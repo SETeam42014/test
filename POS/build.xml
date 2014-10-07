@@ -1,35 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="POS.makejar" default="makejar" basedir=".">
-	
-	<!-- Definitions of variables used during the rest of this script -->
-	
-	<property file="build.properties"/>
-	<property name="build.dir" value="${basedir}/build"/>
-	<property name="build.classes.dir" value="${build.dir}/classes"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="dist.dir" value="${basedir}/dist"/>
-	<property name="conf.dir" value="${basedir}/etc"/>
-	<property name="doc.dir" value="${build.dir}/doc"/>
-	<property name="test.reports.dir" value="${build.dir}/reports/"/>
-	
-	<!-- Definitions of classpath variants used for different tasks -->
-
-	<path id="compile.classpath">
-		<fileset dir="lib">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-
-	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}"/>
-		<!-- configuration -->
-		<pathelement location="${conf.dir}"/>
-		<fileset dir="lib">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-	
-	
   <target name ="makejar" description="Create a jar for the HW project">
     <jar jarfile="POS.jar" includes="*.class" basedir="bin"/>
   </target>
