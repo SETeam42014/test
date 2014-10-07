@@ -16,6 +16,7 @@ public class IntroUI {
 
 
 
+
 	/**
 	 * Graphical user interface of the sales system.
 	 * @return 
@@ -75,6 +76,5 @@ public class IntroUI {
 	private void drawWidgets() {
 
 	  }
-
-	}
+}
 
