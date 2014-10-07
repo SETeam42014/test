@@ -66,6 +66,42 @@
 	<target name="clean" description="Clean up build system results">
 		<delete dir="${build.dir}"/>
 	</target>
+	
+	<!-- Create JAR file in the folder build/jar with all classes, 
+			two property files and other components -->
+	<target name="dist" description="Build project to JAR">
+		<!--
+		<mkdir dir="${build.dir}/jar"/>
+		<jar destfile="${build.dir}/jar/VTKBTarkvara.jar">
+			<fileset dir="${build}/classes"/>
+			<fileset dir="${basedir}/*.properties"/>
+		</jar>
+			-->
+		<propertyfile
+		    file="application.properties"
+		    comment="Application properties">
+		  </propertyfile>
+		<propertyfile
+			file="version.properties"
+			jdkproperties="false"
+			comment="Version properties">
+			<entry  key="build.revision.number" type="int" default="0" operation="+"/>
+			<entry  key="build.minor.number" type="int" default="0"/>
+			<entry  key="build.major.number" type="int" default="0"/>
+			</propertyfile>
+		<loadproperties>
+			<file file="version.properties"/>
+		</loadproperties>
+		<propertyfile 
+			file="version.properties">
+			<entry  key="build.number" type="string" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+		</propertyfile>
+	</target>
+	
+	<target name="jrun" depends="dist" description="Runs JAR file">
+		
+	</target>
+
 
 </project>
 
