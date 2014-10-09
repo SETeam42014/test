@@ -74,6 +74,10 @@
 		<jar destfile="${build.dir}/jar/SETeam42014.jar">
 			<fileset dir="${build.classes.dir}"/>
 			<fileset dir="${basedir}/" includes="*.properties"/>
+			<manifest>
+				<attribute name="Main-Class" 
+					value="ee.ut.math.tvt.SETeam42014.Intro"/>
+			</manifest>
 		</jar>
 		<propertyfile
 		    file="application.properties"
