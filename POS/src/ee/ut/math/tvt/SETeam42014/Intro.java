@@ -12,12 +12,12 @@ public class Intro {
 		// -- ant target (the second option). from targets select "run" and not
 		// "build".
 
-		try {
-			userInterface.getPropertiesValues();
-		} catch (IOException e) {
+		//try {
+			//userInterface.getPropertiesValues();
+		//} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//	e.printStackTrace();
+		//}
 
 	}
 }

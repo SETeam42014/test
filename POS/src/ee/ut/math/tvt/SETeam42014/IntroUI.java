@@ -1,107 +1,79 @@
 package ee.ut.math.tvt.SETeam42014;
 
 import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.Properties;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 public class IntroUI {
 
-	/**
-	 * Graphical user interface of the sales system.
-	 * 
-	 * @return
-	 */
-
-	public String getPropertiesValues() throws IOException {
-
-		String result = "";
-		Properties properties = new Properties();
-		String propertiesFileName = "version.properties";
-
-		InputStream inputStream = getClass().getClassLoader()
-				.getResourceAsStream(propertiesFileName);
-		properties.load(inputStream);
-		if (inputStream == null) {
-			throw new FileNotFoundException("Property file "
-					+ propertiesFileName + " not found in the directory");
-		}
-
-		Date time = new Date(System.currentTimeMillis());
-
-		// get property value and print it out
-		String buildNumber = properties.getProperty("build.number");
-
-		result = buildNumber;
-
-		System.out.println(result + "\nProgram ran on " + time);
-
-		return result;
-	}
-
-	public void SalesSystemUI() {
-
-		setTitle("Sales system");
-
-		// set L&F to the nice Windows style
+	public IntroUI() { 
+		JFrame guiFrame = new JFrame();  
+		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		guiFrame.setTitle("Team: SETeam42014"); 
+		guiFrame.setSize(600,400);  
+		guiFrame.setLocationRelativeTo(null); 
 		try {
-			UIManager.setLookAndFeel(new WindowsClassicLookAndFeel());
-
-		} catch (UnsupportedLookAndFeelException e1) {
-			// log.warn(e1.getMessage());
+			UIManager.setLookAndFeel(new WindowsLookAndFeel());
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		//String[] nameOptions = {"email of leader"};  
+		String[] teamOptions = {"Team leader:","Johani Vajakas"," ",
+				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo"};
+		//String[] leaderOptions2 = {"Johani Vajakas"};
+		//final JPanel comboPanel = new JPanel(); 
+		//JLabel comboLbl = new JLabel("Team members:"); 
+		//JComboBox nimed = new JComboBox(nameOptions);  
+		//comboPanel.add(comboLbl); comboPanel.add(nimed);  
+		final JPanel listPanel = new JPanel(new BorderLayout());
+		//final JPanel listPanel2 = new JPanel();
+		//listPanel.setLayout();
+		listPanel.setVisible(true); 
+		//JLabel listLbl = new JLabel("Team members:");
+		//JLabel listLbl2 = new JLabel("Team leader:");
+		//JLabel listLbl3 = new JLabel("Team leader email:");
+		JList team = new JList(teamOptions); 
+		//JList teamldr = new JList(leaderOptions2);
+		//JList teamldrm = new JList(nameOptions);
+		//team.setLayoutOrientation(JList.VERTICAL_WRAP);  
+		listPanel.add(team);
+		//listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr, BorderLayout.WEST);
+		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
+		JButton vegFruitBut = new JButton( "Tiimi logo");  
+		
+		final JLabel pilt = new JLabel(new ImageIcon("c:/Users/Sander/Desktop/panaan2.png"));
+		guiFrame.add(pilt, BorderLayout.CENTER);
+		vegFruitBut.addActionListener(new ActionListener() { 
+			@Override public void actionPerformed(ActionEvent event) { 
+				 pilt.setVisible(!pilt.isVisible()); 
+				 //comboPanel.setVisible(!comboPanel.isVisible());
+				 } 
+			});
+		guiFrame.add(listPanel, BorderLayout.WEST); 
+		//guiFrame.add(listPanel2, BorderLayout.WEST);
+		guiFrame.add(vegFruitBut,BorderLayout.SOUTH); 
+		guiFrame.setVisible(true);  }
 
-		drawWidgets();
-
-		// size & location
-		int width = 600;
-		int height = 400;
-		setSize(width, height);
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((screen.width - width) / 2, (screen.height - height) / 2);
-
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-	}
-
-	private void addWindowListener(WindowAdapter windowAdapter) {
+	public void getPropertiesValues() {
 		// TODO Auto-generated method stub
-
-		;
+		
+	}
 	}
 
-	private void setLocation(int i, int j) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setSize(int width, int height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setTitle(String string) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void drawWidgets() {
-
-	}
-}
