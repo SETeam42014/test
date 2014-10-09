@@ -33,7 +33,7 @@
          Run them from the command line by executing "ant [targetname]"  -->
 
 	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.VTKBTarkvara.Intro" classpathref="test.classpath" fork="yes" />
+		<java classname="ee.ut.math.tvt.SETeam42014.Intro" classpathref="test.classpath" fork="yes" />
 	</target>
 
 	<target name="build" description="Build the system">
@@ -69,14 +69,12 @@
 	
 	<!-- Create JAR file in the folder build/jar with all classes, 
 			two property files and other components -->
-	<target name="dist" description="Build project to JAR">
-		<!--
+	<target name="dist" depends="build" description="Build project to JAR">
 		<mkdir dir="${build.dir}/jar"/>
-		<jar destfile="${build.dir}/jar/VTKBTarkvara.jar">
-			<fileset dir="${build}/classes"/>
-			<fileset dir="${basedir}/*.properties"/>
+		<jar destfile="${build.dir}/jar/SETeam42014.jar">
+			<fileset dir="${build.classes.dir}"/>
+			<fileset dir="${basedir}/" includes="*.properties"/>
 		</jar>
-			-->
 		<propertyfile
 		    file="application.properties"
 		    comment="Application properties">
@@ -100,7 +98,7 @@
 	</target>
 	
 	<target name="jrun" depends="dist" description="Runs JAR file">
-		
+		<java jar="${build.dir}/jar/SETeam42014.jar" fork="yes"/>
 	</target>
 
 
