@@ -32,7 +32,7 @@
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 
-	<target name="run" depends="build" description="Run the template application">
+	<target name="run" depends="build" description="Run the application">
 		<java classname="ee.ut.math.tvt.SETeam42014.Intro" classpathref="test.classpath" fork="yes" />
 	</target>
 
