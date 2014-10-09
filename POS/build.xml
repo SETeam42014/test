@@ -83,15 +83,6 @@
 	<!-- Create JAR file in the folder build/jar with all classes, 
 			two property files and other components -->
 	<target name="dist" depends="build" description="Build project to JAR">
-		<mkdir dir="${build.jar.dir}"/>
-		<jar destfile="${build.jar.dir}/${team.name}.jar">
-			<fileset dir="${build.classes.dir}"/>
-			<fileset dir="${basedir}/" includes="*.properties"/>
-			<manifest>
-				<attribute name="Main-Class" 
-					value="${application.main.class}"/>
-			</manifest>
-		</jar>
 		<propertyfile
 			file="version.properties"
 			jdkproperties="true"
@@ -106,6 +97,15 @@
 			jdkproperties="true">
 			<entry  key="build.number" type="string" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 		</propertyfile>
+		<mkdir dir="${build.jar.dir}"/>
+		<jar destfile="${build.jar.dir}/${team.name}.jar">
+			<fileset dir="${build.classes.dir}"/>
+			<fileset dir="${basedir}/" includes="*.properties"/>
+			<manifest>
+				<attribute name="Main-Class" 
+					value="${application.main.class}"/>
+			</manifest>
+		</jar>
 	</target>
 	
 	<target name="jrun" depends="dist" description="Builds and runs JAR file">
