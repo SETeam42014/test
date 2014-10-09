@@ -80,20 +80,19 @@
 		<propertyfile
 		    file="application.properties"
 		    comment="Application properties">
-		  </propertyfile>
+		</propertyfile>
 		<propertyfile
 			file="version.properties"
-			jdkproperties="false"
+			jdkproperties="true"
 			comment="Version properties">
 			<entry  key="build.revision.number" type="int" default="0" operation="+"/>
 			<entry  key="build.minor.number" type="int" default="0"/>
 			<entry  key="build.major.number" type="int" default="0"/>
 			</propertyfile>
-		<loadproperties>
-			<file file="version.properties"/>
-		</loadproperties>
+		
 		<propertyfile 
-			file="version.properties">
+			file="version.properties"
+			jdkproperties="true">
 			<entry  key="build.number" type="string" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 		</propertyfile>
 	</target>
