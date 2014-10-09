@@ -2,11 +2,15 @@ package ee.ut.math.tvt.SETeam42014;
 
 import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
 
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -22,6 +26,30 @@ public class IntroUI {
 	 * @return 
 	 */
 
+	
+	public String getPropertiesValues() throws IOException{
+		 
+		 String result="";
+		 Properties properties = new Properties();
+		 String propertiesFileName = "version.properties";
+		 
+		 InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName);
+		 properties.load(inputStream);
+		 if (inputStream == null){
+			 throw new FileNotFoundException("Property file " + propertiesFileName + " not found in the directory");
+		 }
+		 
+		 Date time = new Date (System.currentTimeMillis());
+		 
+		 //get property value and print it out
+		 String buildNumber = properties.getProperty("build.number");
+		 
+		 result=buildNumber;
+		 
+		 System.out.println(result + "\nProgram ran on " + time);
+		 
+		 return result;
+	 }
 	  public void SalesSystemUI() {
 	 
 

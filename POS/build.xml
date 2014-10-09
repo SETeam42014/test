@@ -36,13 +36,17 @@
 		<fileset dir="lib">
 			<include name="*.jar"/>
 		</fileset>
+		<pathelement location="${basedir}"/>
+		<fileset dir="">
+			<include name="*.properties"/>
+		</fileset>
 	</path>
 
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 
 	<target name="run" depends="build" description="Run the application">
-		<java classname="${application.main.class}" classpathref="test.classpath" fork="yes" />
+		<java classname="ee.ut.math.tvt.SETeam42014.Intro" classpathref="test.classpath" fork="true" />
 	</target>
 
 	<target name="build" description="Build the system">
