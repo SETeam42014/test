@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,9 +37,20 @@ public class IntroUI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//String[] nameOptions = {"email of leader"};  
+		//String[] nameOptions = {"email of leader"};
+		Properties prop = new Properties();
+		String propFileName = "version.properties";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+        try {
+			prop.load(inputStream);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String version = prop.getProperty("build.number");
 		String[] teamOptions = {"Team leader:","Johani Vajakas"," ",
-				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo"};
+				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo", " ",
+				"Version number:", version};
 		//String[] leaderOptions2 = {"Johani Vajakas"};
 		//final JPanel comboPanel = new JPanel(); 
 		//JLabel comboLbl = new JLabel("Team members:"); 
