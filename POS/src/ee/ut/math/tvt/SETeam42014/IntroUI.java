@@ -58,7 +58,7 @@ public class IntroUI {
 		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
 		JButton vegFruitBut = new JButton( "Tiimi logo");  
 		
-		final JLabel pilt = new JLabel(new ImageIcon("c:/Users/Sander/Desktop/panaan2.png"));
+		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
 		guiFrame.add(pilt, BorderLayout.CENTER);
 		vegFruitBut.addActionListener(new ActionListener() { 
 			@Override public void actionPerformed(ActionEvent event) { 
