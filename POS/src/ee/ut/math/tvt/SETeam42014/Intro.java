@@ -12,7 +12,7 @@ public class Intro {
 
 	public static void main(String[] args) {
 		IntroUI userInterface = new IntroUI();
-		log.info("SalesSystem started");
+		log.info("SalesSystem started, class name: " + log.getName());
 
 		System.out.println("TERE");
 		// if you want to run this programm, rightclick build.xml -- run as
