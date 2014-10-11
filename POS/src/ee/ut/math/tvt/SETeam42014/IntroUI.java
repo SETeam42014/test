@@ -23,68 +23,72 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 public class IntroUI {
 
-	public IntroUI() { 
-		JFrame guiFrame = new JFrame();  
-		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		guiFrame.setTitle("Team: SETeam42014"); 
-		guiFrame.setSize(600,400);  
-		guiFrame.setLocationRelativeTo(null); 
+	public IntroUI() {
+		JFrame guiFrame = new JFrame();
+		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		guiFrame.setTitle("Team: SETeam42014");
+		guiFrame.setSize(600, 400);
+		guiFrame.setLocationRelativeTo(null);
 		try {
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//String[] nameOptions = {"email of leader"};
+		// String[] nameOptions = {"email of leader"};
 		Properties prop = new Properties();
 		String propFileName = "version.properties";
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-        try {
+		InputStream inputStream = getClass().getClassLoader()
+				.getResourceAsStream(propFileName);
+		try {
 			prop.load(inputStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String version = prop.getProperty("build.number");
-		String[] teamOptions = {"Team leader:","Johani Vajakas"," ",
-				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo"," ",
-				"Version number:", version};  
-				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo", " ",
-				"Version number:", version};
-		//String[] leaderOptions2 = {"Johani Vajakas"};
-		//final JPanel comboPanel = new JPanel(); 
-		//JLabel comboLbl = new JLabel("Team members:"); 
-		//JComboBox nimed = new JComboBox(nameOptions);  
-		//comboPanel.add(comboLbl); comboPanel.add(nimed);  
+		String[] teamOptions = { "Team leader:", "Johani Vajakas", " ",
+				"Team leader e-mail:", "email here", " ",
+				"Other team members:", "Sander Tars", "Brandon Paehn",
+				"Mihkel Killo", " ", "Version number:", version };
+		// String[] leaderOptions2 = {"Johani Vajakas"};
+		// final JPanel comboPanel = new JPanel();
+		// JLabel comboLbl = new JLabel("Team members:");
+		// JComboBox nimed = new JComboBox(nameOptions);
+		// comboPanel.add(comboLbl); comboPanel.add(nimed);
 		final JPanel listPanel = new JPanel(new BorderLayout());
 
-		listPanel.setVisible(true); 
+		listPanel.setVisible(true);
 
-		JList team = new JList(teamOptions); 
-  
+		JList team = new JList(teamOptions);
+
 		listPanel.add(team);
-		//listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr, BorderLayout.WEST);
-		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
-		JButton vegFruitBut = new JButton( "Tiimi logo");  
-		
+		// listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr,
+		// BorderLayout.WEST);
+		// listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm,
+		// BorderLayout.SOUTH);
+		JButton vegFruitBut = new JButton("Tiimi logo");
+
 		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
 		guiFrame.add(pilt, BorderLayout.CENTER);
-		vegFruitBut.addActionListener(new ActionListener() { 
-			@Override public void actionPerformed(ActionEvent event) { 
-				 pilt.setVisible(!pilt.isVisible()); 
-				 } 
-			});
+		vegFruitBut.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				pilt.setVisible(!pilt.isVisible());
+			}
+		});
 
-		guiFrame.add(listPanel, BorderLayout.WEST); 
-		//guiFrame.add(listPanel2, BorderLayout.WEST);
-		guiFrame.add(vegFruitBut,BorderLayout.SOUTH); 
-		guiFrame.setVisible(true);  }
+		guiFrame.add(listPanel, BorderLayout.WEST);
+		// guiFrame.add(listPanel2, BorderLayout.WEST);
+		guiFrame.add(vegFruitBut, BorderLayout.SOUTH);
+		guiFrame.setVisible(true);
+	}
 
 	public void getPropertiesValues() {
 		// TODO Auto-generated method stub
-		
-	}
-	}
 
+	}
+}
