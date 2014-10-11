@@ -4,9 +4,7 @@ import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +51,13 @@ public class IntroUI {
 		String[] teamOptions = {"Team leader:","Johani Vajakas"," ",
 				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo"," ",
 				"Version number:", version};  
+				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo", " ",
+				"Version number:", version};
+		//String[] leaderOptions2 = {"Johani Vajakas"};
+		//final JPanel comboPanel = new JPanel(); 
+		//JLabel comboLbl = new JLabel("Team members:"); 
+		//JComboBox nimed = new JComboBox(nameOptions);  
+		//comboPanel.add(comboLbl); comboPanel.add(nimed);  
 		final JPanel listPanel = new JPanel(new BorderLayout());
 
 		listPanel.setVisible(true); 
@@ -60,19 +65,21 @@ public class IntroUI {
 		JList team = new JList(teamOptions); 
   
 		listPanel.add(team);
-
-		JButton logobut = new JButton( "Tiimi logo");  
+		//listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr, BorderLayout.WEST);
+		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
+		JButton vegFruitBut = new JButton( "Tiimi logo");  
 		
-		final JLabel pilt = new JLabel(new ImageIcon("c:/Users/Sander/Desktop/panaan2.png"));
+		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
 		guiFrame.add(pilt, BorderLayout.CENTER);
-        logobut.addActionListener(new ActionListener() { 
+		vegFruitBut.addActionListener(new ActionListener() { 
 			@Override public void actionPerformed(ActionEvent event) { 
 				 pilt.setVisible(!pilt.isVisible()); 
 				 } 
 			});
 
 		guiFrame.add(listPanel, BorderLayout.WEST); 
-		guiFrame.add(logobut,BorderLayout.SOUTH); 
+		//guiFrame.add(listPanel2, BorderLayout.WEST);
+		guiFrame.add(vegFruitBut,BorderLayout.SOUTH); 
 		guiFrame.setVisible(true);  }
 
 	public void getPropertiesValues() {
