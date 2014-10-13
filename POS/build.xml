@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." name="templateApp" default="build">
+<project basedir="." name="SETeam42014" default="build">
 
 	<!-- Definitions of variables used during the rest of this script -->
-
+	
+	<!-- Definitions are loaded from file "application.properties" -->
 	<property file="application.properties"/>
 	<!-- 
 	DEPRICATED
@@ -21,6 +22,7 @@
 				<file file="application.properties"/>
 	</loadproperties>
 	-->
+	
 	<!-- Definitions of classpath variants used for different tasks -->
 
 	<path id="compile.classpath">
@@ -33,10 +35,12 @@
 		<pathelement location="${build.classes.dir}"/>
 		<!-- configuration -->
 		<pathelement location="${conf.dir}"/>
+		<!-- Include libraries from "lib" folder-->
 		<fileset dir="lib">
 			<include name="*.jar"/>
 		</fileset>
 		<pathelement location="${basedir}"/>
+		<!-- Includes application properties -->
 		<fileset dir="">
 			<include name="*.properties"/>
 		</fileset>
@@ -44,14 +48,17 @@
 
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
-
+	
+	<!-- "run" target -->
 	<target name="run" depends="build" description="Run the application">
 		<java classname="${application.main.class}" classpathref="test.classpath" fork="true" />
 	</target>
-
+	<!-- "build" target -->
 	<target name="build" description="Build the system">
+		<!-- Creates needed directories -->
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
+		<!-- Creates code -->
 		<javac
             srcdir="${src.dir}"
             destdir="${build.classes.dir}"
@@ -64,10 +71,10 @@
 			includeantruntime="false">
 			<classpath refid="compile.classpath"/>
 		</javac>
-
 	</target>
 
 	<!-- Build internal documentation -->
+	<!-- Directly copied from demo, not changed -->
 	<target name="javadoc" description="Build internal documentation">
 		<mkdir dir="${doc.dir}"/>
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
@@ -80,28 +87,38 @@
 		<delete dir="${build.dir}"/>
 	</target>
 	
-	<!-- Create JAR file in the folder build/jar with all classes, 
+	<!-- "dist" target -->
+	<!-- Create JAR file in the folder "build/jar" with all classes, 
 			two property files and other components -->
 	<target name="dist" depends="build" description="Build project to JAR">
+		<!-- Increments version number -->
 		<propertyfile
 			file="version.properties"
 			jdkproperties="true"
 			comment="Version properties">
 			<entry  key="build.revision.number" type="int" default="0" operation="+"/>
 			</propertyfile>
+		<!-- Reads new version number -->
 		<loadproperties>
 			<file file="version.properties"/>
 		</loadproperties>
+		<!-- Writes new full version number -->
 		<propertyfile 
 			file="version.properties"
 			jdkproperties="true">
 			<entry  key="build.number" type="string" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
 		</propertyfile>
+		<!-- Creates JAR directory -->
 		<mkdir dir="${build.jar.dir}"/>
+		<!-- Creates JAR file -->
 		<jar destfile="${build.jar.dir}/${team.name}.jar">
+			<!-- Include classes -->
 			<fileset dir="${build.classes.dir}"/>
+			<!-- Include properties files -->
 			<fileset dir="${basedir}/" includes="*.properties"/>
+			<!-- Include configuration directory ("etc") -->
 			<fileset dir="${conf.dir}"/>
+			<!-- Include log4j classes from JAR file -->
 			<zipfileset includes="**/*.class" src="lib/log4j-1.2.17.jar"/>
 			<manifest>
 				<attribute name="Main-Class" 
@@ -110,10 +127,9 @@
 		</jar>
 	</target>
 	
+	<!-- JAR run target -->
 	<target name="jrun" depends="dist" description="Builds and runs JAR file">
+		<!-- Runs jar file -->
 		<java jar="${build.jar.dir}/${team.name}.jar" fork="yes"/>
 	</target>
-
-
 </project>
-

@@ -9,20 +9,15 @@ public class Intro {
 	private static final Logger log = Logger.getLogger(Intro.class);
 
 	public static void main(String[] args) {
+		// Datetime used for timestamp
+		Date date = new Date();
+		// Program running log entry
+		log.info("POS started, class name: " + log.getName() + ". Timestamp: "
+				+ date.toString());
+		// testing purposes
+		// System.out.println("TERE");
+
+		// IntroUi used to get GUI
 		IntroUI userInterface = new IntroUI();
-		log.info("SalesSystem started, class name: " + log.getName());
-
-		System.out.println("TERE");
-		// if you want to run this programm, rightclick build.xml -- run as
-		// -- ant target (the second option). from targets select "run" and not
-		// "build".
-
-		// try {
-		// userInterface.getPropertiesValues();
-		// } catch (IOException e) {
-		// TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 	}
 }
