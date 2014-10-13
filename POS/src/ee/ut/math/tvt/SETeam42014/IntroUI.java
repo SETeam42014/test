@@ -26,17 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class IntroUI {
 
 	public IntroUI() { 
-		JFrame guiFrame = new JFrame();  
-		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		guiFrame.setTitle("Team: SETeam42014"); 
-		guiFrame.setSize(600,400);  
-		guiFrame.setLocationRelativeTo(null); 
-		try {
-			UIManager.setLookAndFeel(new WindowsLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		//String[] nameOptions = {"email of leader"};
 		Properties prop = new Properties();
 		String propFileName = "version.properties";
@@ -48,9 +38,34 @@ public class IntroUI {
 			e.printStackTrace();
 		}
 		String version = prop.getProperty("build.number");
-		String[] teamOptions = {"Team leader:","Johani Vajakas"," ",
-				"Team leader e-mail:", "email here"," ","Other team members:", "Sander Tars", "Brandon Paehn" ,"Mihkel Killo", " ",
+		propFileName = "application.properties";
+		InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream(propFileName);
+		try {
+			prop.load(inputStream2);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String leader = prop.getProperty("team.leader");
+		String email = prop.getProperty("team.email");
+		String mem1 = prop.getProperty("team.mem1");
+		String mem2 = prop.getProperty("team.mem2");
+		String mem3 = prop.getProperty("team.mem3");
+		String teamname = prop.getProperty("team.name");
+		String[] teamOptions = {"Team leader:",leader," ",
+				"Team leader e-mail:", email," ","Other team members:", mem1, mem2 ,mem3, " ",
 				"Version number:", version};
+		JFrame guiFrame = new JFrame();  
+		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		guiFrame.setTitle(teamname); 
+		guiFrame.setSize(600,400);  
+		guiFrame.setLocationRelativeTo(null); 
+		try {
+			UIManager.setLookAndFeel(new WindowsLookAndFeel());
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//String[] leaderOptions2 = {"Johani Vajakas"};
 		//final JPanel comboPanel = new JPanel(); 
 		//JLabel comboLbl = new JLabel("Team members:"); 
@@ -70,11 +85,11 @@ public class IntroUI {
 		listPanel.add(team);
 		//listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr, BorderLayout.WEST);
 		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
-		JButton vegFruitBut = new JButton( "Tiimi logo");  
+		JButton tiimilogo = new JButton( "Tiimi logo");  
 		
 		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
 		guiFrame.add(pilt, BorderLayout.CENTER);
-		vegFruitBut.addActionListener(new ActionListener() { 
+		tiimilogo.addActionListener(new ActionListener() { 
 			@Override public void actionPerformed(ActionEvent event) { 
 				 pilt.setVisible(!pilt.isVisible()); 
 				 //comboPanel.setVisible(!comboPanel.isVisible());
@@ -82,7 +97,7 @@ public class IntroUI {
 			});
 		guiFrame.add(listPanel, BorderLayout.WEST); 
 		//guiFrame.add(listPanel2, BorderLayout.WEST);
-		guiFrame.add(vegFruitBut,BorderLayout.SOUTH); 
+		guiFrame.add(tiimilogo,BorderLayout.SOUTH); 
 		guiFrame.setVisible(true);  }
 
 	public void getPropertiesValues() {
