@@ -1,108 +1,103 @@
 package ee.ut.math.tvt.SETeam42014;
 
-import com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 public class IntroUI {
 
 	public IntroUI() { 
-
-		//String[] nameOptions = {"email of leader"};
+		//created prop to get Properties
 		Properties prop = new Properties();
+		//propFileName given value to get information from version.properties
 		String propFileName = "version.properties";
+		//inputstream from version.properties
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
         try {
+        	//inputstream executed
 			prop.load(inputStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        //version given build number value from value.properties
 		String version = prop.getProperty("build.number");
+		//propFileName changed to application.properties
 		propFileName = "application.properties";
+		//new inputstream created
 		InputStream inputStream2 = getClass().getClassLoader().getResourceAsStream(propFileName);
 		try {
+			//new inputstream executed
 			prop.load(inputStream2);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//getting team members and leader info from application.properties
 		String leader = prop.getProperty("team.leader");
 		String email = prop.getProperty("team.email");
 		String mem1 = prop.getProperty("team.mem1");
 		String mem2 = prop.getProperty("team.mem2");
 		String mem3 = prop.getProperty("team.mem3");
+		//team name from application.properties
 		String teamname = prop.getProperty("team.name");
+		//string list created using info from application.properties
 		String[] teamOptions = {"Team leader:",leader," ",
 				"Team leader e-mail:", email," ","Other team members:", mem1, mem2 ,mem3, " ",
 				"Version number:", version};
-		JFrame guiFrame = new JFrame();  
-		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-		guiFrame.setTitle(teamname); 
+		//new guiFrame created
+		JFrame guiFrame = new JFrame();
+		//guiFrame close operatsion set to exit_on_close
+		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//guiFrame title set to team name (SETeam2014)
+		guiFrame.setTitle(teamname);
+		//guiFrame size and location set
 		guiFrame.setSize(600,400);  
 		guiFrame.setLocationRelativeTo(null); 
 		try {
+			//guiFrame lookandfeel set to windowslookandfeel
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//String[] leaderOptions2 = {"Johani Vajakas"};
-		//final JPanel comboPanel = new JPanel(); 
-		//JLabel comboLbl = new JLabel("Team members:"); 
-		//JComboBox nimed = new JComboBox(nameOptions);  
-		//comboPanel.add(comboLbl); comboPanel.add(nimed);  
+		//created new JPanel for info, using borderlayout as argument
 		final JPanel listPanel = new JPanel(new BorderLayout());
-		//final JPanel listPanel2 = new JPanel();
-		//listPanel.setLayout();
+		//Panel set visible
 		listPanel.setVisible(true); 
-		//JLabel listLbl = new JLabel("Team members:");
-		//JLabel listLbl2 = new JLabel("Team leader:");
-		//JLabel listLbl3 = new JLabel("Team leader email:");
+		//new list created with previously defined team
 		JList team = new JList(teamOptions); 
-		//JList teamldr = new JList(leaderOptions2);
-		//JList teamldrm = new JList(nameOptions);
-		//team.setLayoutOrientation(JList.VERTICAL_WRAP);  
+		//JList team added to Jpanel listPanel
 		listPanel.add(team);
-		//listPanel.add(listLbl2, BorderLayout.WEST); listPanel.add(teamldr, BorderLayout.WEST);
-		//listPanel.add(listLbl3, BorderLayout.SOUTH); listPanel.add(teamldrm, BorderLayout.SOUTH);
+		//New button created
 		JButton tiimilogo = new JButton( "Tiimi logo");  
-		
+		//chosen picture as team logo from etc folder and added to guiFrame, set to center
 		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
 		guiFrame.add(pilt, BorderLayout.CENTER);
+		//new actionlistener added to team logo- set visible/invisible when clicked
+		//on button tiimilogo
 		tiimilogo.addActionListener(new ActionListener() { 
 			@Override public void actionPerformed(ActionEvent event) { 
 				 pilt.setVisible(!pilt.isVisible()); 
-				 //comboPanel.setVisible(!comboPanel.isVisible());
 				 } 
 			});
+		//listpanel with team members' info added to west and tiimilogo button added to south
 		guiFrame.add(listPanel, BorderLayout.WEST); 
-		//guiFrame.add(listPanel2, BorderLayout.WEST);
-		guiFrame.add(tiimilogo,BorderLayout.SOUTH); 
+		guiFrame.add(tiimilogo,BorderLayout.SOUTH);
+		//guiFrame set visible
 		guiFrame.setVisible(true);  }
 
-	public void getPropertiesValues() {
-		// TODO Auto-generated method stub
-		
-	}
 	}
 
