@@ -164,9 +164,9 @@
 				<arg value="-m ${commit-message}" />
 			</args>
 		</git>
-		<git command="commit">
+		<git command="push">
 			<args>
-				<arg value="development" />
+				<arg value="" />
 			</args>
 		</git>
 	</target>
