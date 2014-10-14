@@ -156,15 +156,19 @@
 		<echo message="Commiting all changes with message ${commit-message}" />
 		<git command="add">
 			<args>
-				<arg value="." />
+				<arg value="-A" />
 			</args>
 		</git>
 		<git command="commit">
 			<args>
-				<arg value="-am ${commit-message}" />
+				<arg value="-m ${commit-message}" />
 			</args>
 		</git>
-		<git command="push" />
+		<git command="commit">
+			<args>
+				<arg value="development" />
+			</args>
+		</git>
 	</target>
 	<target name="git_tag" description="Create tag and synchronize">
 	</target>
