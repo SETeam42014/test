@@ -104,7 +104,7 @@ public class IntroUI {
 		JButton tiimilogo = new JButton("Tiimi logo");
 		// chosen picture as team logo from etc folder and added to guiFrame,
 		// set to center
-		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
+		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));///resources/ juurde lisama, et panaani syya kuhugi
 		guiAken.add(pilt, BorderLayout.CENTER);
 		// new actionlistener added to team logo- set visible/invisible when
 		// clicked

@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -11,8 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.NoSuchElementException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -101,8 +104,12 @@ public class PurchaseItemPanel extends JPanel {
         priceField.setEditable(false);
 
         // == Add components to the panel
-
+        //JComboBox nimed = new JComboBox(nameOptions); 
         // - bar code
+        //final JPanel comboPanel = new JPanel(); 
+		//JLabel comboLbl = new JLabel("Team members:"); 
+		//JComboBox nimed = new JComboBox(nameOptions);  
+		//comboPanel.add(comboLbl); comboPanel.add(nimed);
         panel.add(new JLabel("Bar code:"));
         panel.add(barCodeField);
 
