@@ -25,6 +25,8 @@ public class IntroUI {
 
 	private static final Logger log = Logger.getLogger(IntroUI.class);
 
+	public JFrame guiAken;
+
 	public IntroUI() {
 		// created prop to get Properties
 		Properties prop = new Properties();
@@ -121,5 +123,9 @@ public class IntroUI {
 		// Window opened log entry
 		log.info("IntoUI Window opened. Class: " + log.getName()
 				+ ". Timestamp: " + date.toString());
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
 	}
 }
