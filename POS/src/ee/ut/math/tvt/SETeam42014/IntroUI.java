@@ -25,9 +25,14 @@ public class IntroUI {
 
 	private static final Logger log = Logger.getLogger(IntroUI.class);
 
-	public JFrame guiAken;
+	private JFrame guiAken;
 
+	/**
+	 * Konstruktor IntroUI-le
+	 */
 	public IntroUI() {
+		guiAken = new JFrame();
+
 		// created prop to get Properties
 		Properties prop = new Properties();
 		// propFileName given value to get information from version.properties
@@ -71,15 +76,13 @@ public class IntroUI {
 				"Team leader e-mail:", email, " ", "Other team members:", mem1,
 				mem2, mem3, " ", "Version number:", version };
 
-		// new guiFrame created
-		JFrame guiFrame = new JFrame();
 		// guiFrame close operatsion set to exit_on_close
-		guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		guiAken.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// guiFrame title set to team name (SETeam2014)
-		guiFrame.setTitle(teamname);
+		guiAken.setTitle(teamname);
 		// guiFrame size and location set
-		guiFrame.setSize(600, 400);
-		guiFrame.setLocationRelativeTo(null);
+		guiAken.setSize(600, 400);
+		guiAken.setLocationRelativeTo(null);
 		try {
 			// guiFrame lookandfeel set to windowslookandfeel
 			UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -102,7 +105,7 @@ public class IntroUI {
 		// chosen picture as team logo from etc folder and added to guiFrame,
 		// set to center
 		final JLabel pilt = new JLabel(new ImageIcon("etc/panaan2.png"));
-		guiFrame.add(pilt, BorderLayout.CENTER);
+		guiAken.add(pilt, BorderLayout.CENTER);
 		// new actionlistener added to team logo- set visible/invisible when
 		// clicked
 		// on button tiimilogo
@@ -114,10 +117,9 @@ public class IntroUI {
 		});
 		// listpanel with team members' info added to west and tiimilogo button
 		// added to south
-		guiFrame.add(listPanel, BorderLayout.WEST);
-		guiFrame.add(tiimilogo, BorderLayout.SOUTH);
+		guiAken.add(listPanel, BorderLayout.WEST);
+		guiAken.add(tiimilogo, BorderLayout.SOUTH);
 		// guiFrame set visible
-		guiFrame.setVisible(true);
 		// Datetime used for timestamp
 		Date date = new Date();
 		// Window opened log entry
@@ -127,10 +129,11 @@ public class IntroUI {
 
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub
+		guiAken.setVisible(b);
 	}
 
 	public void setAlwaysOnTop(boolean b) {
 		// TODO Auto-generated method stub
-		
+		guiAken.setAlwaysOnTop(b);
 	}
 }

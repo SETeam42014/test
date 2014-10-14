@@ -26,20 +26,20 @@ public class Intro {
 			cui.run();
 		} else {
 
-			IntroUI introUI = new IntroUI();
-			introUI.setVisible(true);
-			introUI.setAlwaysOnTop(true);
+			// IntroUI introUI = new IntroUI();
+			// introUI.setVisible(true);
+			// introUI.setAlwaysOnTop(true);
 
 			final SalesSystemUI ui = new SalesSystemUI(domainController);
 			ui.setVisible(true);
 
-			introUI.setAlwaysOnTop(false);
+			// introUI.setAlwaysOnTop(false);
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			introUI.setVisible(false);
+			// introUI.setVisible(false);
 		}
 		// Datetime used for timestamp
 		Date date = new Date();
@@ -49,7 +49,5 @@ public class Intro {
 		// testing purposes
 		// System.out.println("TERE");
 
-		// IntroUi used to get GUI
-		IntroUI userInterface = new IntroUI();
 	}
 }
