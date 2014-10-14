@@ -164,11 +164,7 @@
 				<arg value="-m ${commit-message}" />
 			</args>
 		</git>
-		<git command="push">
-			<args>
-				<arg value="" />
-			</args>
-		</git>
+		<git command="push"/>
 	</target>
 	<target name="git_tag" description="Create tag and synchronize">
 	</target>
