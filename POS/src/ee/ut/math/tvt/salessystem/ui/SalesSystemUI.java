@@ -1,19 +1,22 @@
 package ee.ut.math.tvt.salessystem.ui;
 
-import com.jgoodies.looks.windows.WindowsLookAndFeel;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -34,6 +37,7 @@ public class SalesSystemUI extends JFrame {
   private PurchaseTab purchaseTab;
   private HistoryTab historyTab;
   private StockTab stockTab;
+  private InfoTab infoTab;
 
   /**
    * Constructs sales system GUI.
@@ -47,12 +51,13 @@ public class SalesSystemUI extends JFrame {
     historyTab = new HistoryTab();
     stockTab = new StockTab(model);
     purchaseTab = new PurchaseTab(domainController, model);
+    infoTab = new InfoTab();
 
     setTitle("Sales system");
 
     // set L&F to the nice Windows style
     try {
-      UIManager.setLookAndFeel(new WindowsLookAndFeel());
+      UIManager.setLookAndFeel(new com.sun.java.swing.plaf.windows.WindowsLookAndFeel());
 
     } catch (UnsupportedLookAndFeelException e1) {
       log.warn(e1.getMessage());
@@ -81,6 +86,7 @@ public class SalesSystemUI extends JFrame {
     tabbedPane.add("Point-of-sale", purchaseTab.draw());
     tabbedPane.add("Warehouse", stockTab.draw());
     tabbedPane.add("History", historyTab.draw());
+    tabbedPane.add("Team info", infoTab.draw());
 
     getContentPane().add(tabbedPane);
   }
