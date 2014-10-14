@@ -132,4 +132,11 @@
 		<!-- Runs jar file -->
 		<java jar="${build.jar.dir}/${team.name}.jar" fork="yes"/>
 	</target>
+	
+	<!-- runc target -->
+	<target name="runc" depends="build" description="Run the application (console)">
+		<java classname="ee.ut.math.tvt.[team].Intro" classpathref="test.classpath" fork="yes">
+			<arg value="console" />
+		</java>
+	</target>
 </project>
