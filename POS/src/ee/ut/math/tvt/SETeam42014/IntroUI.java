@@ -128,4 +128,9 @@ public class IntroUI {
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub
 	}
+
+	public void setAlwaysOnTop(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }
