@@ -152,7 +152,7 @@
 		</java>
 	</target>
 	<target name="git_commit" description="Commit the code to git">
-		<input message="Commit message" addproperty="commit-message" />
+		<input message="Commit message" addproperty="commit-message"/>
 		<echo message="Commiting all changes with message ${commit-message}" />
 		<git command="add">
 			<args>
@@ -164,7 +164,11 @@
 				<arg value="-m ${commit-message}" />
 			</args>
 		</git>
-		<git command="push"/>
+		<input message="Git username:" addproperty="git.username"/>
+		<input message="Git password:" addproperty="git.password">
+		    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+		</input>
+		<git command="push https://$g{git.username}:${git.password}@github.com/SETeam42014/test.git"/>
 	</target>
 	<target name="git_tag" description="Create tag and synchronize">
 	</target>
