@@ -139,4 +139,8 @@
 			<arg value="console" />
 		</java>
 	</target>
+	<target name="git_commit" description="Commit the code to git">
+	</target>
+	<target name="git_tag" description="Create tag and synchronize">
+	</target>
 </project>
