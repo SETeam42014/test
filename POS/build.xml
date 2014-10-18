@@ -166,6 +166,7 @@
 				<arg value="-m ${commit-message}" />
 			</args>
 		</git>
+		
 		<input message="Git username:" addproperty="git.username"/>
 		<input message="Git password:" addproperty="git.password"/>
 		
