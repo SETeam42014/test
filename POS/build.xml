@@ -25,6 +25,7 @@
 	
 	<!-- Definitions of classpath variants used for different tasks -->
 
+	<!-- http://tlrobinson.net/blog/2008/11/ant-tasks-for-git/ -->
 	<macrodef name = "git">
 	    <attribute name = "command" />
 	    <attribute name = "dir" default = "" />
@@ -37,6 +38,7 @@
 	        </exec>
 	    </sequential>
 	</macrodef>
+	
 	<path id="compile.classpath">
 		<fileset dir="lib">
 			<include name="*.jar"/>
@@ -191,5 +193,28 @@
 	</target>
 	<!-- git_tag target -->
 	<target name="git_tag" description="Create tag and synchronize">
+		<!-- Create git tag -->
+		<input message="Tag name:" addproperty="git.tag.name"/>
+		<input message="Tag comment:" addproperty="git.tag.comment"/>
+		<git command="tag">
+			<args>
+				<arg value="-a" />
+				<arg value="${git.tag.name}" />
+				<arg value="-m" />
+				<arg value='"${git.tag.comment}"' />
+			</args>
+		</git>
+		
+		<!-- Push tags to server -->
+		<!-- Gets User info for Git -->
+		<input message="Git username:" addproperty="git.username"/>
+		<!-- Problem: Echos back password -->
+		<input message="Git password:" addproperty="git.password"/>
+		<git command="push">
+			<args>
+				<arg value="--tags"/>
+				<arg value="https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
+			</args>
+		</git>
 	</target>
 </project>
