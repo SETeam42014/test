@@ -167,9 +167,8 @@
 			</args>
 		</git>
 		<input message="Git username:" addproperty="git.username"/>
-		<input message="Git password:" addproperty="git.password">
-		    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
-		</input>
+		<input message="Git password:" addproperty="git.password"/>
+		
 		<git command="push https://$g{git.username}:${git.password}@github.com/SETeam42014/test.git"/>
 	</target>
 	<!-- git_tag target -->
