@@ -169,7 +169,11 @@
 		<input message="Git username:" addproperty="git.username"/>
 		<input message="Git password:" addproperty="git.password"/>
 		
-		<git command="push https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
+		<git command="push ">
+			<args>
+				<arg value="https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
+			</args>
+		</git>
 	</target>
 	<!-- git_tag target -->
 	<target name="git_tag" description="Create tag and synchronize">
