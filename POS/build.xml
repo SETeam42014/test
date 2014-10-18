@@ -19,7 +19,7 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
 	
 	<loadproperties>
-				<file file="application.properties"/>
+		<file file="application.properties"/>
 	</loadproperties>
 	-->
 	
@@ -59,13 +59,34 @@
 			<include name="*.properties"/>
 		</fileset>
 	</path>
+	
+	<path id="run.classpath">
+			<pathelement location="${build.classes.dir}"/>
+			<!-- configuration -->
+			<pathelement location="${conf.dir}"/>
+			<!-- Include libraries from "lib" folder-->
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+			<pathelement location="${basedir}"/>
+			<!-- Includes application properties -->
+			<fileset dir="">
+				<include name="*.properties"/>
+			</fileset>
+		</path>
+		
 
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 	
 	<!-- "run" target -->
 	<target name="run" depends="build" description="Run the application">
-		<java classname="${application.main.class}" classpathref="test.classpath" fork="true" />
+		<java 
+			classname="${application.main.class}" 
+			classpathref="run.classpath" 
+			fork="true" />
+			<jvmarg value="-Xdebug" />
+		    <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
 	</target>
 	<!-- "build" target -->
 	<target name="build" description="Build the system">
@@ -180,7 +201,7 @@
 		<!-- This code hangs when run as ANT target from Eclipse
 		
 		<input message="Git password:" addproperty="git.password">
-			<handler classname="org.apache.tools.ant.input.SecureInputHandler"/>		
+			<handler classname="org.apache.tools.ant.input.SecureInputHandler"/>
 		</input>
 		-->
 		
