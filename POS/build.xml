@@ -151,6 +151,8 @@
 			<arg value="console" />
 		</java>
 	</target>
+	
+	<!-- git_commit target -->
 	<target name="git_commit" description="Commit the code to git">
 		<input message="Commit message" addproperty="commit-message"/>
 		<echo message="Commiting all changes with message ${commit-message}" />
@@ -170,6 +172,7 @@
 		</input>
 		<git command="push https://$g{git.username}:${git.password}@github.com/SETeam42014/test.git"/>
 	</target>
+	<!-- git_tag target -->
 	<target name="git_tag" description="Create tag and synchronize">
 	</target>
 </project>
