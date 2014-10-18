@@ -35,6 +35,7 @@ public class PurchaseItemPanel extends JPanel {
     private JTextField quantityField;
     private JTextField nameField;
     private JTextField priceField;
+    private JComboBox products;
 
     private JButton addItemButton;
 
@@ -58,7 +59,8 @@ public class PurchaseItemPanel extends JPanel {
         setEnabled(false);
     }
 
-    // shopping cart pane
+
+	// shopping cart pane
     private JComponent drawBasketPane() {
 
         // Create the basketPane
@@ -81,15 +83,15 @@ public class PurchaseItemPanel extends JPanel {
 
         // Create the panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 2));
+        panel.setLayout(new GridLayout(6, 2));
         panel.setBorder(BorderFactory.createTitledBorder("Product"));
-
+        String[] buffer = {};
         // Initialize the textfields
+        products = new JComboBox();
         barCodeField = new JTextField();
         quantityField = new JTextField("1");
         nameField = new JTextField();
         priceField = new JTextField();
-
         // Fill the dialog fields if the bar code text field loses focus
         barCodeField.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent e) {
@@ -99,7 +101,7 @@ public class PurchaseItemPanel extends JPanel {
                 fillDialogFields();
             }
         });
-
+        
         nameField.setEditable(false);
         priceField.setEditable(false);
 
@@ -110,6 +112,9 @@ public class PurchaseItemPanel extends JPanel {
 		//JLabel comboLbl = new JLabel("Team members:"); 
 		//JComboBox nimed = new JComboBox(nameOptions);  
 		//comboPanel.add(comboLbl); comboPanel.add(nimed);
+        panel.add(new JLabel("Products:"));
+        panel.add(products);
+        
         panel.add(new JLabel("Bar code:"));
         panel.add(barCodeField);
 
