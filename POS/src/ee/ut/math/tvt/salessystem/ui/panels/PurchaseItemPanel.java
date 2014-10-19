@@ -100,11 +100,13 @@ public class PurchaseItemPanel extends JPanel {
 		nameField = new JTextField();
 		priceField = new JTextField();
 
+		/**
+		 * JComboBox "products" ActionListener
+		 */
 		products.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox) e.getSource();
-				System.out.println("Soovid saada:"
-						+ (String) cb.getSelectedItem());
+				addItemSelectHandler(e);
+
 			}
 		});
 		// Fill the dialog fields if the bar code text field loses focus
@@ -200,6 +202,15 @@ public class PurchaseItemPanel extends JPanel {
 			model.getCurrentPurchaseTableModel().addItem(
 					new SoldItem(stockItem, quantity));
 		}
+	}
+
+	public void addItemSelectHandler(ActionEvent e) {
+		JComboBox cb = (JComboBox) e.getSource();
+		StockItem item = model.getWarehouseTableModel().getItemByName(
+				(String) cb.getSelectedItem());
+		barCodeField.setText(item.getId().toString());
+		nameField.setText(item.getName().toString());
+		priceField.setText(Double.toString(item.getPrice()));
 	}
 
 	/**
