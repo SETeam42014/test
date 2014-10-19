@@ -105,7 +105,7 @@ public class PurchaseItemPanel extends JPanel {
 		 */
 		products.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addItemSelectHandler(e);
+				itemSelectHandler(e);
 
 			}
 		});
@@ -206,13 +206,19 @@ public class PurchaseItemPanel extends JPanel {
 		}
 	}
 
-	public void addItemSelectHandler(ActionEvent e) {
-		JComboBox cb = (JComboBox) e.getSource();
+	/**
+	 * Handles selected item in JComboBox as StockItem
+	 * 
+	 * @param e
+	 *            JComboBox actionEvent
+	 */
+	public void itemSelectHandler(ActionEvent e) {
+		@SuppressWarnings("unchecked")
 		StockItem item = model.getWarehouseTableModel().getItemByName(
-				(String) cb.getSelectedItem());
-		barCodeField.setText(item.getId().toString());
-		nameField.setText(item.getName().toString());
-		priceField.setText(Double.toString(item.getPrice()));
+				(String) ((JComboBox<String>) e.getSource()).getSelectedItem());
+		this.barCodeField.setText(item.getId().toString());
+		this.nameField.setText(item.getName().toString());
+		this.priceField.setText(Double.toString(item.getPrice()));
 	}
 
 	/**
