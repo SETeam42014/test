@@ -94,7 +94,7 @@ public class PurchaseItemPanel extends JPanel {
 			warehouseProducts[i] = model.getWarehouseTableModel()
 					.getValueAt(i, 1).toString();
 		}
-		products = new JComboBox(warehouseProducts);
+		products = new JComboBox<String>(warehouseProducts);
 		barCodeField = new JTextField();
 		quantityField = new JTextField("1");
 		nameField = new JTextField();
@@ -119,6 +119,8 @@ public class PurchaseItemPanel extends JPanel {
 			}
 		});
 
+		// barCodeField.setEditable(false);
+		products.setEnabled(false);
 		nameField.setEditable(false);
 		priceField.setEditable(false);
 
@@ -218,6 +220,7 @@ public class PurchaseItemPanel extends JPanel {
 	 */
 	@Override
 	public void setEnabled(boolean enabled) {
+		this.products.setEnabled(enabled);
 		this.addItemButton.setEnabled(enabled);
 		this.barCodeField.setEnabled(enabled);
 		this.quantityField.setEnabled(enabled);
