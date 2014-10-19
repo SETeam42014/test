@@ -99,6 +99,14 @@ public class PurchaseItemPanel extends JPanel {
 		quantityField = new JTextField("1");
 		nameField = new JTextField();
 		priceField = new JTextField();
+
+		products.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox) e.getSource();
+				System.out.println("Soovid saada:"
+						+ (String) cb.getSelectedItem());
+			}
+		});
 		// Fill the dialog fields if the bar code text field loses focus
 		barCodeField.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
