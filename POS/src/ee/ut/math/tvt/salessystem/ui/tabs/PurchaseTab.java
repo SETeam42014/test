@@ -1,18 +1,23 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -150,12 +155,17 @@ public class PurchaseTab {
   }
 
 
-  /**  Event handler for the <code>cancel purchase</code> event. */
+  /**  Event handler for the <code>cancel purchase</code> event. Now adds added products back to warehouse,
+   * when purchase isn't confirmed */
   protected void cancelPurchaseButtonClicked() {
     log.info("Sale cancelled");
     try {
       domainController.cancelCurrentPurchase();
       endSale();
+      for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()){
+		StockItem stockItem = i.getStockItem();
+		stockItem.setQuantity(stockItem.getQuantity()+i.getQuantity());
+      };
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());

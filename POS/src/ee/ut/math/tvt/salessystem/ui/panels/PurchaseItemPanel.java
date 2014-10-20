@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,16 +19,19 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 /**
  * Purchase pane + shopping cart tabel UI.
  */
 public class PurchaseItemPanel extends JPanel {
-
+	private static final Logger log = Logger.getLogger(PurchaseItemPanel.class);
 	private static final long serialVersionUID = 1L;
 
 	// Text field on the dialogPane
@@ -84,7 +88,6 @@ public class PurchaseItemPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(6, 2));
 		panel.setBorder(BorderFactory.createTitledBorder("Product"));
-		String[] buffer = {};
 		// Initialize the textfields
 
 		// Add products to JComboBox
@@ -189,12 +192,13 @@ public class PurchaseItemPanel extends JPanel {
 	}
 
 	/**
-	 * Add new item to the cart.
+	 * Add new item to the cart. When item out of stock
+	 * then error message displayed
 	 */
 	public void addItemEventHandler() {
 		// add chosen item to the shopping cart.
 		StockItem stockItem = getStockItemByBarcode();
-		if (stockItem != null) {
+		if (stockItem != null && stockItem.getQuantity()>0) {
 			int quantity;
 			try {
 				quantity = Integer.parseInt(quantityField.getText());
@@ -203,6 +207,12 @@ public class PurchaseItemPanel extends JPanel {
 			}
 			model.getCurrentPurchaseTableModel().addItem(
 					new SoldItem(stockItem, quantity));
+			stockItem.setQuantity(stockItem.getQuantity()-1);
+		}
+		if (stockItem.getQuantity()==0){
+			log.info("Product out of Stock");
+			JOptionPane.showMessageDialog(null, "Product out of stock", "Error",
+                    JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
