@@ -1,10 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -26,6 +21,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -192,27 +191,33 @@ public class PurchaseItemPanel extends JPanel {
 	}
 
 	/**
-	 * Add new item to the cart. When item out of stock
-	 * then error message displayed
+	 * Add new item to the cart. When item out of stock then error message
+	 * displayed
 	 */
 	public void addItemEventHandler() {
 		// add chosen item to the shopping cart.
 		StockItem stockItem = getStockItemByBarcode();
-		if (stockItem != null && stockItem.getQuantity()>0) {
+		if (stockItem != null && stockItem.getQuantity() > 0) {
 			int quantity;
 			try {
 				quantity = Integer.parseInt(quantityField.getText());
 			} catch (NumberFormatException ex) {
 				quantity = 1;
 			}
-			model.getCurrentPurchaseTableModel().addItem(
-					new SoldItem(stockItem, quantity));
-			stockItem.setQuantity(stockItem.getQuantity()-1);
+			if (quantity <= stockItem.getQuantity()) {
+				stockItem.setQuantity(stockItem.getQuantity() - quantity);
+				model.getCurrentPurchaseTableModel().addItem(
+						new SoldItem(stockItem, quantity));
+			} else {
+				log.info("Not enough " + stockItem.getName()
+						+ " in stock, only " + stockItem.getQuantity());
+			}
+
 		}
-		if (stockItem.getQuantity()==0){
+		if (stockItem.getQuantity() == 0) {
 			log.info("Product out of Stock");
-			JOptionPane.showMessageDialog(null, "Product out of stock", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Product out of stock",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
