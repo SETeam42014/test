@@ -7,6 +7,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 /**
  * Implementation of the sales domain controller.
@@ -32,6 +33,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 	public List<StockItem> loadWarehouseState() {
 		// XXX mock implementation
+		// NEXT Practical will implement loadWarehouseState with database to
+		// here???
 		List<StockItem> dataset = new ArrayList<StockItem>();
 
 		StockItem chips = new StockItem(1l, "Lays chips", "Potato chips", 11.0,

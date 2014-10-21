@@ -205,7 +205,7 @@ public class PurchaseItemPanel extends JPanel {
 				quantity = 1;
 			}
 			if (quantity <= stockItem.getQuantity()) {
-				stockItem.setQuantity(stockItem.getQuantity() - quantity);
+				stockItem.reduceQuantity(quantity);
 				model.getCurrentPurchaseTableModel().addItem(
 						new SoldItem(stockItem, quantity));
 			} else {

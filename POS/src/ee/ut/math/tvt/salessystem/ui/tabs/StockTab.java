@@ -12,84 +12,85 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
 
-
 public class StockTab {
 
-  private JButton addItem;
+	private JButton addItem;
 
-  private SalesSystemModel model;
+	private SalesSystemModel model;
 
-  public StockTab(SalesSystemModel model) {
-    this.model = model;
-  }
+	public StockTab(SalesSystemModel model) {
+		this.model = model;
+	}
 
-  // warehouse stock tab - consists of a menu and a table
-  public Component draw() {
-    JPanel panel = new JPanel();
-    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	// warehouse stock tab - consists of a menu and a table
+	public Component draw() {
+		JPanel panel = new JPanel();
 
-    GridBagLayout gb = new GridBagLayout();
-    GridBagConstraints gc = new GridBagConstraints();
-    panel.setLayout(gb);
+		this.model.updateStock();
 
-    gc.fill = GridBagConstraints.HORIZONTAL;
-    gc.anchor = GridBagConstraints.NORTH;
-    gc.gridwidth = GridBagConstraints.REMAINDER;
-    gc.weightx = 1.0d;
-    gc.weighty = 0d;
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-    panel.add(drawStockMenuPane(), gc);
+		GridBagLayout gb = new GridBagLayout();
+		GridBagConstraints gc = new GridBagConstraints();
+		panel.setLayout(gb);
 
-    gc.weighty = 1.0;
-    gc.fill = GridBagConstraints.BOTH;
-    panel.add(drawStockMainPane(), gc);
-    return panel;
-  }
+		gc.fill = GridBagConstraints.HORIZONTAL;
+		gc.anchor = GridBagConstraints.NORTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.weightx = 1.0d;
+		gc.weighty = 0d;
 
-  // warehouse menu
-  private Component drawStockMenuPane() {
-    JPanel panel = new JPanel();
+		panel.add(drawStockMenuPane(), gc);
 
-    GridBagConstraints gc = new GridBagConstraints();
-    GridBagLayout gb = new GridBagLayout();
+		gc.weighty = 1.0;
+		gc.fill = GridBagConstraints.BOTH;
+		panel.add(drawStockMainPane(), gc);
+		return panel;
+	}
 
-    panel.setLayout(gb);
+	// warehouse menu
+	private Component drawStockMenuPane() {
+		JPanel panel = new JPanel();
 
-    gc.anchor = GridBagConstraints.NORTHWEST;
-    gc.weightx = 0;
+		GridBagConstraints gc = new GridBagConstraints();
+		GridBagLayout gb = new GridBagLayout();
 
-    addItem = new JButton("Add");
-    gc.gridwidth = GridBagConstraints.RELATIVE;
-    gc.weightx = 1.0;
-    panel.add(addItem, gc);
+		panel.setLayout(gb);
 
-    panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    return panel;
-  }
+		gc.anchor = GridBagConstraints.NORTHWEST;
+		gc.weightx = 0;
 
+		addItem = new JButton("Add");
+		gc.gridwidth = GridBagConstraints.RELATIVE;
+		gc.weightx = 1.0;
+		panel.add(addItem, gc);
 
-  // table of the wareshouse stock
-  private Component drawStockMainPane() {
-    JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		return panel;
+	}
 
-    JTable table = new JTable(model.getWarehouseTableModel());
+	// table of the wareshouse stock
+	private Component drawStockMainPane() {
+		JPanel panel = new JPanel();
 
-    JTableHeader header = table.getTableHeader();
-    header.setReorderingAllowed(false);
+		JTable table = new JTable(model.getWarehouseTableModel());
 
-    JScrollPane scrollPane = new JScrollPane(table);
+		JTableHeader header = table.getTableHeader();
+		header.setReorderingAllowed(false);
 
-    GridBagConstraints gc = new GridBagConstraints();
-    GridBagLayout gb = new GridBagLayout();
-    gc.fill = GridBagConstraints.BOTH;
-    gc.weightx = 1.0;
-    gc.weighty = 1.0;
+		JScrollPane scrollPane = new JScrollPane(table);
 
-    panel.setLayout(gb);
-    panel.add(scrollPane, gc);
+		GridBagConstraints gc = new GridBagConstraints();
+		GridBagLayout gb = new GridBagLayout();
+		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 1.0;
+		gc.weighty = 1.0;
 
-    panel.setBorder(BorderFactory.createTitledBorder("Warehouse status"));
-    return panel;
-  }
+		panel.setLayout(gb);
+		panel.add(scrollPane, gc);
+
+		panel.setBorder(BorderFactory.createTitledBorder("Warehouse status"));
+		return panel;
+	}
 
 }
