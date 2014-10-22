@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
@@ -167,7 +168,7 @@ public class PurchaseItemPanel extends JPanel {
 	}
 
 	// Fill dialog with data from the "database".
-	public void fillDialogFields() {
+	private void fillDialogFields() {
 		StockItem stockItem = getStockItemByBarcode();
 
 		if (stockItem != null) {
@@ -182,13 +183,14 @@ public class PurchaseItemPanel extends JPanel {
 
 	}
 
-	public void populateProducts() {
+	private void populateProducts() {
 		if (this.products.getItemCount() > 0)
 			this.products.removeAllItems();
-		log.debug("Listis on: " + this.products.getItemCount());
+		// log.debug("Listis on: " + this.products.getItemCount());
 		for (StockItem product : model.getWarehouseTableModel().getTableRows()) {
 			this.products.addItem(product.getName());
 		}
+		getStockItemByBarcode();
 
 	}
 
@@ -212,31 +214,32 @@ public class PurchaseItemPanel extends JPanel {
 	public void addItemEventHandler() {
 		// add chosen item to the shopping cart.
 		StockItem stockItem = getStockItemByBarcode();
-		if (stockItem != null && stockItem.getQuantity() > 0) {
-			int quantity;
-			try {
-				quantity = Integer.parseInt(quantityField.getText());
-
-				// reduce quantity of the item
-				/*
-				 * this.model.getWarehouseTableModel().reduceItemQuantity(
-				 * stockItem, quantity);
-				 */
-				// add item to sold item list
-				this.model.getCurrentPurchaseTableModel().addItem(
-						new SoldItem(stockItem, quantity));
-			} catch (NumberFormatException ex) {
-				quantity = 1;
-			} catch (Exception e) {
-				log.info("Not enough " + stockItem.getName()
-						+ " in stock, only " + stockItem.getQuantity());
+		int quantity;
+		try {
+			quantity = Integer.parseInt(quantityField.getText());
+			if (stockItem.getQuantity() == 0
+					|| quantity > stockItem.getQuantity()
+					|| (model.getCurrentPurchaseTableModel().getRowCount() > 0 && model
+							.getCurrentPurchaseTableModel()
+							.getItemById(stockItem.getId()).getQuantity() >= stockItem
+							.getQuantity())) {
+				throw new OutOfStockException();
 			}
-		}
-		if (stockItem.getQuantity() == 0) {
+			// quantity = Integer.parseInt(quantityField.getText());
+
+			// add item to sold item list
+			this.model.getCurrentPurchaseTableModel().addItem(
+					new SoldItem(stockItem, quantity));
+		} catch (NumberFormatException ex) {
+			quantity = 1;
+		} catch (OutOfStockException e) {
 			log.info("Product out of Stock");
 			JOptionPane.showMessageDialog(null, "Product out of stock",
 					"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (NullPointerException e) {
+			log.info("No product selected");
 		}
+
 	}
 
 	/**
@@ -273,6 +276,7 @@ public class PurchaseItemPanel extends JPanel {
 		quantityField.setText("1");
 		nameField.setText("");
 		priceField.setText("");
+		getStockItemByBarcode();
 	}
 
 	/*

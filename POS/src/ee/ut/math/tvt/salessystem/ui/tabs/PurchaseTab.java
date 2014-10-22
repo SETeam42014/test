@@ -234,7 +234,9 @@ public class PurchaseTab {
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		} catch (OutOfStockException e) {
-			log.error(e.getMessage());
+			log.info("Product out of Stock");
+			JOptionPane.showMessageDialog(null, "Not enough product in stock",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
