@@ -27,7 +27,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	 * private SalesDomainControllerImpl() { // this.wareHouse =
 	 * loadWarehouseState(); }
 	 */
-	public void submitCurrentPurchase() throws VerificationFailedException {
+	public void submitCurrentPurchase(List<SoldItem> goods)
+			throws VerificationFailedException {
 	}
 
 	public void submitCurrentPurchase(List<SoldItem> goods,

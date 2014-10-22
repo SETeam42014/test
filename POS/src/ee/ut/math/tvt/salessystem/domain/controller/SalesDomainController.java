@@ -37,7 +37,8 @@ public interface SalesDomainController {
 	 */
 	public void cancelCurrentPurchase() throws VerificationFailedException;
 
-	public void submitCurrentPurchase() throws VerificationFailedException;
+	public void submitCurrentPurchase(List<SoldItem> goods)
+			throws VerificationFailedException;
 
 	/**
 	 * Commit business transaction - purchsae of goods.

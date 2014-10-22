@@ -7,34 +7,31 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 
 /**
  * @author Johani
  *
  */
-public class HistoryTableModel extends SalesSystemTableModel<SoldItem> {
+public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = Logger.getLogger(HistoryTableModel.class);
 
 	public HistoryTableModel() {
-		super(new String[] { "Id", "Name", "Quantity", "Sum" });
+		super(new String[] { "Date", "Time", "Sum" });
 	}
 
 	@Override
-	protected Object getColumnValue(SoldItem item, int columnIndex) {
+	protected Object getColumnValue(HistoryItem item, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return item.getId();
+			return item.getEndDate();
 		case 1:
-			return item.getName();
+			return item.getEndDate();
 		case 2:
-			return item.getQuantity();
-		case 3:
-			return item.getPrice();
+			return item.getSum();
 		}
 		throw new IllegalArgumentException("Column index out of range");
 	}
@@ -45,17 +42,9 @@ public class HistoryTableModel extends SalesSystemTableModel<SoldItem> {
 	 * 
 	 * @param stockItem
 	 */
-	public void addItem(final SoldItem soldItem) {
-		try {
-			SoldItem item = getItemById(soldItem.getId());
-			item.setQuantity(item.getQuantity() + soldItem.getQuantity());
-			log.debug("Found existing item " + soldItem.getName()
-					+ " increased quantity by " + soldItem.getQuantity());
-		} catch (NoSuchElementException e) {
-			rows.add(soldItem);
-			log.debug("Added " + soldItem.getName() + " quantity of "
-					+ soldItem.getQuantity());
-		}
+	public void addItem(final HistoryItem historyItem) {
+		rows.add(historyItem);
+		log.debug("Added new item: " + historyItem.getId());
 		fireTableDataChanged();
 	}
 
@@ -67,11 +56,10 @@ public class HistoryTableModel extends SalesSystemTableModel<SoldItem> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final SoldItem soldItem : rows) {
-			buffer.append(soldItem.getId() + "\t");
-			buffer.append(soldItem.getName() + "\t");
-			buffer.append(soldItem.getQuantity() + "\t");
-			buffer.append(soldItem.getPrice() + "\t");
+		for (final HistoryItem historyItem : rows) {
+			buffer.append(historyItem.getEndDate() + "\t");
+			buffer.append(historyItem.getEndDate() + "\t");
+			buffer.append(historyItem.getSum() + "\t");
 			buffer.append("\n");
 		}
 
