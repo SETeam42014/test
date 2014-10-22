@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -181,7 +182,13 @@ public class PurchaseTab {
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
-					.getCurrentPurchaseTableModel().getTableRows());
+					.getCurrentPurchaseTableModel().getTableRows(), model
+					.getWarehouseTableModel().getTableRows());
+			/*
+			 * domainController.submitCurrentPurchase(model
+			 * .getCurrentPurchaseTableModel().getTableRows());
+			 */
+
 			/**
 			 * From here payment window
 			 */
@@ -227,6 +234,8 @@ public class PurchaseTab {
 
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
+		} catch (OutOfStockException e) {
+			log.error(e.getMessage());
 		}
 	}
 

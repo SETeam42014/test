@@ -4,7 +4,9 @@ import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 /**
  * Sales domain controller is responsible for the domain specific business
@@ -35,14 +37,26 @@ public interface SalesDomainController {
 	 */
 	public void cancelCurrentPurchase() throws VerificationFailedException;
 
+	public void submitCurrentPurchase() throws VerificationFailedException;
+
 	/**
 	 * Commit business transaction - purchsae of goods.
 	 * 
 	 * @param goods
 	 *            Goods that the buyer has chosen to buy.
+	 * @param model
+	 *            wareHouse model
 	 * @throws VerificationFailedException
+	 *             Not eligible to buy
+	 * @throws OutOfStockException
+	 *             Not enough in stock
 	 */
-	public void submitCurrentPurchase(List<SoldItem> goods)
-			throws VerificationFailedException;
+	public void submitCurrentPurchase(List<SoldItem> goods,
+			SalesSystemModel model) throws VerificationFailedException,
+			OutOfStockException;
+
+	public void submitCurrentPurchase(List<SoldItem> goods,
+			List<StockItem> stock) throws VerificationFailedException,
+			OutOfStockException;
 
 }

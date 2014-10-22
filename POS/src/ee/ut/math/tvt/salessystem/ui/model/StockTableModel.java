@@ -1,10 +1,13 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 
 /**
  * Stock item table model.
@@ -59,19 +62,53 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	/**
 	 * Reduce stock item Quantity
 	 * 
+	 * DEPRECATED
+	 * 
 	 * @param stockItem
 	 *            Item
 	 * @param quantity
 	 *            Quantity
 	 * @throws Exception
-	 *             If there is not enough items in stock
+	 *             Not enough items in stock
 	 */
-	public void reduceItemQuantity(final StockItem stockItem, int quantity)
+	private void reduceItemQuantity(final StockItem stockItem, int quantity)
 			throws Exception {
 		if (stockItem.getQuantity() < quantity) {
 			throw new Exception();
 		}
 		this.getItemById(stockItem.getId()).reduceQuantity(quantity);
+	}
+
+	/**
+	 * Sell items from WareHouse
+	 * 
+	 * @param stockItem
+	 *            Item to sell
+	 * @throws Exception
+	 *             Not enough items in stock
+	 */
+	private void reduceItemQuantity(final SoldItem soldItem)
+			throws OutOfStockException {
+		if (this.getItemById(soldItem.getId()).getQuantity() < soldItem
+				.getQuantity()) {
+			throw new OutOfStockException();
+		}
+		this.getItemById(soldItem.getId()).reduceQuantity(
+				soldItem.getQuantity());
+	}
+
+	/**
+	 * Sell items from WareHouse
+	 * 
+	 * @param stockItem
+	 *            List of items to be sold
+	 * @throws Exception
+	 */
+	public void sellItem(final List<SoldItem> soldItem)
+			throws OutOfStockException {
+		for (SoldItem item : soldItem) {
+			this.reduceItemQuantity(item);
+		}
 	}
 
 	@Override

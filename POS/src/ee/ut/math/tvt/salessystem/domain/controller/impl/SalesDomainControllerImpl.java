@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 
 /**
@@ -25,9 +27,13 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	 * private SalesDomainControllerImpl() { // this.wareHouse =
 	 * loadWarehouseState(); }
 	 */
+	public void submitCurrentPurchase() throws VerificationFailedException {
+	}
 
-	public void submitCurrentPurchase(List<SoldItem> goods)
-			throws VerificationFailedException {
+	public void submitCurrentPurchase(List<SoldItem> goods,
+			SalesSystemModel model) throws VerificationFailedException,
+			OutOfStockException {
+		model.getWarehouseTableModel().sellItem(goods);
 		// Let's assume we have checked and found out that the buyer is
 		// underaged and
 		// cannot buy chupa-chups
@@ -42,8 +48,38 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 		 */
 	}
 
+	public void submitCurrentPurchase(List<SoldItem> goods,
+			List<StockItem> stock) throws VerificationFailedException,
+			OutOfStockException {
+		for (SoldItem soldItem : goods) {
+			for (StockItem stockItem : stock) {
+				if (soldItem.getId() == stockItem.getId()) {
+					stockItem.reduceQuantity(soldItem.getQuantity());
+				}
+			}
+		}
+		for (StockItem stockItem : stock) {
+			if (stockItem.getQuantity() < 0) {
+				this.cancelCurrentPurchase(goods, stock);
+				throw new OutOfStockException();
+			}
+		}
+	}
+
 	public void cancelCurrentPurchase() throws VerificationFailedException {
 		// XXX - Cancel current purchase
+	}
+
+	public void cancelCurrentPurchase(List<SoldItem> goods,
+			List<StockItem> stock) throws VerificationFailedException {
+		// XXX - Cancel current purchase
+		for (SoldItem soldItem : goods) {
+			for (StockItem stockItem : stock) {
+				if (soldItem.getId() == stockItem.getId()) {
+					stockItem.reduceQuantity(-soldItem.getQuantity());
+				}
+			}
+		}
 	}
 
 	public void startNewPurchase() throws VerificationFailedException {

@@ -218,8 +218,10 @@ public class PurchaseItemPanel extends JPanel {
 				quantity = Integer.parseInt(quantityField.getText());
 
 				// reduce quantity of the item
-				this.model.getWarehouseTableModel().reduceItemQuantity(
-						stockItem, quantity);
+				/*
+				 * this.model.getWarehouseTableModel().reduceItemQuantity(
+				 * stockItem, quantity);
+				 */
 				// add item to sold item list
 				this.model.getCurrentPurchaseTableModel().addItem(
 						new SoldItem(stockItem, quantity));
