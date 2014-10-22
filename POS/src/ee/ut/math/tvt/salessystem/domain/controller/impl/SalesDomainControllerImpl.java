@@ -32,24 +32,6 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	}
 
 	public void submitCurrentPurchase(List<SoldItem> goods,
-			SalesSystemModel model) throws VerificationFailedException,
-			OutOfStockException {
-		model.getWarehouseTableModel().sellItem(goods);
-		// Let's assume we have checked and found out that the buyer is
-		// underaged and
-		// cannot buy chupa-chups
-		// throw new VerificationFailedException("Underaged!");
-		// XXX - Save purchase
-		/*
-		 * try { for (SoldItem item : goods) { if (item.getName() ==
-		 * "Chupa-chups") throw new VerificationFailedException(); } } catch
-		 * (VerificationFailedException e) {
-		 * 
-		 * }
-		 */
-	}
-
-	public void submitCurrentPurchase(List<SoldItem> goods,
 			List<StockItem> stock) throws VerificationFailedException,
 			OutOfStockException {
 		for (SoldItem soldItem : goods) {

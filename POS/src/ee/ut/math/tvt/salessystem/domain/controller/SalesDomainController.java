@@ -53,10 +53,6 @@ public interface SalesDomainController {
 	 *             Not enough in stock
 	 */
 	public void submitCurrentPurchase(List<SoldItem> goods,
-			SalesSystemModel model) throws VerificationFailedException,
-			OutOfStockException;
-
-	public void submitCurrentPurchase(List<SoldItem> goods,
 			List<StockItem> stock) throws VerificationFailedException,
 			OutOfStockException;
 
