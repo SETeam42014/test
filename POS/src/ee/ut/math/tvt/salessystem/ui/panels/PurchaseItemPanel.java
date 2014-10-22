@@ -238,6 +238,8 @@ public class PurchaseItemPanel extends JPanel {
 					"Error", JOptionPane.ERROR_MESSAGE);
 		} catch (NullPointerException e) {
 			log.info("No product selected");
+		} catch (NoSuchElementException e) {
+			log.info("There is no element like: " + e);
 		}
 
 	}

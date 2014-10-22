@@ -49,6 +49,14 @@ public class PurchaseTab {
 
 	private SalesSystemModel model;
 
+	/**
+	 * Default constructor
+	 * 
+	 * @param controller
+	 *            SalesDomainController
+	 * @param model
+	 *            SalesSystemModel
+	 */
 	public PurchaseTab(SalesDomainController controller, SalesSystemModel model) {
 		this.domainController = controller;
 		this.model = model;
@@ -75,7 +83,11 @@ public class PurchaseTab {
 		return panel;
 	}
 
-	// The purchase menu. Contains buttons "New purchase", "Submit", "Cancel".
+	/**
+	 * The purchase menu. Contains buttons "New purchase", "Submit", "Cancel".
+	 * 
+	 * @return Purchase menu panel
+	 */
 	private Component getPurchaseMenuPane() {
 		JPanel panel = new JPanel();
 
@@ -97,7 +109,11 @@ public class PurchaseTab {
 		return panel;
 	}
 
-	// Creates the button "New purchase"
+	/**
+	 * Creates the button "New purchase"
+	 * 
+	 * @return JButton
+	 */
 	private JButton createNewPurchaseButton() {
 		JButton b = new JButton("New purchase");
 		b.addActionListener(new ActionListener() {
@@ -109,7 +125,11 @@ public class PurchaseTab {
 		return b;
 	}
 
-	// Creates the "Confirm" button
+	/**
+	 * Creates the "Confirm" button
+	 * 
+	 * @return JButton
+	 */
 	private JButton createConfirmButton() {
 		JButton b = new JButton("Confirm");
 		b.addActionListener(new ActionListener() {
@@ -122,7 +142,11 @@ public class PurchaseTab {
 		return b;
 	}
 
-	// Creates the "Cancel" button
+	/**
+	 * Creates the "Cancel" button
+	 * 
+	 * @return JButton
+	 */
 	private JButton createCancelButton() {
 		JButton b = new JButton("Cancel");
 		b.addActionListener(new ActionListener() {
@@ -160,13 +184,12 @@ public class PurchaseTab {
 		try {
 			domainController.cancelCurrentPurchase();
 			endSale();
-			for (SoldItem i : model.getCurrentPurchaseTableModel()
-					.getTableRows()) {
-				StockItem stockItem = i.getStockItem();
-				stockItem
-						.setQuantity(stockItem.getQuantity() + i.getQuantity());
-			}
-			;
+			/*
+			 * DEPRICATED for (SoldItem i : model.getCurrentPurchaseTableModel()
+			 * .getTableRows()) { StockItem stockItem = i.getStockItem();
+			 * stockItem .setQuantity(stockItem.getQuantity() +
+			 * i.getQuantity()); } ;
+			 */
 			model.getCurrentPurchaseTableModel().clear();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());

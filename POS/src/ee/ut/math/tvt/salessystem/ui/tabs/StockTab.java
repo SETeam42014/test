@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,11 +23,21 @@ public class StockTab {
 
 	private SalesSystemModel model;
 
+	/**
+	 * Default constructor for StockTab
+	 * 
+	 * @param model
+	 *            SalesSystemModel
+	 */
 	public StockTab(SalesSystemModel model) {
 		this.model = model;
 	}
 
-	// warehouse stock tab - consists of a menu and a table
+	/**
+	 * warehouse stock tab - consists of a menu and a table
+	 * 
+	 * @return Panel
+	 */
 	public Component draw() {
 		JPanel panel = new JPanel();
 
@@ -54,7 +63,11 @@ public class StockTab {
 		return panel;
 	}
 
-	// warehouse menu
+	/**
+	 * Warehouse menu
+	 * 
+	 * @return Panel
+	 */
 	private Component drawStockMenuPane() {
 		JPanel panel = new JPanel();
 
@@ -77,7 +90,11 @@ public class StockTab {
 		return panel;
 	}
 
-	// Creates the "Add" button
+	/**
+	 * Creates the "Add" button
+	 * 
+	 * @return "Add" button
+	 */
 	private JButton createAddButton() {
 		JButton b = new JButton("Add");
 		b.addActionListener(new ActionListener() {
@@ -90,12 +107,20 @@ public class StockTab {
 		return b;
 	}
 
+	/**
+	 * Add button Clicked action
+	 */
 	private void addButtonClicked() {
+		// mockup add item
 		model.getWarehouseTableModel().addItem(
 				new StockItem(1l, "Lays chips", "Potato chips", 11.0, 0));
 	}
 
-	// table of the wareshouse stock
+	/**
+	 * table of the wareshouse stock
+	 * 
+	 * @return Panel
+	 */
 	private Component drawStockMainPane() {
 		JPanel panel = new JPanel();
 
