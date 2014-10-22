@@ -50,9 +50,10 @@ public class HistoryItem implements DisplayableItem, Serializable {
 		this.state = state;
 	}
 
-	public HistoryItem() {
+	public HistoryItem(double sum) {
 		this.id = nextId++;
-		this.startDate = new Date();
+		this.endDate = new Date();
+		this.sum = sum;
 	}
 
 	/*

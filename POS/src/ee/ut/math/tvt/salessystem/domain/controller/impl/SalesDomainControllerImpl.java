@@ -18,15 +18,7 @@ import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
  * Implementation of the sales domain controller.
  */
 public class SalesDomainControllerImpl implements SalesDomainController {
-	// private List<StockItem> wareHouse;
 
-	// private static final Logger log = Logger
-	// .getLogger(SalesDomainControllerImpl.class);
-
-	/*
-	 * private SalesDomainControllerImpl() { // this.wareHouse =
-	 * loadWarehouseState(); }
-	 */
 	public void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException {
 	}
@@ -47,6 +39,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 				throw new OutOfStockException();
 			}
 		}
+		// after submit, synchronize warehouse data
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
@@ -67,6 +60,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 	public void startNewPurchase() throws VerificationFailedException {
 		// XXX - Start new purchase
+
 	}
 
 	public List<StockItem> loadWarehouseState() {

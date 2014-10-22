@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
@@ -184,11 +185,6 @@ public class PurchaseTab {
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows(), model
 					.getWarehouseTableModel().getTableRows());
-			/*
-			 * domainController.submitCurrentPurchase(model
-			 * .getCurrentPurchaseTableModel().getTableRows());
-			 */
-
 			/**
 			 * From here payment window
 			 */
@@ -222,6 +218,7 @@ public class PurchaseTab {
 					result = JOptionPane.showConfirmDialog(null, myPanel,
 							"Please Enter Payment size",
 							JOptionPane.CLOSED_OPTION);
+					// Add transaction to history
 					endSale();
 					model.getCurrentPurchaseTableModel().clear();
 				} else {
