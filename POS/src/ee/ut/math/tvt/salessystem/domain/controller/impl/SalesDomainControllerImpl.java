@@ -15,7 +15,7 @@ import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
 /**
  * Implementation of the sales domain controller.
  */
-public class SalesDomainControllerImpl extends SalesDomainController {
+public class SalesDomainControllerImpl implements SalesDomainController {
 	// private List<StockItem> wareHouse;
 
 	// private static final Logger log = Logger

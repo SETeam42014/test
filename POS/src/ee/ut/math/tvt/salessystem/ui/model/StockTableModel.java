@@ -56,6 +56,24 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		fireTableDataChanged();
 	}
 
+	/**
+	 * Reduce stock item Quantity
+	 * 
+	 * @param stockItem
+	 *            Item
+	 * @param quantity
+	 *            Quantity
+	 * @throws Exception
+	 *             If there is not enough items in stock
+	 */
+	public void reduceItemQuantity(final StockItem stockItem, int quantity)
+			throws Exception {
+		if (stockItem.getQuantity() < quantity) {
+			throw new Exception();
+		}
+		this.getItemById(stockItem.getId()).reduceQuantity(quantity);
+	}
+
 	@Override
 	public String toString() {
 		final StringBuffer buffer = new StringBuffer();

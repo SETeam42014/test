@@ -10,7 +10,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
  * Sales domain controller is responsible for the domain specific business
  * processes.
  */
-public abstract class SalesDomainController {
+public interface SalesDomainController {
 
 	/**
 	 * Load the current state of the warehouse.
@@ -18,7 +18,7 @@ public abstract class SalesDomainController {
 	 * @return List of ${link
 	 *         ee.ut.math.tvt.salessystem.domain.data.StockItem}s.
 	 */
-	public abstract List<StockItem> loadWarehouseState();
+	public List<StockItem> loadWarehouseState();
 
 	// business processes
 	/**
@@ -26,15 +26,14 @@ public abstract class SalesDomainController {
 	 * 
 	 * @throws VerificationFailedException
 	 */
-	public abstract void startNewPurchase() throws VerificationFailedException;
+	public void startNewPurchase() throws VerificationFailedException;
 
 	/**
 	 * Rollback business transaction - purchase of goods.
 	 * 
 	 * @throws VerificationFailedException
 	 */
-	public abstract void cancelCurrentPurchase()
-			throws VerificationFailedException;
+	public void cancelCurrentPurchase() throws VerificationFailedException;
 
 	/**
 	 * Commit business transaction - purchsae of goods.
@@ -43,7 +42,7 @@ public abstract class SalesDomainController {
 	 *            Goods that the buyer has chosen to buy.
 	 * @throws VerificationFailedException
 	 */
-	public abstract void submitCurrentPurchase(List<SoldItem> goods)
+	public void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException;
 
 }
