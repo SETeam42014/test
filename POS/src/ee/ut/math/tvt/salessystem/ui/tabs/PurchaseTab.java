@@ -13,12 +13,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.InputMismatchException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
 
@@ -177,10 +182,49 @@ public class PurchaseTab {
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows());
-			JOptionPane.showMessageDialog(null, "Product out of stock",
-					"Error", 0);
-			endSale();
-			model.getCurrentPurchaseTableModel().clear();
+			/**
+			 * From here payment window
+			 */
+			double a = 0;
+			for (SoldItem i : model.getCurrentPurchaseTableModel()
+					.getTableRows()) {
+				a += i.getSum();
+			}
+			;
+			JTextField xField = new JTextField(5);
+			JTextPane yField = new JTextPane();
+			JTextPane sumField = new JTextPane();
+			sumField.setText(Double.toString(a));
+			JPanel myPanel = new JPanel();
+			myPanel.add(new JLabel("Bill"));
+			myPanel.add(sumField);
+			myPanel.add(new JLabel("Payment"));
+			myPanel.add(xField);
+			myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+			myPanel.add(new JLabel("Money back"));
+			myPanel.add(yField);
+
+			int result = JOptionPane.showConfirmDialog(null, myPanel,
+					"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
+			if (result == JOptionPane.OK_OPTION) {
+				yField.setText(Double.toString(-1
+						* (a - Double.parseDouble(xField.getText()))));
+				System.out.println("Payment: " + xField.getText());
+				System.out.println("Money back: " + yField.getText());
+				if ((a - Double.parseDouble(xField.getText())) < 0) {
+					result = JOptionPane.showConfirmDialog(null, myPanel,
+							"Please Enter Payment size",
+							JOptionPane.CLOSED_OPTION);
+					endSale();
+					model.getCurrentPurchaseTableModel().clear();
+				} else {
+					log.error("Payment is not sufficient");
+				}
+			}
+			/**
+			 * Payment window end
+			 */
+
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		}
