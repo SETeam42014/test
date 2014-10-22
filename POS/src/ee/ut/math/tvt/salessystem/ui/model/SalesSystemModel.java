@@ -32,6 +32,7 @@ public class SalesSystemModel {
 		this.currentPurchaseTableModel = new PurchaseInfoTableModel();
 
 		// populate stock model with data from the warehouse
+		// DEPRICATED
 		this.warehouseTableModel.populateWithData(this.domainController
 				.loadWarehouseState());
 
