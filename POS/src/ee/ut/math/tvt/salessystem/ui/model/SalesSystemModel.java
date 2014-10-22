@@ -11,6 +11,9 @@ public class SalesSystemModel {
 
 	private static final Logger log = Logger.getLogger(SalesSystemModel.class);
 
+	// History model
+	private HistoryTableModel historyTableModel;
+
 	// Warehouse model
 	private StockTableModel warehouseTableModel;
 
@@ -50,6 +53,10 @@ public class SalesSystemModel {
 
 	public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
 		return this.currentPurchaseTableModel;
+	}
+
+	public HistoryTableModel getHistoryTableModel() {
+		return this.historyTableModel;
 	}
 
 }

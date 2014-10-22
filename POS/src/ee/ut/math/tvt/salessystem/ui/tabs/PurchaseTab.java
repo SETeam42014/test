@@ -177,8 +177,11 @@ public class PurchaseTab {
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows());
-			JOptionPane.showMessageDialog(null, "Product out of stock",
-					"Error", 0);
+			/*
+			 * JOptionPane.showMessageDialog(null, "Product out of stock",
+			 * "Error", 0);
+			 */
+
 			endSale();
 			model.getCurrentPurchaseTableModel().clear();
 		} catch (VerificationFailedException e1) {
