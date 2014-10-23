@@ -227,14 +227,14 @@ public class PurchaseTab {
 	 * when called.
 	 */
 	private void createPaymentWindow() {
-		double a = 0;
+		double sum = 0;
 		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
-			a += i.getSum();
+			sum += i.getSum();
 		}
 		;
 		JTextField xField = new JTextField(5);
 		JTextPane sumField = new JTextPane();
-		sumField.setText(Double.toString(a));
+		sumField.setText(Double.toString(sum));
 		JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Bill"));
 		myPanel.add(sumField);
@@ -244,31 +244,43 @@ public class PurchaseTab {
 
 		int result = JOptionPane.showConfirmDialog(null, myPanel,
 				"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
-		submitPayment(myPanel, result, xField, a);
+		submitPayment(myPanel, result, xField, sum);
 	}
 
 	private void submitPayment(JPanel myPanel, int result, JTextField xField,
-			double a) {
+			double sum) {
 		if (result == JOptionPane.OK_OPTION) {
 			JTextPane yField = new JTextPane();
-			yField.setText(Double.toString(-1
-					* (a - Double.parseDouble(xField.getText()))));
-			System.out.println("Payment: " + xField.getText());
-			if ((a - Double.parseDouble(xField.getText())) < 0) {
-				myPanel.add(new JLabel("Money back"));
-				myPanel.add(yField);
-				result = JOptionPane.showConfirmDialog(null, myPanel,
-						"Please Enter Payment size", JOptionPane.CLOSED_OPTION);
-				System.out.println("Money back: " + yField.getText());
-				// Add transaction to history
-				this.model.getHistoryTableModel().addItem(
-						new HistoryItem(a, model.getCurrentPurchaseTableModel()
-								.getTableRows()));
-				endSale();
-				model.getCurrentPurchaseTableModel().clear();
-			} else {
-				log.error("Payment is not sufficient");
+			try {
+				yField.setText(Double.toString(-1
+						* (sum - Double.parseDouble(xField.getText()))));
+
+				System.out.println("Payment: " + xField.getText());
+				if ((sum - Double.parseDouble(xField.getText())) <= 0) {
+					myPanel.add(new JLabel("Money back"));
+					myPanel.add(yField);
+					result = JOptionPane.showConfirmDialog(null, myPanel,
+							"Payment result", JOptionPane.CLOSED_OPTION);
+					System.out.println("Money back: " + yField.getText());
+					// Add transaction to history
+					this.model.getHistoryTableModel().addItem(
+							new HistoryItem(sum, model
+									.getCurrentPurchaseTableModel()
+									.getTableRows()));
+					endSale();
+					model.getCurrentPurchaseTableModel().clear();
+				} else {
+					JOptionPane.showMessageDialog(null, "Payment insufficient");
+					log.error("Payment is not sufficient");
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Payment should be entered as number");
+				log.error("Payment should be entered as number");
 			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Payment not completed");
+			log.error("Payment is not sufficient");
 		}
 	}
 
