@@ -64,10 +64,17 @@ public class HistoryItem implements DisplayableItem, Serializable {
 		this.state = state;
 	}
 
-	public HistoryItem(double sum) {
+	/**
+	 * Constructor for HistoryItem
+	 * 
+	 * @param sum
+	 * @param purchase
+	 */
+	public HistoryItem(double sum, List<StockItem> purchase) {
 		this.id = nextId++;
 		this.endDate = new Date();
 		this.sum = sum;
+		this.items = purchase;
 	}
 
 	/*
