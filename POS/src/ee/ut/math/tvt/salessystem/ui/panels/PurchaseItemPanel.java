@@ -149,7 +149,6 @@ public class PurchaseItemPanel extends JPanel {
 		products.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				itemSelectHandler(e);
-				populateProducts();
 			}
 		});
 

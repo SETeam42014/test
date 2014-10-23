@@ -122,8 +122,6 @@ public class StockTab {
 	 */
 	private void addButtonClicked() {
 		createInputWindow();
-		model.getWarehouseTableModel().addItem(
-				new StockItem(1l, "Lays chips", "Potato chips", 11.0, 0));
 	}
 
 	private void createInputWindow() {
@@ -132,6 +130,7 @@ public class StockTab {
 			sum += i.getSum();
 		}
 		;
+		JTextField idField = new JTextField(3);
 		JTextField priceField = new JTextField(5);
 		JTextField nameField = new JTextField(15);
 		JTextField descrField = new JTextField(15);
@@ -139,6 +138,8 @@ public class StockTab {
 		// JTextField descrField = new JTextField();
 		nameField.setText(Double.toString(sum));
 		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Id"));
+		myPanel.add(idField);
 		myPanel.add(new JLabel("Name"));
 		myPanel.add(nameField);
 		myPanel.add(new JLabel("Price"));
@@ -153,19 +154,25 @@ public class StockTab {
 				.showConfirmDialog(null, myPanel,
 						"Please Enter Product Parameters",
 						JOptionPane.OK_CANCEL_OPTION);
+		itemAdd(idField, priceField, nameField, descrField, quantityField);
+	}
+
+	private void itemAdd(JTextField idField, JTextField priceField,
+			JTextField nameField, JTextField descrField,
+			JTextField quantityField) {
 		String name = nameField.getText();
 		try {
+			long id = Long.parseLong(idField.getText());
 			double price = Double.parseDouble(priceField.getText());
 			String description = descrField.getText();
 			int quantity = Integer.parseInt(quantityField.getText());
-			long id = model.getWarehouseTableModel().getRowCount() + 1;
-			System.out.println(id);
 			StockItem stockItem = new StockItem(id, name, description, price,
 					quantity);
-			model.getWarehouseTableModel().addItem(stockItem);
+			model.getWarehouseTableModel().addItem(
+					new StockItem(id, name, description, price, quantity));
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
-					"Price and quantity should be entered as numbers.");
+					"Id, Price and quantity should be entered as numbers.");
 			log.error("Adding StockItem failed, price or quantity not a number.");
 		}
 	}
