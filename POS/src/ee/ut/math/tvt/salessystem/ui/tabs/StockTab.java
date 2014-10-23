@@ -1,7 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -11,18 +14,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.table.JTableHeader;
+
+import org.apache.log4j.Logger;
 
 public class StockTab {
 
-	/**
-	 * Variables
-	 */
 	private JButton addItem;
+	private static final Logger log = Logger.getLogger(StockTab.class);
 	private SalesSystemModel model;
 
 	/**
@@ -38,7 +46,7 @@ public class StockTab {
 	/**
 	 * warehouse stock tab - consists of a menu and a table
 	 * 
-	 * @return Warehouse stock tab
+	 * @return Panel
 	 */
 	public Component draw() {
 		JPanel panel = new JPanel();
@@ -68,7 +76,7 @@ public class StockTab {
 	/**
 	 * Warehouse menu
 	 * 
-	 * @return Warehouse menu pane
+	 * @return Panel
 	 */
 	private Component drawStockMenuPane() {
 		JPanel panel = new JPanel();
@@ -95,7 +103,7 @@ public class StockTab {
 	/**
 	 * Creates the "Add" button
 	 * 
-	 * @return "Add" JButton
+	 * @return "Add" button
 	 */
 	private JButton createAddButton() {
 		JButton b = new JButton("Add");
@@ -113,15 +121,59 @@ public class StockTab {
 	 * Add button Clicked action
 	 */
 	private void addButtonClicked() {
-		// mockup add item
+		createInputWindow();
 		model.getWarehouseTableModel().addItem(
 				new StockItem(1l, "Lays chips", "Potato chips", 11.0, 0));
+	}
+
+	private void createInputWindow() {
+		double sum = 0;
+		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
+			sum += i.getSum();
+		}
+		;
+		JTextField priceField = new JTextField(5);
+		JTextField nameField = new JTextField(15);
+		JTextField descrField = new JTextField(15);
+		JTextField quantityField = new JTextField(5);
+		// JTextField descrField = new JTextField();
+		nameField.setText(Double.toString(sum));
+		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Name"));
+		myPanel.add(nameField);
+		myPanel.add(new JLabel("Price"));
+		myPanel.add(priceField);
+		myPanel.add(new JLabel("Description"));
+		myPanel.add(descrField);
+		myPanel.add(new JLabel("Quantity"));
+		myPanel.add(quantityField);
+		myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+
+		int result = JOptionPane
+				.showConfirmDialog(null, myPanel,
+						"Please Enter Product Parameters",
+						JOptionPane.OK_CANCEL_OPTION);
+		String name = nameField.getText();
+		try {
+			double price = Double.parseDouble(priceField.getText());
+			String description = descrField.getText();
+			int quantity = Integer.parseInt(quantityField.getText());
+			long id = model.getWarehouseTableModel().getRowCount() + 1;
+			System.out.println(id);
+			StockItem stockItem = new StockItem(id, name, description, price,
+					quantity);
+			model.getWarehouseTableModel().addItem(stockItem);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null,
+					"Price and quantity should be entered as numbers.");
+			log.error("Adding StockItem failed, price or quantity not a number.");
+		}
 	}
 
 	/**
 	 * table of the wareshouse stock
 	 * 
-	 * @return Warehouse stock main pane
+	 * @return Panel
 	 */
 	private Component drawStockMainPane() {
 		JPanel panel = new JPanel();
