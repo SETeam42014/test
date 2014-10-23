@@ -6,8 +6,10 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.SETeam42014.Intro;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -208,51 +210,8 @@ public class PurchaseTab {
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows(), model
 					.getWarehouseTableModel().getTableRows());
-			/**
-			 * From here payment window
-			 */
-			double a = 0;
-			for (SoldItem i : model.getCurrentPurchaseTableModel()
-					.getTableRows()) {
-				a += i.getSum();
-			}
-			;
-			JTextField xField = new JTextField(5);
-			JTextPane yField = new JTextPane();
-			JTextPane sumField = new JTextPane();
-			sumField.setText(Double.toString(a));
-			JPanel myPanel = new JPanel();
-			myPanel.add(new JLabel("Bill"));
-			myPanel.add(sumField);
-			myPanel.add(new JLabel("Payment"));
-			myPanel.add(xField);
-			myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-			myPanel.add(new JLabel("Money back"));
-			myPanel.add(yField);
 
-			int result = JOptionPane.showConfirmDialog(null, myPanel,
-					"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
-			if (result == JOptionPane.OK_OPTION) {
-				yField.setText(Double.toString(-1
-						* (a - Double.parseDouble(xField.getText()))));
-				System.out.println("Payment: " + xField.getText());
-				System.out.println("Money back: " + yField.getText());
-				if ((a - Double.parseDouble(xField.getText())) < 0) {
-					result = JOptionPane.showConfirmDialog(null, myPanel,
-							"Please Enter Payment size",
-							JOptionPane.CLOSED_OPTION);
-					// Add transaction to history
-					this.model.getHistoryTableModel().addItem(
-							new HistoryItem(a));
-					endSale();
-					model.getCurrentPurchaseTableModel().clear();
-				} else {
-					log.error("Payment is not sufficient");
-				}
-			}
-			/**
-			 * Payment window end
-			 */
+			createPaymentWindow();
 
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
@@ -267,6 +226,49 @@ public class PurchaseTab {
 	 * === Helper methods that bring the whole purchase-tab to a certain state
 	 * when called.
 	 */
+	private void createPaymentWindow() {
+		double a = 0;
+		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
+			a += i.getSum();
+		}
+		;
+		JTextField xField = new JTextField(5);
+		JTextPane sumField = new JTextPane();
+		sumField.setText(Double.toString(a));
+		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Bill"));
+		myPanel.add(sumField);
+		myPanel.add(new JLabel("Payment"));
+		myPanel.add(xField);
+		myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+
+		int result = JOptionPane.showConfirmDialog(null, myPanel,
+				"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
+		submitPayment(myPanel, result, xField, a);
+	}
+
+	private void submitPayment(JPanel myPanel, int result, JTextField xField,
+			double a) {
+		if (result == JOptionPane.OK_OPTION) {
+			JTextPane yField = new JTextPane();
+			yField.setText(Double.toString(-1
+					* (a - Double.parseDouble(xField.getText()))));
+			System.out.println("Payment: " + xField.getText());
+			if ((a - Double.parseDouble(xField.getText())) < 0) {
+				myPanel.add(new JLabel("Money back"));
+				myPanel.add(yField);
+				result = JOptionPane.showConfirmDialog(null, myPanel,
+						"Please Enter Payment size", JOptionPane.CLOSED_OPTION);
+				System.out.println("Money back: " + yField.getText());
+				// Add transaction to history
+				this.model.getHistoryTableModel().addItem(new HistoryItem(a));
+				endSale();
+				model.getCurrentPurchaseTableModel().clear();
+			} else {
+				log.error("Payment is not sufficient");
+			}
+		}
+	}
 
 	// switch UI to the state that allows to proceed with the purchase
 	private void startNewSale() {
