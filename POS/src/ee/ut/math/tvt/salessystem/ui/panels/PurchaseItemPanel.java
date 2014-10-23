@@ -149,7 +149,7 @@ public class PurchaseItemPanel extends JPanel {
 		products.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				itemSelectHandler(e);
-
+				populateProducts();
 			}
 		});
 
@@ -183,7 +183,7 @@ public class PurchaseItemPanel extends JPanel {
 
 	}
 
-	private void populateProducts() {
+	public void populateProducts() {
 		if (this.products.getItemCount() > 0)
 			this.products.removeAllItems();
 		// log.debug("Listis on: " + this.products.getItemCount());

@@ -47,11 +47,12 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 */
 	public void addItem(final StockItem stockItem) {
 		try {
-			StockItem item = getItemById(stockItem.getId());
+			StockItem item = getItemByName(stockItem.getName());
 			item.setQuantity(item.getQuantity() + stockItem.getQuantity());
 			log.debug("Found existing item " + stockItem.getName()
 					+ " increased quantity by " + stockItem.getQuantity());
 		} catch (NoSuchElementException e) {
+			System.out.println("ei ole sellist elementi");
 			rows.add(stockItem);
 			log.debug("Added " + stockItem.getName() + " quantity of "
 					+ stockItem.getQuantity());
