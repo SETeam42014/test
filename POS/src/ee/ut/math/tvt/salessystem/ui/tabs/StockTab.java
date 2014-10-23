@@ -19,8 +19,10 @@ import javax.swing.table.JTableHeader;
 
 public class StockTab {
 
+	/**
+	 * Variables
+	 */
 	private JButton addItem;
-
 	private SalesSystemModel model;
 
 	/**
@@ -36,7 +38,7 @@ public class StockTab {
 	/**
 	 * warehouse stock tab - consists of a menu and a table
 	 * 
-	 * @return Panel
+	 * @return Warehouse stock tab
 	 */
 	public Component draw() {
 		JPanel panel = new JPanel();
@@ -66,7 +68,7 @@ public class StockTab {
 	/**
 	 * Warehouse menu
 	 * 
-	 * @return Panel
+	 * @return Warehouse menu pane
 	 */
 	private Component drawStockMenuPane() {
 		JPanel panel = new JPanel();
@@ -93,7 +95,7 @@ public class StockTab {
 	/**
 	 * Creates the "Add" button
 	 * 
-	 * @return "Add" button
+	 * @return "Add" JButton
 	 */
 	private JButton createAddButton() {
 		JButton b = new JButton("Add");
@@ -119,7 +121,7 @@ public class StockTab {
 	/**
 	 * table of the wareshouse stock
 	 * 
-	 * @return Panel
+	 * @return Warehouse stock main pane
 	 */
 	private Component drawStockMainPane() {
 		JPanel panel = new JPanel();

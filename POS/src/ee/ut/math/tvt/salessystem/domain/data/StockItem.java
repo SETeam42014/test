@@ -19,13 +19,13 @@ public class StockItem implements Cloneable, DisplayableItem {
 	 * Constucts new <code>StockItem</code> with the specified values.
 	 * 
 	 * @param id
-	 *            barcode id
+	 *            Barcode id
 	 * @param name
-	 *            name of the product
+	 *            Name of the product
 	 * @param desc
-	 *            description of the product
+	 *            Description of the product
 	 * @param price
-	 *            price of the product
+	 *            Price of the product
 	 */
 	public StockItem(Long id, String name, String desc, double price) {
 		this.id = id;
@@ -34,6 +34,20 @@ public class StockItem implements Cloneable, DisplayableItem {
 		this.price = price;
 	}
 
+	/**
+	 * Creates new StockItem with parameters
+	 * 
+	 * @param id
+	 *            Barcode id
+	 * @param name
+	 *            Name of the product
+	 * @param desc
+	 *            Description of the product
+	 * @param price
+	 *            Price of the product
+	 * @param quantity
+	 *            How many of the same product
+	 */
 	public StockItem(Long id, String name, String desc, double price,
 			int quantity) {
 		this.id = id;

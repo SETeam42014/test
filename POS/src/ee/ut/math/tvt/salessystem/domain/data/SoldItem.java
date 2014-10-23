@@ -53,7 +53,10 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
+/**
+ * Gets the sum of all (quantity) products
+ * @return quantity * price
+ */
 	public double getSum() {
 		return price * ((double) quantity);
 	}

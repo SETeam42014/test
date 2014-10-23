@@ -16,6 +16,10 @@ public class HistoryItem implements DisplayableItem, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Variables
+	 */
 	private static long nextId;
 	private long id;
 	private Date endDate;
@@ -67,8 +71,10 @@ public class HistoryItem implements DisplayableItem, Serializable {
 	/**
 	 * Constructor for HistoryItem
 	 * 
-	 * @param sum
-	 * @param purchase
+	 * @param Sum
+	 *            of the transaction
+	 * @param Sold
+	 *            goods
 	 */
 	public HistoryItem(double sum, List<SoldItem> purchase) {
 		this.id = nextId++;

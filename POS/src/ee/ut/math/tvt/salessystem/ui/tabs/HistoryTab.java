@@ -23,9 +23,6 @@ public class HistoryTab {
 	// TODO - implement!
 	private SalesSystemModel model;
 
-	public HistoryTab() {
-	}
-
 	public HistoryTab(SalesSystemModel model) {
 		this.model = model;
 	}
