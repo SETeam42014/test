@@ -217,7 +217,6 @@ public class PurchaseItemPanel extends JPanel {
 		int quantity;
 		try {
 			quantity = Integer.parseInt(quantityField.getText());
-			log.info("GETS THIS FAR");
 			if (stockItem.getQuantity() == 0
 					|| quantity > stockItem.getQuantity()) {
 				throw new OutOfStockException();
@@ -232,11 +231,9 @@ public class PurchaseItemPanel extends JPanel {
 				// If the element isn't in the purchase list yet
 			}
 			// quantity = Integer.parseInt(quantityField.getText());
-			log.info("GETS THIS FAR ASWELL");
 			// add item to sold item list
 			this.model.getCurrentPurchaseTableModel().addItem(
 					new SoldItem(stockItem, quantity));
-			log.info("DOESNT GET THIS FAR");
 		} catch (NumberFormatException ex) {
 			quantity = 1;
 		} catch (OutOfStockException e) {

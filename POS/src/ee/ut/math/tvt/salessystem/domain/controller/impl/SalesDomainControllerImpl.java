@@ -44,6 +44,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	public void cancelCurrentPurchase(List<SoldItem> goods,
 			List<StockItem> stock) throws VerificationFailedException {
 		// XXX - Cancel current purchase
+		// Reload data from database?
 		for (SoldItem soldItem : goods) {
 			for (StockItem stockItem : stock) {
 				if (soldItem.getId() == stockItem.getId()) {
