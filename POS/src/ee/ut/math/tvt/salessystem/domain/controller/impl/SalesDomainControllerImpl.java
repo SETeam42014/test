@@ -59,6 +59,10 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
 	}
 
+	public List<StockItem> loadWarehouseState(List<StockItem> wareHouse) {
+		return wareHouse;
+	}
+
 	public List<StockItem> loadWarehouseState() {
 		// XXX mock implementation
 		// NEXT Practical will implement loadWarehouseState with database to

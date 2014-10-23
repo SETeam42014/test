@@ -21,6 +21,14 @@ public interface SalesDomainController {
 	 */
 	public List<StockItem> loadWarehouseState();
 
+	/**
+	 * Dummy loadWareHouse
+	 * 
+	 * @param wareHouse
+	 * @return wareHouse
+	 */
+	public List<StockItem> loadWarehouseState(List<StockItem> wareHouse);
+
 	// business processes
 	/**
 	 * Initiate new business transaction - purchase of the goods.
