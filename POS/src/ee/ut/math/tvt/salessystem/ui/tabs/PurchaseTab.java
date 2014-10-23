@@ -261,7 +261,9 @@ public class PurchaseTab {
 						"Please Enter Payment size", JOptionPane.CLOSED_OPTION);
 				System.out.println("Money back: " + yField.getText());
 				// Add transaction to history
-				this.model.getHistoryTableModel().addItem(new HistoryItem(a));
+				this.model.getHistoryTableModel().addItem(
+						new HistoryItem(a, model.getCurrentPurchaseTableModel()
+								.getTableRows()));
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
 			} else {

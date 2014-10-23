@@ -21,14 +21,14 @@ public class HistoryItem implements DisplayableItem, Serializable {
 	private Date endDate;
 	private Date startDate;
 	private double sum;
-	private List<StockItem> items;
+	private List<SoldItem> items;
 	private int state;
 
-	public void setItems(List<StockItem> purchase) {
+	public void setItems(List<SoldItem> purchase) {
 		this.items = purchase;
 	}
 
-	public List<StockItem> getItems() {
+	public List<SoldItem> getItems() {
 		return this.items;
 	}
 
@@ -70,7 +70,7 @@ public class HistoryItem implements DisplayableItem, Serializable {
 	 * @param sum
 	 * @param purchase
 	 */
-	public HistoryItem(double sum, List<StockItem> purchase) {
+	public HistoryItem(double sum, List<SoldItem> purchase) {
 		this.id = nextId++;
 		this.endDate = new Date();
 		this.sum = sum;
