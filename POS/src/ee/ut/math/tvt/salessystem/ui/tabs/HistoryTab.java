@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -51,6 +52,13 @@ public class HistoryTab {
 		gc.fill = GridBagConstraints.BOTH;
 		panel.add(drawHistorykMainPane(), gc);
 		return panel;
+	}
+
+	private void historyItemClicked() {
+		JPanel paymentPanel = new JPanel();
+		// JTable table = new JTable(model.);
+		JOptionPane.showConfirmDialog(null, paymentPanel,
+				"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
 	}
 
 	private Component drawHistoryMenuPane() {

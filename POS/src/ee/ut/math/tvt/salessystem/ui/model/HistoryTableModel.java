@@ -11,7 +11,7 @@ import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 
 /**
  * @author Johani
- *
+ * 
  */
 public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 
@@ -44,7 +44,7 @@ public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 	 */
 	public void addItem(final HistoryItem historyItem) {
 		rows.add(historyItem);
-		log.debug("Added new item: " + historyItem.getId());
+		log.debug("Added new item: " + historyItem.getEndDate());
 		fireTableDataChanged();
 	}
 
