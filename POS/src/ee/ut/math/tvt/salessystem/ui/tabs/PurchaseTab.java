@@ -205,71 +205,105 @@ public class PurchaseTab {
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");
 		try {
+			if (model.getCurrentPurchaseTableModel().getRowCount() == 0)
+				throw new NullPointerException();
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
 			domainController.submitCurrentPurchase(model
 					.getCurrentPurchaseTableModel().getTableRows(), model
 					.getWarehouseTableModel().getTableRows());
 
-			createPaymentWindow();
+			while (createPaymentWindow() == 1)
+				;
 
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
 		} catch (OutOfStockException e) {
-			log.info("Product out of Stock");
+			log.error("Product out of Stock");
 			JOptionPane.showMessageDialog(null, "Not enough product in stock",
 					"Error", JOptionPane.ERROR_MESSAGE);
+		} catch (NullPointerException e) {
+			log.error("No items in cart");
 		}
+	}
+
+	/**
+	 * https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-
+	 * places
+	 * 
+	 * @param value
+	 * @param places
+	 * @return
+	 */
+	public static double round(double value, int places) {
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		long factor = (long) Math.pow(10, places);
+		value = value * factor;
+		long tmp = Math.round(value);
+		return (double) tmp / factor;
 	}
 
 	/*
 	 * === Helper methods that bring the whole purchase-tab to a certain state
 	 * when called.
 	 */
-	private void createPaymentWindow() {
-		double a = 0;
-		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
-			a += i.getSum();
-		}
-		;
-		JTextField xField = new JTextField(5);
-		JTextPane sumField = new JTextPane();
-		sumField.setText(Double.toString(a));
-		JPanel myPanel = new JPanel();
-		myPanel.add(new JLabel("Bill"));
-		myPanel.add(sumField);
-		myPanel.add(new JLabel("Payment"));
-		myPanel.add(xField);
-		myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+	private int createPaymentWindow() {
+		try {
+			double sum = 0;
+			for (SoldItem item : model.getCurrentPurchaseTableModel()
+					.getTableRows()) {
+				sum += item.getSum();
+			}
+			sum = round(sum, 2);
+			JTextField sumField = new JTextField(5);
+			JTextPane sumPane = new JTextPane();
+			sumPane.setText(Double.toString(sum));
+			JPanel paymentPanel = new JPanel();
+			paymentPanel.add(new JLabel("Bill"));
+			paymentPanel.add(sumPane);
+			paymentPanel.add(new JLabel("Payment"));
+			paymentPanel.add(sumField);
+			paymentPanel.add(Box.createHorizontalStrut(15)); // a spacer
 
-		int result = JOptionPane.showConfirmDialog(null, myPanel,
-				"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
-		submitPayment(myPanel, result, xField, a);
-	}
+			// int result = JOptionPane.showConfirmDialog(null, myPanel,
+			// "Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
 
-	private void submitPayment(JPanel myPanel, int result, JTextField xField,
-			double a) {
-		if (result == JOptionPane.OK_OPTION) {
-			JTextPane yField = new JTextPane();
-			yField.setText(Double.toString(-1
-					* (a - Double.parseDouble(xField.getText()))));
-			System.out.println("Payment: " + xField.getText());
-			if ((a - Double.parseDouble(xField.getText())) < 0) {
-				myPanel.add(new JLabel("Money back"));
-				myPanel.add(yField);
-				result = JOptionPane.showConfirmDialog(null, myPanel,
-						"Please Enter Payment size", JOptionPane.CLOSED_OPTION);
-				System.out.println("Money back: " + yField.getText());
-				// Add transaction to history
-				this.model.getHistoryTableModel().addItem(
-						new HistoryItem(a, model.getCurrentPurchaseTableModel()
-								.getTableRows()));
+			if (JOptionPane.showConfirmDialog(null, paymentPanel,
+					"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+				JTextPane paymentPane = new JTextPane();
+				paymentPane.setText(sumField.getText());
+				paymentPanel.remove(sumField);
+				paymentPanel.add(paymentPane);
+				submitPayment(paymentPanel,
+						round(Double.parseDouble(paymentPane.getText()), 2)
+								- sum);
+				this.model.getHistoryTableModel()
+						.addItem(
+								new HistoryItem(sum, model
+										.getCurrentPurchaseTableModel()
+										.getTableRows()));
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
-			} else {
-				log.error("Payment is not sufficient");
 			}
+		} catch (IllegalArgumentException e) {
+			log.error(e);
+			return 1;
 		}
+		return 0;
+	}
+
+	private int submitPayment(JPanel paymentPanel, double payBack)
+			throws IllegalArgumentException {
+		if (payBack < 0.0)
+			throw new IllegalArgumentException("Payment not sufficient.");
+		JTextPane payBackField = new JTextPane();
+		payBackField.setText(Double.toString(payBack));
+		paymentPanel.add(new JLabel("Money back"));
+		paymentPanel.add(payBackField);
+		return JOptionPane.showConfirmDialog(null, paymentPanel,
+				"Please Enter Payment size", JOptionPane.CLOSED_OPTION);
 	}
 
 	// switch UI to the state that allows to proceed with the purchase
