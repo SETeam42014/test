@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -135,6 +136,7 @@ public class HistoryTab {
 
 		// Create the basketPane
 		JPanel basketPane = new JPanel();
+		basketPane.setPreferredSize(new Dimension(400, 150));
 		basketPane.setLayout(new GridBagLayout());
 		basketPane.setBorder(BorderFactory.createTitledBorder("Order details"));
 
