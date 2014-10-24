@@ -6,18 +6,28 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -27,6 +37,7 @@ public class HistoryTab {
 
 	// TODO - implement!
 	private SalesSystemModel model;
+	private PurchaseItemPanel purchasePane;
 
 	public HistoryTab(SalesSystemModel model) {
 		this.model = model;
@@ -63,19 +74,20 @@ public class HistoryTab {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 1) {
-					JTable target = (JTable) e.getSource();
-					// target.getSelectedRow();
+					HistoryItem item = model.getHistoryTableModel()
+							.getItemById(
+									(long) ((JTable) e.getSource())
+											.getSelectedRow());
 					JPanel paymentPanel = new JPanel();
-					// JTable table = new JTable(model.);
+					item.getItems().toString();
+					paymentPanel.add(drawBasketPane(item),
+							getBasketPaneConstraints());
+
 					JOptionPane.showConfirmDialog(null, paymentPanel,
 							"Order details", JOptionPane.OK_CANCEL_OPTION);
 				}
 			}
 		});
-		// JPanel paymentPanel = new JPanel();
-		// JTable table = new JTable(model.);
-		// JOptionPane.showConfirmDialog(null, paymentPanel,
-		// "Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
 	}
 
 	private Component drawHistoryMenuPane() {
@@ -118,4 +130,49 @@ public class HistoryTab {
 		panel.setBorder(BorderFactory.createTitledBorder("History"));
 		return panel;
 	}
+
+	private JComponent drawBasketPane(HistoryItem item) {
+
+		// Create the basketPane
+		JPanel basketPane = new JPanel();
+		basketPane.setLayout(new GridBagLayout());
+		basketPane.setBorder(BorderFactory.createTitledBorder("Order details"));
+
+		// Create the table, put it inside a scollPane,
+		// and add the scrollPane to the basketPanel.
+		item.getItems();
+		PurchaseInfoTableModel historymodel = new PurchaseInfoTableModel();
+		for (SoldItem i : item.getItems()) {
+			historymodel.addItem(i);
+		}
+		JTable table = new JTable(historymodel);
+		JScrollPane scrollPane = new JScrollPane(table);
+
+		basketPane.add(scrollPane, getBacketScrollPaneConstraints());
+
+		return basketPane;
+	}
+
+	private GridBagConstraints getBacketScrollPaneConstraints() {
+		GridBagConstraints gc = new GridBagConstraints();
+
+		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 1.0;
+		gc.weighty = 1.0;
+
+		return gc;
+	}
+
+	private GridBagConstraints getBasketPaneConstraints() {
+		GridBagConstraints gc = new GridBagConstraints();
+
+		gc.anchor = GridBagConstraints.WEST;
+		gc.weightx = 0.2;
+		gc.weighty = 1.0;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.fill = GridBagConstraints.BOTH;
+
+		return gc;
+	}
+
 }
