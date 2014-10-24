@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -30,6 +34,7 @@ public class HistoryTab {
 
 	public Component draw() {
 		JPanel panel = new JPanel();
+
 		// TODO - Sales history tabel
 
 		// this.model.updateStock();
@@ -54,11 +59,23 @@ public class HistoryTab {
 		return panel;
 	}
 
-	private void historyItemClicked() {
-		JPanel paymentPanel = new JPanel();
+	private void historyItemClicked(JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 1) {
+					JTable target = (JTable) e.getSource();
+					// target.getSelectedRow();
+					JPanel paymentPanel = new JPanel();
+					// JTable table = new JTable(model.);
+					JOptionPane.showConfirmDialog(null, paymentPanel,
+							"Order details", JOptionPane.OK_CANCEL_OPTION);
+				}
+			}
+		});
+		// JPanel paymentPanel = new JPanel();
 		// JTable table = new JTable(model.);
-		JOptionPane.showConfirmDialog(null, paymentPanel,
-				"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
+		// JOptionPane.showConfirmDialog(null, paymentPanel,
+		// "Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
 	}
 
 	private Component drawHistoryMenuPane() {
@@ -83,7 +100,7 @@ public class HistoryTab {
 		JPanel panel = new JPanel();
 
 		JTable table = new JTable(model.getHistoryTableModel());
-
+		historyItemClicked(table);
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
 
