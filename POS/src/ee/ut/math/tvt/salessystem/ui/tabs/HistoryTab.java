@@ -158,11 +158,11 @@ public class HistoryTab {
 		// Create the table, put it inside a scollPane,
 		// and add the scrollPane to the basketPanel.
 		item.getItems();
-		PurchaseInfoTableModel historymodel = new PurchaseInfoTableModel();
+		PurchaseInfoTableModel soldGoods = new PurchaseInfoTableModel();
 		for (SoldItem i : item.getItems()) {
-			historymodel.addItem(i);
+			soldGoods.addItem(i);
 		}
-		JTable table = new JTable(historymodel);
+		JTable table = new JTable(soldGoods);
 		JScrollPane scrollPane = new JScrollPane(table);
 
 		basketPane.add(scrollPane, getBacketScrollPaneConstraints());
