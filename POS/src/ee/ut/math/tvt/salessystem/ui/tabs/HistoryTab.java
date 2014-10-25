@@ -38,7 +38,6 @@ public class HistoryTab {
 
 	// TODO - implement!
 	private SalesSystemModel model;
-	private PurchaseItemPanel purchasePane;
 
 	public HistoryTab(SalesSystemModel model) {
 		this.model = model;
@@ -47,15 +46,20 @@ public class HistoryTab {
 	public Component draw() {
 		JPanel panel = new JPanel();
 
-		// TODO - Sales history tabel
-
-		// this.model.updateStock();
-
+		// Layout
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		panel.setLayout(new GridBagLayout());
 
-		GridBagLayout gb = new GridBagLayout();
+		// Add history menu
+		panel.add(drawHistoryMenuPane(), getConstraintsForHistoryMenu());
+
+		// Add the main panel
+		panel.add(drawHistoryMainPane(), getConstraintsForHistoryMainPane());
+		return panel;
+	}
+
+	private GridBagConstraints getConstraintsForHistoryMenu() {
 		GridBagConstraints gc = new GridBagConstraints();
-		panel.setLayout(gb);
 
 		gc.fill = GridBagConstraints.HORIZONTAL;
 		gc.anchor = GridBagConstraints.NORTH;
@@ -63,32 +67,19 @@ public class HistoryTab {
 		gc.weightx = 1.0d;
 		gc.weighty = 0d;
 
-		panel.add(drawHistoryMenuPane(), gc);
-
-		gc.weighty = 1.0;
-		gc.fill = GridBagConstraints.BOTH;
-		panel.add(drawHistorykMainPane(), gc);
-		return panel;
+		return gc;
 	}
 
-	private void historyItemClicked(JTable table) {
-		table.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 1) {
-					HistoryItem item = model.getHistoryTableModel()
-							.getItemById(
-									(long) ((JTable) e.getSource())
-											.getSelectedRow());
-					JPanel paymentPanel = new JPanel();
-					item.getItems().toString();
-					paymentPanel.add(drawBasketPane(item),
-							getBasketPaneConstraints());
+	private GridBagConstraints getConstraintsForHistoryMainPane() {
+		GridBagConstraints gc = new GridBagConstraints();
 
-					JOptionPane.showConfirmDialog(null, paymentPanel,
-							"Order details", JOptionPane.OK_CANCEL_OPTION);
-				}
-			}
-		});
+		gc.fill = GridBagConstraints.BOTH;
+		gc.anchor = GridBagConstraints.NORTH;
+		gc.gridwidth = GridBagConstraints.REMAINDER;
+		gc.weightx = 1.0d;
+		gc.weighty = 1.0;
+
+		return gc;
 	}
 
 	private Component drawHistoryMenuPane() {
@@ -109,13 +100,17 @@ public class HistoryTab {
 		return panel;
 	}
 
-	private Component drawHistorykMainPane() {
+	private Component drawHistoryMainPane() {
 		JPanel panel = new JPanel();
 
+		panel.setLayout(new GridBagLayout());
+
+		// Create table
 		JTable table = new JTable(model.getHistoryTableModel());
-		historyItemClicked(table);
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
+
+		// historyItemClicked(table);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 
@@ -129,7 +124,27 @@ public class HistoryTab {
 		panel.add(scrollPane, gc);
 
 		panel.setBorder(BorderFactory.createTitledBorder("History"));
+
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				historyTabelMouseListener(e);
+			}
+		});
 		return panel;
+	}
+
+	private void historyTabelMouseListener(MouseEvent e) {
+		if (e.getClickCount() == 1) {
+			// get item clicked
+			HistoryItem item = model.getHistoryTableModel().getItemById(
+					(long) ((JTable) e.getSource()).getSelectedRow());
+			// Create new panel for purchase history view
+			JPanel paymentPanel = new JPanel();
+			paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
+
+			JOptionPane.showConfirmDialog(null, paymentPanel, "Order details",
+					JOptionPane.OK_CANCEL_OPTION);
+		}
 	}
 
 	private JComponent drawBasketPane(HistoryItem item) {
