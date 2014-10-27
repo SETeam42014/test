@@ -19,12 +19,26 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/"/>
 	
 	<loadproperties>
-				<file file="application.properties"/>
+		<file file="application.properties"/>
 	</loadproperties>
 	-->
 	
 	<!-- Definitions of classpath variants used for different tasks -->
 
+	<!-- http://tlrobinson.net/blog/2008/11/ant-tasks-for-git/ -->
+	<macrodef name = "git">
+	    <attribute name = "command" />
+	    <attribute name = "dir" default = "" />
+	    <element name = "args" optional = "true" />
+	    <sequential>
+	        <echo message = "git @{command}" />
+	        <exec executable = "git" dir = "@{dir}">
+	            <arg value = "@{command}" />
+	            <args/>
+	        </exec>
+	    </sequential>
+	</macrodef>
+	
 	<path id="compile.classpath">
 		<fileset dir="lib">
 			<include name="*.jar"/>
@@ -45,13 +59,37 @@
 			<include name="*.properties"/>
 		</fileset>
 	</path>
+	
+	<path id="run.classpath">
+			<pathelement location="${build.classes.dir}"/>
+			<!-- configuration -->
+			<pathelement location="${conf.dir}"/>
+			<!-- Include libraries from "lib" folder-->
+			<fileset dir="lib">
+				<include name="*.jar"/>
+			</fileset>
+			<pathelement location="${basedir}"/>
+			<!-- Includes application properties -->
+			<fileset dir="">
+				<include name="*.properties"/>
+			</fileset>
+		</path>
+		
 
 	<!-- Definitions of runnable ant targets.
          Run them from the command line by executing "ant [targetname]"  -->
 	
 	<!-- "run" target -->
 	<target name="run" depends="build" description="Run the application">
-		<java classname="${application.main.class}" classpathref="test.classpath" fork="true" />
+		<java 
+			classname="${application.main.class}" 
+			classpathref="run.classpath" 
+			fork="true" >
+			<jvmarg value="-Xdebug" />
+		    <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+			<jvmarg value="-Xnoagent"/>
+			<jvmarg value="-Djava.compiler=NONE"/>
+		</java>
 	</target>
 	<!-- "build" target -->
 	<target name="build" description="Build the system">
@@ -131,5 +169,76 @@
 	<target name="jrun" depends="dist" description="Builds and runs JAR file">
 		<!-- Runs jar file -->
 		<java jar="${build.jar.dir}/${team.name}.jar" fork="yes"/>
+	</target>
+	
+	<!-- runc target -->
+	<target name="runc" depends="build" description="Run the application (console)">
+		<java classname="${application.main.class}" classpathref="test.classpath" fork="yes">
+			<arg value="console" />
+		</java>
+	</target>
+	
+	<!-- git_commit target -->
+	<target name="git_commit" description="Commit the code to git">
+		<!-- Gets commit message -->
+		<input message="Commit message" addproperty="commit-message"/>
+		
+		<!-- Commits code to local repo -->
+		<echo message="Commiting all changes with message ${commit-message}" />
+		<git command="add">
+			<args>
+				<arg value="-A" />
+			</args>
+		</git>
+		<git command="commit">
+			<args>
+				<arg value="-m ${commit-message}" />
+			</args>
+		</git>
+		
+		<!-- Gets User info for Git -->
+		<input message="Git username:" addproperty="git.username"/>
+		<!-- Problem: Echos back password -->
+		<input message="Git password:" addproperty="git.password"/>
+			
+		<!-- This code hangs when run as ANT target from Eclipse
+		
+		<input message="Git password:" addproperty="git.password">
+			<handler classname="org.apache.tools.ant.input.SecureInputHandler"/>
+		</input>
+		-->
+		
+		<!-- Pushes changes to GitHub server -->
+		<git command="push">
+			<args>
+				<arg value="https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
+			</args>
+		</git>
+	</target>
+	<!-- git_tag target -->
+	<target name="git_tag" description="Create tag and synchronize">
+		<!-- Create git tag -->
+		<input message="Tag name:" addproperty="git.tag.name"/>
+		<input message="Tag comment:" addproperty="git.tag.comment"/>
+		<git command="tag">
+			<args>
+				<arg value="-a" />
+				<arg value="${git.tag.name}" />
+				<arg value="-m" />
+				<arg value='"${git.tag.comment}"' />
+			</args>
+		</git>
+		
+		<!-- Push tags to server -->
+		<!-- Gets User info for Git -->
+		<input message="Git username:" addproperty="git.username"/>
+		<!-- Problem: Echos back password -->
+		<input message="Git password:" addproperty="git.password"/>
+		<git command="push">
+			<args>
+				<arg value="--tags"/>
+				<arg value="https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
+			</args>
+		</git>
 	</target>
 </project>
