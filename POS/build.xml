@@ -84,9 +84,12 @@
 		<java 
 			classname="${application.main.class}" 
 			classpathref="run.classpath" 
-			fork="true" />
+			fork="true" >
 			<jvmarg value="-Xdebug" />
 		    <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+			<jvmarg value="-Xnoagent"/>
+			<jvmarg value="-Djava.compiler=NONE"/>
+		</java>
 	</target>
 	<!-- "build" target -->
 	<target name="build" description="Build the system">
