@@ -4,6 +4,7 @@ import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 
 /**
@@ -12,38 +13,54 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
  */
 public interface SalesDomainController {
 
-    /**
-     * Load the current state of the warehouse.
-     * 
-     * @return List of ${link
-     *         ee.ut.math.tvt.salessystem.domain.data.StockItem}s.
-     */
-    public List<StockItem> loadWarehouseState();
+	/**
+	 * Load the current state of the warehouse.
+	 * 
+	 * @return List of ${link
+	 *         ee.ut.math.tvt.salessystem.domain.data.StockItem}s.
+	 */
+	public List<StockItem> loadWarehouseState();
 
-    // business processes
-    /**
-     * Initiate new business transaction - purchase of the goods.
-     * 
-     * @throws VerificationFailedException
-     */
-    public void startNewPurchase() throws VerificationFailedException;
+	/**
+	 * Dummy loadWareHouse
+	 * 
+	 * @param wareHouse
+	 * @return wareHouse
+	 */
+	public List<StockItem> loadWarehouseState(List<StockItem> wareHouse);
 
-    /**
-     * Rollback business transaction - purchase of goods.
-     * 
-     * @throws VerificationFailedException
-     */
-    public void cancelCurrentPurchase() throws VerificationFailedException;
+	// business processes
+	/**
+	 * Initiate new business transaction - purchase of the goods.
+	 * 
+	 * @throws VerificationFailedException
+	 */
+	public void startNewPurchase() throws VerificationFailedException;
 
-    /**
-     * Commit business transaction - purchsae of goods.
-     * 
-     * @param goods
-     *            Goods that the buyer has chosen to buy.
-     * @throws VerificationFailedException
-     */
-    public void submitCurrentPurchase(List<SoldItem> goods)
-            throws VerificationFailedException;
+	/**
+	 * Rollback business transaction - purchase of goods.
+	 * 
+	 * @throws VerificationFailedException
+	 */
+	public void cancelCurrentPurchase() throws VerificationFailedException;
 
-    
+	public void submitCurrentPurchase(List<SoldItem> goods)
+			throws VerificationFailedException;
+
+	/**
+	 * Commit business transaction - purchsae of goods.
+	 * 
+	 * @param goods
+	 *            Goods that the buyer has chosen to buy.
+	 * @param model
+	 *            wareHouse model
+	 * @throws VerificationFailedException
+	 *             Not eligible to buy
+	 * @throws OutOfStockException
+	 *             Not enough in stock
+	 */
+	public void submitCurrentPurchase(List<SoldItem> goods,
+			List<StockItem> stock) throws VerificationFailedException,
+			OutOfStockException;
+
 }

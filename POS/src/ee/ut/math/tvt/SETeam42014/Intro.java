@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.SETeam42014.IntroUI;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.ui.ConsoleUI;
@@ -41,5 +40,13 @@ public class Intro {
 			}
 			// introUI.setVisible(false);
 		}
+		// Datetime used for timestamp
+		Date date = new Date();
+		// Program running log entry
+		log.info("POS started, class name: " + log.getName() + ". Timestamp: "
+				+ date.toString());
+		// testing purposes
+		// System.out.println("TERE");
+
 	}
 }

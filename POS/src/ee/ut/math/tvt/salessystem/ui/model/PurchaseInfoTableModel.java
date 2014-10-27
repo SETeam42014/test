@@ -1,8 +1,11 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
 /**
@@ -11,10 +14,11 @@ import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger log = Logger.getLogger(PurchaseInfoTableModel.class);
-	
+	private static final Logger log = Logger
+			.getLogger(PurchaseInfoTableModel.class);
+
 	public PurchaseInfoTableModel() {
-		super(new String[] { "Id", "Name", "Price", "Quantity"});
+		super(new String[] { "Id", "Name", "Price", "Quantity", "Sum" });
 	}
 
 	@Override
@@ -28,6 +32,8 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 			return item.getPrice();
 		case 3:
 			return item.getQuantity();
+		case 4:
+			return item.getQuantity() * item.getPrice();
 		}
 		throw new IllegalArgumentException("Column index out of range");
 	}
@@ -51,18 +57,21 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 		return buffer.toString();
 	}
-	
-    /**
-     * Add new StockItem to table.
-     */
-    public void addItem(final SoldItem item) {
-        /**
-         * XXX In case such stockItem already exists increase the quantity of the
-         * existing stock.
-         */
-        
-        rows.add(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
-        fireTableDataChanged();
-    }
+
+	/**
+	 * Add new StockItem to table.
+	 */
+	public void addItem(final SoldItem item) {
+		try {
+			SoldItem sold = getItemById(item.getId());
+			sold.setQuantity(sold.getQuantity() + item.getQuantity());
+			log.debug("Found existing item " + item.getName()
+					+ " increased quantity by " + item.getQuantity());
+		} catch (NoSuchElementException e) {
+			rows.add(item);
+			log.debug("Added " + item.getName() + " quantity of "
+					+ item.getQuantity());
+		}
+		fireTableDataChanged();
+	}
 }

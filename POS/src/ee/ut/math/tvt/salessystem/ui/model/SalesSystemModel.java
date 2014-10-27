@@ -8,38 +8,57 @@ import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
  * Main model. Holds all the other models.
  */
 public class SalesSystemModel {
-    
-    private static final Logger log = Logger.getLogger(SalesSystemModel.class);
 
-    // Warehouse model
-    private StockTableModel warehouseTableModel;
-    
-    // Current shopping cart model
-    private PurchaseInfoTableModel currentPurchaseTableModel;
+	private static final Logger log = Logger.getLogger(SalesSystemModel.class);
 
-    private final SalesDomainController domainController;
+	// History model
+	private HistoryTableModel historyTableModel;
 
-    /**
-     * Construct application model.
-     * @param domainController Sales domain controller.
-     */
-    public SalesSystemModel(SalesDomainController domainController) {
-        this.domainController = domainController;
-        
-        warehouseTableModel = new StockTableModel();
-        currentPurchaseTableModel = new PurchaseInfoTableModel();
+	// Warehouse model
+	private StockTableModel warehouseTableModel;
 
-        // populate stock model with data from the warehouse
-        warehouseTableModel.populateWithData(domainController.loadWarehouseState());
+	// Current shopping cart model
+	private PurchaseInfoTableModel currentPurchaseTableModel;
 
-    }
+	private final SalesDomainController domainController;
 
-    public StockTableModel getWarehouseTableModel() {
-        return warehouseTableModel;
-    }
+	/**
+	 * Construct application model.
+	 * 
+	 * @param domainController
+	 *            Sales domain controller.
+	 */
+	public SalesSystemModel(SalesDomainController domainController) {
+		this.domainController = domainController;
 
-    public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
-        return currentPurchaseTableModel;
-    }
-    
+		this.historyTableModel = new HistoryTableModel();
+
+		this.warehouseTableModel = new StockTableModel();
+		this.currentPurchaseTableModel = new PurchaseInfoTableModel();
+
+		// populate stock model with data from the warehouse
+		// DEPRICATED
+		this.warehouseTableModel.populateWithData(this.domainController
+				.loadWarehouseState());
+
+	}
+
+	public void updateStock() {
+		this.warehouseTableModel.populateWithData(this.domainController
+				.loadWarehouseState());
+		log.debug("Stock update triggered");
+	}
+
+	public StockTableModel getWarehouseTableModel() {
+		return this.warehouseTableModel;
+	}
+
+	public PurchaseInfoTableModel getCurrentPurchaseTableModel() {
+		return this.currentPurchaseTableModel;
+	}
+
+	public HistoryTableModel getHistoryTableModel() {
+		return this.historyTableModel;
+	}
+
 }
