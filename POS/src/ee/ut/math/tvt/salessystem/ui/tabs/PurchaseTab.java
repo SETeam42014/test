@@ -209,9 +209,6 @@ public class PurchaseTab {
 				throw new NullPointerException();
 			log.debug("Contents of the current basket:\n"
 					+ model.getCurrentPurchaseTableModel());
-			domainController.submitCurrentPurchase(model
-					.getCurrentPurchaseTableModel().getTableRows(), model
-					.getWarehouseTableModel().getTableRows());
 
 			while (createPaymentWindow() == 1)
 				;
@@ -249,7 +246,8 @@ public class PurchaseTab {
 	 * === Helper methods that bring the whole purchase-tab to a certain state
 	 * when called.
 	 */
-	private int createPaymentWindow() {
+	private int createPaymentWindow() throws VerificationFailedException,
+			OutOfStockException {
 		try {
 			double sum = 0;
 			for (SoldItem item : model.getCurrentPurchaseTableModel()
@@ -284,6 +282,9 @@ public class PurchaseTab {
 								new HistoryItem(sum, model
 										.getCurrentPurchaseTableModel()
 										.getTableRows()));
+				domainController.submitCurrentPurchase(model
+						.getCurrentPurchaseTableModel().getTableRows(), model
+						.getWarehouseTableModel().getTableRows());
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
 			}
