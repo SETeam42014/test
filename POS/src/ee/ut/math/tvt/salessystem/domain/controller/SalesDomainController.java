@@ -63,4 +63,8 @@ public interface SalesDomainController {
 			List<StockItem> stock) throws VerificationFailedException,
 			OutOfStockException;
 
+	/**
+	 * End session to the database
+	 */
+	public void endSession();
 }
