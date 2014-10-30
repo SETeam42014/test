@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+//import javax.persistence.Transient;
 
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving
@@ -21,8 +23,9 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToMany
-	@OneToOne(mappedBy = "id")
+	// @OneToOne(mappedBy = "id")
+	@OneToOne
+	@MapsId
 	private StockItem stockItem;
 	@Column(name = "name")
 	private String name;
