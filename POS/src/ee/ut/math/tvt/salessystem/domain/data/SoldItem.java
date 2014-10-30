@@ -1,16 +1,34 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Already bought StockItem. SoldItem duplicates name and price for preserving
  * history.
  */
+@Entity
+@Table(name = "SOLDITEM")
 public class SoldItem implements Cloneable, DisplayableItem {
 
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToMany
+	@OneToOne(mappedBy = "id")
 	private StockItem stockItem;
-
+	@Column(name = "name")
 	private String name;
+	@Column(name = "quantity")
 	private Integer quantity;
+	@Column(name = "price")
 	private double price;
 
 	public SoldItem(StockItem stockItem, int quantity) {
@@ -53,10 +71,12 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-/**
- * Gets the sum of all (quantity) products
- * @return quantity * price
- */
+
+	/**
+	 * Gets the sum of all (quantity) products
+	 * 
+	 * @return quantity * price
+	 */
 	public double getSum() {
 		return price * ((double) quantity);
 	}

@@ -7,26 +7,41 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 /**
  * @author Johani
  * 
  */
-public class HistoryItem implements DisplayableItem, Serializable {
-	/**
-	 * 
-	 */
+@Entity
+@Table(name = "HISTORYITEM")
+public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Variables
 	 */
 	private static long nextId;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private Date endDate;
-	private Date startDate;
+	@Column(name = "date")
+	private Date date;
+	@Column(name = "sum")
 	private double sum;
+	@ManyToMany
+	@JoinTable(name = "HISTORYITEM_TO_SOLDITEM", joinColumns = @JoinColumn(name = "HISTORYITEM_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "STOCKITEM_ID", referencedColumnName = "ID"))
 	private List<SoldItem> items;
-	private int state;
 
 	public void setItems(List<SoldItem> purchase) {
 		this.items = purchase;
@@ -36,20 +51,12 @@ public class HistoryItem implements DisplayableItem, Serializable {
 		return this.items;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setEndDate(Date date) {
+		this.date = date;
 	}
 
 	public double getSum() {
@@ -58,14 +65,6 @@ public class HistoryItem implements DisplayableItem, Serializable {
 
 	public void setSum(double sum) {
 		this.sum = sum;
-	}
-
-	public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
 	}
 
 	/**
@@ -78,7 +77,7 @@ public class HistoryItem implements DisplayableItem, Serializable {
 	 */
 	public HistoryItem(double sum, List<SoldItem> purchase) {
 		this.id = nextId++;
-		this.endDate = new Date();
+		this.date = new Date();
 		this.sum = sum;
 		this.items = purchase;
 	}

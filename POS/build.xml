@@ -143,7 +143,9 @@
 			<fileset dir="${build.classes.dir}"/>
 			<!-- Include properties files -->
 			<fileset dir="${basedir}/" includes="*.properties"/>
-			<!-- Include configuration directory ("etc") -->
+			<!-- Include etc directory -->
+			<fileset dir="${etc.dir}"/>
+			<!-- Include configuration directory ("conf") -->
 			<fileset dir="${conf.dir}"/>
 			<!-- Include log4j classes from JAR file -->
 			<zipfileset includes="**/*.class" src="lib/log4j-1.2.17.jar"/>
