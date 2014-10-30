@@ -65,7 +65,6 @@ public class SalesSystemUI extends JFrame {
 		} catch (UnsupportedLookAndFeelException e1) {
 			log.warn(e1.getMessage());
 		}
-
 		drawWidgets();
 
 		// size & location
@@ -78,7 +77,7 @@ public class SalesSystemUI extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				exitProgram();
 			}
 		});
 	}
@@ -94,4 +93,12 @@ public class SalesSystemUI extends JFrame {
 		getContentPane().add(tabbedPane);
 	}
 
+	private void exitProgram() {
+		try {
+			this.domainController.endSession();
+		} catch (Exception e) {
+			log.error(e);
+		}
+		System.exit(0);
+	}
 }
