@@ -3,6 +3,7 @@ package ee.ut.math.tvt.salessystem.ui.model;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 
 /**
  * Main model. Holds all the other models.
@@ -20,7 +21,11 @@ public class SalesSystemModel {
 	// Current shopping cart model
 	private PurchaseInfoTableModel currentPurchaseTableModel;
 
+	// Domain controller
 	private final SalesDomainController domainController;
+
+	// DB service
+	private final HibernateDataService service;
 
 	/**
 	 * Construct application model.
@@ -28,8 +33,10 @@ public class SalesSystemModel {
 	 * @param domainController
 	 *            Sales domain controller.
 	 */
-	public SalesSystemModel(SalesDomainController domainController) {
+	public SalesSystemModel(SalesDomainController domainController,
+			HibernateDataService service) {
 		this.domainController = domainController;
+		this.service = service;
 
 		this.historyTableModel = new HistoryTableModel();
 
@@ -38,14 +45,15 @@ public class SalesSystemModel {
 
 		// populate stock model with data from the warehouse
 		// DEPRICATED
-		this.warehouseTableModel.populateWithData(this.domainController
-				.loadWarehouseState());
+		// this.warehouseTableModel.populateWithData(this.domainController
+		// .loadWarehouseState());
 
 	}
 
 	public void updateStock() {
-		this.warehouseTableModel.populateWithData(this.domainController
-				.loadWarehouseState());
+		this.warehouseTableModel.populateWithData(this.service.getStockItems());
+		// this.warehouseTableModel.populateWithData(this.domainController
+		// .loadWarehouseState());
 		log.debug("Stock update triggered");
 	}
 

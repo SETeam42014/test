@@ -24,13 +24,17 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	// @OneToOne(mappedBy = "id")
+
 	@OneToOne
 	@MapsId
 	private StockItem stockItem;
+
 	@Column(name = "name")
 	private String name;
+
 	@Column(name = "quantity")
 	private Integer quantity;
+
 	@Column(name = "price")
 	private double price;
 

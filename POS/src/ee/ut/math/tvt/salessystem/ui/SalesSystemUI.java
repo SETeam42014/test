@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
@@ -30,6 +31,8 @@ public class SalesSystemUI extends JFrame {
 
 	private final SalesDomainController domainController;
 
+	private final HibernateDataService service;
+
 	// Warehouse model
 	private SalesSystemModel model;
 
@@ -45,9 +48,11 @@ public class SalesSystemUI extends JFrame {
 	 * @param domainController
 	 *            Sales domain controller.
 	 */
-	public SalesSystemUI(SalesDomainController domainController) {
+	public SalesSystemUI(SalesDomainController domainController,
+			HibernateDataService service) {
 		this.domainController = domainController;
-		this.model = new SalesSystemModel(domainController);
+		this.model = new SalesSystemModel(domainController, service);
+		this.service = service;
 
 		// Create singleton instances of the tab classes
 		historyTab = new HistoryTab(model);

@@ -24,10 +24,10 @@ public class HibernateDataService {
 
 	private Session session = HibernateUtil.currentSession();
 
-	// public List<SoldItem> getSoldItems() {
-	// List<SoldItem> result = session.createQuery("from Solditem").list();
-	// return result;
-	// }
+	public List<SoldItem> getSoldItems() {
+		List<SoldItem> result = session.createQuery("from Solditem").list();
+		return result;
+	}
 
 	// // WTH??? - need to research it
 	// // public List<Lecturer> getLecturers() {
@@ -35,15 +35,20 @@ public class HibernateDataService {
 	// // .list(), Lecturer.class);
 	// // }
 	//
-	// public List<StockItem> getStockItems() {
-	// List<StockItem> result = session.createQuery("from Stockitem").list();
-	// return result;
-	// }
-	//
-	// public List<HistoryItem> getHistoryItems() {
-	// List<HistoryItem> result = session.createQuery("from Historyitem")
-	// .list();
-	// return result;
-	// }
+	public List<StockItem> getStockItems() {
+		// CASE SENSITIVE
+		List<StockItem> result = session.createQuery("from StockItem").list();
+
+		// This is the same thing
+		// return Collections.checkedList(session.createQuery("from StockItem")
+		// .list(), StockItem.class);
+		return result;
+	}
+
+	public List<HistoryItem> getHistoryItems() {
+		List<HistoryItem> result = session.createQuery("from Historyitem")
+				.list();
+		return result;
+	}
 
 }

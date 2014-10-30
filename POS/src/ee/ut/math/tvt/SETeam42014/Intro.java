@@ -41,7 +41,8 @@ public class Intro {
 			// introUI.setVisible(true);
 			// introUI.setAlwaysOnTop(true);
 
-			final SalesSystemUI ui = new SalesSystemUI(domainController);
+			final SalesSystemUI ui = new SalesSystemUI(domainController,
+					service);
 			ui.setVisible(true);
 
 			// introUI.setAlwaysOnTop(false);
