@@ -11,7 +11,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
  * Sales domain controller is responsible for the domain specific business
  * processes.
  */
-public interface SalesDomainController {
+public abstract class SalesDomainController {
 
 	/**
 	 * Load the current state of the warehouse.
@@ -19,7 +19,7 @@ public interface SalesDomainController {
 	 * @return List of ${link
 	 *         ee.ut.math.tvt.salessystem.domain.data.StockItem}s.
 	 */
-	public List<StockItem> loadWarehouseState();
+	public abstract List<StockItem> loadWarehouseState();
 
 	/**
 	 * Dummy loadWareHouse
@@ -27,7 +27,7 @@ public interface SalesDomainController {
 	 * @param wareHouse
 	 * @return wareHouse
 	 */
-	public List<StockItem> loadWarehouseState(List<StockItem> wareHouse);
+	public abstract List<StockItem> loadWarehouseState(List<StockItem> wareHouse);
 
 	// business processes
 	/**
@@ -35,16 +35,17 @@ public interface SalesDomainController {
 	 * 
 	 * @throws VerificationFailedException
 	 */
-	public void startNewPurchase() throws VerificationFailedException;
+	public abstract void startNewPurchase() throws VerificationFailedException;
 
 	/**
 	 * Rollback business transaction - purchase of goods.
 	 * 
 	 * @throws VerificationFailedException
 	 */
-	public void cancelCurrentPurchase() throws VerificationFailedException;
+	public abstract void cancelCurrentPurchase()
+			throws VerificationFailedException;
 
-	public void submitCurrentPurchase(List<SoldItem> goods)
+	public abstract void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException;
 
 	/**
@@ -59,12 +60,12 @@ public interface SalesDomainController {
 	 * @throws OutOfStockException
 	 *             Not enough in stock
 	 */
-	public void submitCurrentPurchase(List<SoldItem> goods,
+	public abstract void submitCurrentPurchase(List<SoldItem> goods,
 			List<StockItem> stock) throws VerificationFailedException,
 			OutOfStockException;
 
 	/**
 	 * End session to the database
 	 */
-	public void endSession();
+	public abstract void endSession();
 }

@@ -13,7 +13,7 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 /**
  * Implementation of the sales domain controller.
  */
-public class SalesDomainControllerImpl implements SalesDomainController {
+public class SalesDomainControllerImpl extends SalesDomainController {
 
 	public void submitCurrentPurchase(List<SoldItem> goods)
 			throws VerificationFailedException {
@@ -88,7 +88,6 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	}
 
 	public void endSession() {
-		// NOT WORKING YET
-		// HibernateUtil.closeSession();
+		HibernateUtil.closeSession();
 	}
 }
