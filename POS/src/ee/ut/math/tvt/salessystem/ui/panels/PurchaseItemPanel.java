@@ -254,12 +254,17 @@ public class PurchaseItemPanel extends JPanel {
 	 *            JComboBox actionEvent
 	 */
 	public void itemSelectHandler(ActionEvent e) {
-		@SuppressWarnings("unchecked")
-		StockItem item = model.getWarehouseTableModel().getItemByName(
-				(String) ((JComboBox<String>) e.getSource()).getSelectedItem());
-		this.barCodeField.setText(item.getId().toString());
-		this.nameField.setText(item.getName().toString());
-		this.priceField.setText(Double.toString(item.getPrice()));
+		try {
+			StockItem item = model.getWarehouseTableModel().getItemByName(
+					(String) ((JComboBox<String>) e.getSource())
+							.getSelectedItem());
+			this.barCodeField.setText(item.getId().toString());
+			this.nameField.setText(item.getName().toString());
+			this.priceField.setText(Double.toString(item.getPrice()));
+		} catch (NoSuchElementException e1) {
+			// start DB sync / update??
+			// log.error(e1);
+		}
 	}
 
 	/**
@@ -277,6 +282,7 @@ public class PurchaseItemPanel extends JPanel {
 	 * Reset dialog fields.
 	 */
 	public void reset() {
+		this.populateProducts();
 		barCodeField.setText("");
 		quantityField.setText("1");
 		nameField.setText("");
