@@ -38,18 +38,28 @@ public abstract class SalesDomainController {
 	public abstract void startNewPurchase() throws VerificationFailedException;
 
 	/**
-	 * Rollback business transaction - purchase of goods.
+	 * Roll back business transaction - purchase of goods.
 	 * 
 	 * @throws VerificationFailedException
 	 */
 	public abstract void cancelCurrentPurchase()
 			throws VerificationFailedException;
 
+	/**
+	 * Commit business transaction - purchase of goods.
+	 * 
+	 * @param goods
+	 *            Goods that the buyer has chosen to buy.
+	 * @throws VerificationFailedException
+	 *             Not eligible to buy
+	 * @throws OutOfStockException
+	 *             Not enough in stock
+	 */
 	public abstract void submitCurrentPurchase(List<SoldItem> goods)
-			throws VerificationFailedException;
+			throws VerificationFailedException, OutOfStockException;
 
 	/**
-	 * Commit business transaction - purchsae of goods.
+	 * Commit business transaction - purchase of goods.
 	 * 
 	 * @param goods
 	 *            Goods that the buyer has chosen to buy.

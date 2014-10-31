@@ -98,12 +98,11 @@ public class SalesSystemUI extends JFrame {
 		getContentPane().add(tabbedPane);
 	}
 
+	/**
+	 * Terminate DB session and exit program
+	 */
 	private void exitProgram() {
-		try {
-			this.domainController.endSession();
-		} catch (Exception e) {
-			log.error(e);
-		}
+		this.domainController.endSession();
 		System.exit(0);
 	}
 }

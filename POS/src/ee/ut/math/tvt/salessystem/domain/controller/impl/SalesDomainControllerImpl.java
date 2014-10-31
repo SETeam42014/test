@@ -8,6 +8,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 /**
@@ -15,13 +16,52 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
  */
 public class SalesDomainControllerImpl extends SalesDomainController {
 
+	private SalesSystemModel model;
+
+	/**
+	 * Default constructor
+	 * 
+	 * @param model
+	 *            SalesSystemModel
+	 */
+	public SalesDomainControllerImpl(SalesSystemModel model) {
+		this.model = model;
+	}
+
+	public SalesDomainControllerImpl() {
+		this.model = null;
+	}
+
+	/**
+	 * Get SalesSystem model
+	 * 
+	 * @return SalesSystemModel
+	 */
+	public SalesSystemModel getModel() {
+		return model;
+	}
+
+	/**
+	 * Set SalesSystem model
+	 * 
+	 * @param model
+	 *            SalesSystemModel
+	 */
+	public void setModel(SalesSystemModel model) {
+		this.model = model;
+	}
+
 	public void submitCurrentPurchase(List<SoldItem> goods)
-			throws VerificationFailedException {
+			throws VerificationFailedException, OutOfStockException {
+		this.getModel().getWarehouseTableModel().sellItem(goods);
 	}
 
 	public void submitCurrentPurchase(List<SoldItem> goods,
 			List<StockItem> stock) throws VerificationFailedException,
 			OutOfStockException {
+		/**
+		 * Sell goods
+		 */
 		for (SoldItem soldItem : goods) {
 			for (StockItem stockItem : stock) {
 				if (soldItem.getId() == stockItem.getId()) {
@@ -29,12 +69,19 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 				}
 			}
 		}
+		/**
+		 * Check if not out of stock
+		 */
 		for (StockItem stockItem : stock) {
+			/**
+			 * If out of stock, cancel purchase and throw error
+			 */
 			if (stockItem.getQuantity() < 0) {
 				this.cancelCurrentPurchase(goods, stock);
 				throw new OutOfStockException();
 			}
 		}
+
 		// after submit, synchronize warehouse data
 	}
 
@@ -42,14 +89,25 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		// XXX - Cancel current purchase
 	}
 
+	/**
+	 * Cancel current purchase
+	 * 
+	 * @param goods
+	 *            Purchased goods
+	 * @param stock
+	 *            Warehouse stock
+	 * @throws VerificationFailedException
+	 */
 	public void cancelCurrentPurchase(List<SoldItem> goods,
-			List<StockItem> stock) throws VerificationFailedException {
+			List<StockItem> stock) {
 		// XXX - Cancel current purchase
 		// Reload data from database?
 		for (SoldItem soldItem : goods) {
 			for (StockItem stockItem : stock) {
 				if (soldItem.getId() == stockItem.getId()) {
-					stockItem.reduceQuantity(-soldItem.getQuantity());
+					// stockItem.reduceQuantity(-soldItem.getQuantity());
+					stockItem.setQuantity(stockItem.getQuantity()
+							+ soldItem.getQuantity());
 				}
 			}
 		}
@@ -64,6 +122,9 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		return wareHouse;
 	}
 
+	/**
+	 * Load Warehouse items
+	 */
 	public List<StockItem> loadWarehouseState() {
 		// XXX mock implementation
 		// NEXT Practical will implement loadWarehouseState with database to
@@ -87,6 +148,9 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		return dataset;
 	}
 
+	/**
+	 * End DB session
+	 */
 	public void endSession() {
 		HibernateUtil.closeSession();
 	}

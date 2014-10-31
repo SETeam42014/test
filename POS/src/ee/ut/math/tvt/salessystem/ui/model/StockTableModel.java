@@ -72,13 +72,13 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 * @throws Exception
 	 *             Not enough items in stock
 	 */
-	private void reduceItemQuantity(final StockItem stockItem, int quantity)
-			throws Exception {
-		if (stockItem.getQuantity() < quantity) {
-			throw new Exception();
-		}
-		this.getItemById(stockItem.getId()).reduceQuantity(quantity);
-	}
+	// private void reduceItemQuantity(final StockItem stockItem, int quantity)
+	// throws OutOfStockException {
+	// if (stockItem.getQuantity() < quantity) {
+	// throw new OutOfStockException();
+	// }
+	// this.getItemById(stockItem.getId()).reduceQuantity(quantity);
+	// }
 
 	/**
 	 * Sell items from WareHouse
@@ -88,15 +88,15 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 * @throws Exception
 	 *             Not enough items in stock
 	 */
-	private void reduceItemQuantity(final SoldItem soldItem)
-			throws OutOfStockException {
-		if (this.getItemById(soldItem.getId()).getQuantity() < soldItem
-				.getQuantity()) {
-			throw new OutOfStockException();
-		}
-		this.getItemById(soldItem.getId()).reduceQuantity(
-				soldItem.getQuantity());
-	}
+	// private void reduceItemQuantity(final SoldItem soldItem)
+	// throws OutOfStockException {
+	// if (this.getItemById(soldItem.getId()).getQuantity() < soldItem
+	// .getQuantity()) {
+	// throw new OutOfStockException();
+	// }
+	// this.getItemById(soldItem.getId()).reduceQuantity(
+	// soldItem.getQuantity());
+	// }
 
 	/**
 	 * Sell items from WareHouse
@@ -107,9 +107,15 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 */
 	public void sellItem(final List<SoldItem> soldItem)
 			throws OutOfStockException {
+		boolean isOutOfStock = false;
 		for (SoldItem item : soldItem) {
-			this.reduceItemQuantity(item);
+			// this.reduceItemQuantity(item);
+			this.getItemById(item.getId()).reduceQuantity(item.getQuantity());
+			if (this.getItemById(item.getId()).getQuantity() < 0)
+				isOutOfStock = true;
 		}
+		if (isOutOfStock)
+			throw new OutOfStockException();
 	}
 
 	@Override

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Johani
@@ -31,14 +32,18 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	 * Variables
 	 */
 	private static long nextId;
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
 	@Column(name = "date")
 	private Date date;
-	@Column(name = "sum")
+
+	@Transient
 	private double sum;
+
 	@ManyToMany
 	@JoinTable(name = "HISTORYITEM_TO_SOLDITEM", joinColumns = @JoinColumn(name = "HISTORYITEM_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "STOCKITEM_ID", referencedColumnName = "ID"))
 	private List<SoldItem> items;
@@ -55,7 +60,7 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 		return date;
 	}
 
-	public void setEndDate(Date date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

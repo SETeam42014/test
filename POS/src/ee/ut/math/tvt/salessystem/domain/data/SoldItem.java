@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 //import javax.persistence.Transient;
 
@@ -29,22 +30,16 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@MapsId
 	private StockItem stockItem;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "price")
+	private double price;
 
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	@Column(name = "price")
-	private double price;
-
 	public SoldItem(StockItem stockItem, int quantity) {
-		this.stockItem = stockItem;
 		this.id = stockItem.getId();
-		this.name = stockItem.getName();
-		this.price = stockItem.getPrice();
+		this.stockItem = stockItem;
 		this.quantity = quantity;
-
 	}
 
 	public Long getId() {
@@ -56,15 +51,11 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	}
 
 	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		return this.stockItem.getName();
 	}
 
 	public double getPrice() {
-		return price;
+		return this.price;
 	}
 
 	public void setPrice(double price) {
@@ -85,7 +76,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	 * @return quantity * price
 	 */
 	public double getSum() {
-		return price * ((double) quantity);
+		return this.price * ((double) quantity);
 	}
 
 	public StockItem getStockItem() {
