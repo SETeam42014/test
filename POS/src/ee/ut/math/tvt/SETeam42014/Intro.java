@@ -6,6 +6,8 @@ package ee.ut.math.tvt.SETeam42014;
  * KUS TULEKS ALUSTADA DB SERVICE?
  * 
  * MIS VAJADUS ON DOMAINCONTROLLERIL?
+ * 
+ * Kuidas tuleb ajalugu (ning myydud esemeid) hoida?
  */
 import java.util.Date;
 
@@ -37,29 +39,21 @@ public class Intro {
 			cui.run();
 		} else {
 
-			// IntroUI introUI = new IntroUI();
-			// introUI.setVisible(true);
-			// introUI.setAlwaysOnTop(true);
-
 			final SalesSystemUI ui = new SalesSystemUI(domainController,
 					service);
 			ui.setVisible(true);
 
-			// introUI.setAlwaysOnTop(false);
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			// introUI.setVisible(false);
 		}
-		// Datetime used for timestamp
-		Date date = new Date();
-		// Program running log entry
-		log.info("POS started, class name: " + log.getName() + ". Timestamp: "
-				+ date.toString());
-		// testing purposes
-		// System.out.println("TERE");
-
+		// // Datetime used for timestamp
+		// Date date = new Date();
+		// // Program running log entry
+		// log.info("POS started, class name: " + log.getName() +
+		// ". Timestamp: "
+		// + date.toString());
 	}
 }

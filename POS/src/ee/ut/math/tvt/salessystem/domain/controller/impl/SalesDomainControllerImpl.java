@@ -5,7 +5,9 @@ import java.util.List;
 
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
@@ -18,6 +20,8 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 
 	private SalesSystemModel model;
 
+	private HibernateDataService dbService;
+
 	/**
 	 * Default constructor
 	 * 
@@ -26,10 +30,12 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	 */
 	public SalesDomainControllerImpl(SalesSystemModel model) {
 		this.model = model;
+		this.dbService = new HibernateDataService();
 	}
 
 	public SalesDomainControllerImpl() {
-		this.model = null;
+		this.dbService = new HibernateDataService();
+		this.model = new SalesSystemModel(this, dbService);
 	}
 
 	/**
@@ -122,10 +128,15 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		return wareHouse;
 	}
 
+	public List<HistoryItem> loadHistoryState() {
+		return this.dbService.getHistoryItems();
+	}
+
 	/**
 	 * Load Warehouse items
 	 */
 	public List<StockItem> loadWarehouseState() {
+		// return this.dbService.getStockItems();
 		// XXX mock implementation
 		// NEXT Practical will implement loadWarehouseState with database to
 		// here???

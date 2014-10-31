@@ -18,6 +18,11 @@ public class HibernateDataService {
 
 	private Session session = HibernateUtil.currentSession();
 
+	/**
+	 * Not needed ?
+	 * 
+	 * @return List of SoldItems
+	 */
 	public List<SoldItem> getSoldItems() {
 		List<SoldItem> result = session.createQuery("from Solditem").list();
 		return result;
@@ -33,6 +38,11 @@ public class HibernateDataService {
 		return result;
 	}
 
+	/**
+	 * NEEDS TO BE IMPLEMENTED
+	 * 
+	 * @return List of HistoryItems
+	 */
 	public List<HistoryItem> getHistoryItems() {
 		List<HistoryItem> result = session.createQuery("from Historyitem")
 				.list();
