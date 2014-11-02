@@ -9,8 +9,6 @@ package ee.ut.math.tvt.SETeam42014;
  * 
  * Kuidas tuleb ajalugu (ning myydud esemeid) hoida?
  */
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;

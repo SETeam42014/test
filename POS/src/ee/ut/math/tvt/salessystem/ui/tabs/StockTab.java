@@ -2,9 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 
 import java.awt.Color;
 import java.awt.Component;

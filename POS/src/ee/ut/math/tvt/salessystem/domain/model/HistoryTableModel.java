@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ee.ut.math.tvt.salessystem.ui.model;
+package ee.ut.math.tvt.salessystem.domain.model;
 
 import java.util.NoSuchElementException;
 

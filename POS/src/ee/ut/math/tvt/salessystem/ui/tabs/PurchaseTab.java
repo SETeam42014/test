@@ -7,7 +7,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 import ee.ut.math.tvt.SETeam42014.Intro;
 
@@ -79,7 +79,7 @@ public class PurchaseTab {
 		panel.add(getPurchaseMenuPane(), getConstraintsForPurchaseMenu());
 
 		// Add the main purchase-panel
-		purchasePane = new PurchaseItemPanel(model);
+		purchasePane = new PurchaseItemPanel(this.model);
 		panel.add(purchasePane, getConstraintsForPurchasePanel());
 
 		return panel;

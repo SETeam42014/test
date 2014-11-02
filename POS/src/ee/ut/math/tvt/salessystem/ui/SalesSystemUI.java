@@ -2,7 +2,7 @@ package ee.ut.math.tvt.salessystem.ui;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
 import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
