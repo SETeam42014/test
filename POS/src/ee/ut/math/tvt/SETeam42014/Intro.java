@@ -8,6 +8,10 @@ package ee.ut.math.tvt.SETeam42014;
  * MIS VAJADUS ON DOMAINCONTROLLERIL?
  * 
  * Kuidas tuleb ajalugu (ning myydud esemeid) hoida?
+ * 
+ * Kuidas andmeid mudeli ja DB vahel sünkroonida?
+ * 
+ * Mida teeb startNewPurchase domain controlleris?
  */
 import org.apache.log4j.Logger;
 
