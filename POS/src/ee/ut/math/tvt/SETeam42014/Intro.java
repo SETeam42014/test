@@ -9,7 +9,7 @@ package ee.ut.math.tvt.SETeam42014;
  * 
  * Kuidas tuleb ajalugu (ning myydud esemeid) hoida?
  * 
- * Kuidas andmeid mudeli ja DB vahel sünkroonida?
+ * Kuidas andmeid mudeli ja DB vahel synkroonida?
  * 
  * Mida teeb startNewPurchase domain controlleris?
  */
