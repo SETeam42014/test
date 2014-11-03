@@ -183,19 +183,19 @@ public class PurchaseTab {
 	 */
 	protected void cancelPurchaseButtonClicked() {
 		log.info("Sale cancelled");
-		try {
-			domainController.cancelCurrentPurchase();
-			endSale();
-			/*
-			 * DEPRICATED for (SoldItem i : model.getCurrentPurchaseTableModel()
-			 * .getTableRows()) { StockItem stockItem = i.getStockItem();
-			 * stockItem .setQuantity(stockItem.getQuantity() +
-			 * i.getQuantity()); } ;
-			 */
-			model.getCurrentPurchaseTableModel().clear();
-		} catch (VerificationFailedException e1) {
-			log.error(e1.getMessage());
-		}
+		// try {
+		model.getCurrentPurchaseTableModel().clear();
+		// domainController.cancelCurrentPurchase();
+		endSale();
+		/*
+		 * DEPRICATED for (SoldItem i : model.getCurrentPurchaseTableModel()
+		 * .getTableRows()) { StockItem stockItem = i.getStockItem(); stockItem
+		 * .setQuantity(stockItem.getQuantity() + i.getQuantity()); } ;
+		 */
+		// model.getCurrentPurchaseTableModel().clear();
+		// } catch (VerificationFailedException e1) {
+		// log.error(e1.getMessage());
+		// }
 	}
 
 	/**
@@ -283,8 +283,7 @@ public class PurchaseTab {
 										.getCurrentPurchaseTableModel()
 										.getTableRows()));
 				domainController.submitCurrentPurchase(model
-						.getCurrentPurchaseTableModel().getTableRows(), model
-						.getWarehouseTableModel().getTableRows());
+						.getCurrentPurchaseTableModel().getTableRows());
 				endSale();
 				model.getCurrentPurchaseTableModel().clear();
 			}

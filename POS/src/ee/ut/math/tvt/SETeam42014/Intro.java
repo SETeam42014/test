@@ -25,10 +25,10 @@ public class Intro {
 	public static void main(String[] args) {
 
 		// start DB service
-		final HibernateDataService service = new HibernateDataService();
+		// final HibernateDataService service = new HibernateDataService();
 
 		// domainController
-		final SalesDomainController domainController = new SalesDomainControllerImpl();
+		final SalesDomainControllerImpl domainController = new SalesDomainControllerImpl();
 
 		if (args.length == 1 && args[0].equals(MODE)) {
 			log.debug("Mode: " + MODE);
@@ -37,8 +37,7 @@ public class Intro {
 			cui.run();
 		} else {
 
-			final SalesSystemUI ui = new SalesSystemUI(domainController,
-					service);
+			final SalesSystemUI ui = new SalesSystemUI(domainController);
 			ui.setVisible(true);
 
 			try {

@@ -6,28 +6,14 @@ import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 
 /**
  * Sales domain controller is responsible for the domain specific business
  * processes.
  */
 public abstract class SalesDomainController {
-
-	/**
-	 * Load the current state of the warehouse.
-	 * 
-	 * @return List of ${link
-	 *         ee.ut.math.tvt.salessystem.domain.data.StockItem}s.
-	 */
-	public abstract List<StockItem> loadWarehouseState();
-
-	/**
-	 * Dummy loadWareHouse
-	 * 
-	 * @param wareHouse
-	 * @return wareHouse
-	 */
-	public abstract List<StockItem> loadWarehouseState(List<StockItem> wareHouse);
 
 	// business processes
 	/**
@@ -70,9 +56,15 @@ public abstract class SalesDomainController {
 	 * @throws OutOfStockException
 	 *             Not enough in stock
 	 */
-	public abstract void submitCurrentPurchase(List<SoldItem> goods,
-			List<StockItem> stock) throws VerificationFailedException,
-			OutOfStockException;
+	// public abstract void submitCurrentPurchase(List<SoldItem> goods,
+	// List<StockItem> stock) throws VerificationFailedException,
+	// OutOfStockException;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public abstract List<StockItem> loadWarehouseState();
 
 	/**
 	 * End session to the database

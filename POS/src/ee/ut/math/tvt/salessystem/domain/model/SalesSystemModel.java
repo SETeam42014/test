@@ -2,7 +2,7 @@ package ee.ut.math.tvt.salessystem.domain.model;
 
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 
 /**
@@ -22,7 +22,7 @@ public class SalesSystemModel {
 	private PurchaseInfoTableModel currentPurchaseTableModel;
 
 	// Domain controller
-	private final SalesDomainController domainController;
+	private final SalesDomainControllerImpl domainController;
 
 	// DB service
 	private final HibernateDataService service;
@@ -33,7 +33,7 @@ public class SalesSystemModel {
 	 * @param domainController
 	 *            Sales domain controller.
 	 */
-	public SalesSystemModel(SalesDomainController domainController,
+	public SalesSystemModel(SalesDomainControllerImpl domainController,
 			HibernateDataService service) {
 		this.domainController = domainController;
 		this.service = service;
@@ -51,9 +51,11 @@ public class SalesSystemModel {
 	}
 
 	public void updateStock() {
-		this.warehouseTableModel.populateWithData(this.service.getStockItems());
-		// this.warehouseTableModel.populateWithData(this.domainController
-		// .loadWarehouseState());
+		// this.domainController.loadWarehouseState();
+		// this.warehouseTableModel.populateWithData(this.service.getStockItems());
+		// this.warehouseTableModel.populateWithData(data);
+		this.warehouseTableModel.populateWithData(this.domainController
+				.loadWarehouseState());
 		log.debug("Stock update triggered");
 	}
 
