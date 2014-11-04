@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -40,6 +41,7 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField nameField;
 	private JTextField priceField;
 	private JComboBox products;
+	private JTextField empty;
 
 	private JButton addItemButton;
 
@@ -85,9 +87,11 @@ public class PurchaseItemPanel extends JPanel {
 	private JComponent drawDialogPane() {
 
 		// Create the panel
+		JPanel panel2 = new JPanel();
+		panel2.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(6, 2));
-		panel.setBorder(BorderFactory.createTitledBorder("Product"));
+		panel2.setBorder(BorderFactory.createTitledBorder("Product"));
 		// Initialize the textfields
 
 		// Add products to JComboBox
@@ -161,9 +165,10 @@ public class PurchaseItemPanel extends JPanel {
 				fillDialogFields();
 			}
 		});
-		panel.add(addItemButton);
+		panel2.add(panel, BorderLayout.CENTER);
+		panel2.add(addItemButton, BorderLayout.PAGE_END);
 
-		return panel;
+		return panel2;
 	}
 
 	// Fill dialog with data from the "database".
