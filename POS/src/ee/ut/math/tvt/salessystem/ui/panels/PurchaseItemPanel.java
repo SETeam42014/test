@@ -41,12 +41,8 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField quantityField;
 	private JTextField nameField;
 	private JTextField priceField;
-<<<<<<< HEAD
 	private JComboBox<String> products;
-=======
-	private JComboBox products;
 	private JTextField empty;
->>>>>>> branch 'development' of https://github.com/SETeam42014/test.git
 
 	private JButton addItemButton;
 
