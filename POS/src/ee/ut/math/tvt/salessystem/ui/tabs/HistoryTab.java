@@ -141,9 +141,10 @@ public class HistoryTab {
 			// Create new panel for purchase history view
 			JPanel paymentPanel = new JPanel();
 			paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
-
-			JOptionPane.showConfirmDialog(null, paymentPanel, "Order details",
-					JOptionPane.OK_CANCEL_OPTION);
+			Object[] options = { "OK" };
+			JOptionPane.showOptionDialog(null, paymentPanel, "Order details",
+					JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+					options, options[0]);
 		}
 	}
 
