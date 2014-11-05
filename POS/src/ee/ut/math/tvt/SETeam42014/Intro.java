@@ -3,15 +3,7 @@ package ee.ut.math.tvt.SETeam42014;
 /**
  * KySIMUSED:
  * 
- * KUS TULEKS ALUSTADA DB SERVICE?
  * 
- * MIS VAJADUS ON DOMAINCONTROLLERIL?
- * 
- * Kuidas tuleb ajalugu (ning myydud esemeid) hoida?
- * 
- * Kuidas andmeid mudeli ja DB vahel synkroonida?
- * 
- * Mida teeb startNewPurchase domain controlleris?
  */
 import org.apache.log4j.Logger;
 
@@ -25,9 +17,6 @@ public class Intro {
 	private static final String MODE = "console";
 
 	public static void main(String[] args) {
-
-		// start DB service
-		// final HibernateDataService service = new HibernateDataService();
 
 		// domainController
 		final SalesDomainControllerImpl domainController = new SalesDomainControllerImpl();
@@ -48,11 +37,5 @@ public class Intro {
 				e.printStackTrace();
 			}
 		}
-		// // Datetime used for timestamp
-		// Date date = new Date();
-		// // Program running log entry
-		// log.info("POS started, class name: " + log.getName() +
-		// ". Timestamp: "
-		// + date.toString());
 	}
 }

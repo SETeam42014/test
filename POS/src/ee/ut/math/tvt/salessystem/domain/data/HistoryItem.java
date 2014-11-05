@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -44,8 +45,22 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	@Transient
 	private double sum;
 
-	@ManyToMany
-	@JoinTable(name = "HISTORYITEM_TO_SOLDITEM", joinColumns = @JoinColumn(name = "HISTORYITEM_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "STOCKITEM_ID", referencedColumnName = "ID"))
+	/**
+	 * Constructor for HistoryItem
+	 * 
+	 * @param Sum
+	 *            of the transaction
+	 * @param Sold
+	 *            goods
+	 */
+	public HistoryItem(double sum, List<SoldItem> purchase) {
+		this.id = nextId++;
+		this.date = new Date();
+		this.sum = sum;
+		this.items = purchase;
+	}
+
+	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
 	public void setItems(List<SoldItem> purchase) {
@@ -72,21 +87,6 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 		this.sum = sum;
 	}
 
-	/**
-	 * Constructor for HistoryItem
-	 * 
-	 * @param Sum
-	 *            of the transaction
-	 * @param Sold
-	 *            goods
-	 */
-	public HistoryItem(double sum, List<SoldItem> purchase) {
-		this.id = nextId++;
-		this.date = new Date();
-		this.sum = sum;
-		this.items = purchase;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,7 +94,6 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	 */
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
 		return this.id;
 	}
 
@@ -105,8 +104,7 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id + " " + this.date;
 	}
 
 }

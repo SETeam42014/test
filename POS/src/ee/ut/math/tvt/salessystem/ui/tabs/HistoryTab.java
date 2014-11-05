@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,6 +24,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
+import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
@@ -36,11 +39,10 @@ import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
  */
 public class HistoryTab {
 
-	// TODO - implement!
-	private SalesSystemModel model;
+	private SalesDomainControllerImpl domainController;
 
-	public HistoryTab(SalesSystemModel model) {
-		this.model = model;
+	public HistoryTab(SalesDomainControllerImpl domainController) {
+		this.domainController = domainController;
 	}
 
 	public Component draw() {
@@ -106,11 +108,9 @@ public class HistoryTab {
 		panel.setLayout(new GridBagLayout());
 
 		// Create table
-		JTable table = new JTable(model.getHistoryTableModel());
+		JTable table = new JTable(this.domainController.loadHistoryTableState());
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
-
-		// historyItemClicked(table);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 
@@ -135,15 +135,25 @@ public class HistoryTab {
 
 	private void historyTabelMouseListener(MouseEvent e) {
 		if (e.getClickCount() == 1) {
-			// get item clicked
-			HistoryItem item = model.getHistoryTableModel().getItemById(
-					(long) ((JTable) e.getSource()).getSelectedRow());
-			// Create new panel for purchase history view
-			JPanel paymentPanel = new JPanel();
-			paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
+			try {
+				// get item clicked
+				HistoryItem item = this.domainController
+						.getModel()
+						.getHistoryTableModel()
+						.getItemById(
+								(long) ((JTable) e.getSource())
+										.getSelectedRow());
+				// Create new panel for purchase history view
+				JPanel paymentPanel = new JPanel();
+				paymentPanel.add(drawBasketPane(item),
+						getBasketPaneConstraints());
 
-			JOptionPane.showConfirmDialog(null, paymentPanel, "Order details",
-					JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showConfirmDialog(null, paymentPanel,
+						"Order details", JOptionPane.OK_CANCEL_OPTION);
+			} catch (NoSuchElementException exception) {
+				JOptionPane.showMessageDialog(null, exception, "Alert",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 

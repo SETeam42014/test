@@ -1,5 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
@@ -30,15 +31,17 @@ public class StockTab {
 	private JButton addItem;
 	private static final Logger log = Logger.getLogger(StockTab.class);
 	private SalesSystemModel model;
+	private SalesDomainControllerImpl domainController;
 
 	/**
 	 * Default constructor for StockTab
 	 * 
-	 * @param model
+	 * @param domainController
 	 *            SalesSystemModel
 	 */
-	public StockTab(SalesSystemModel model) {
-		this.model = model;
+	public StockTab(SalesDomainControllerImpl domainController) {
+		this.domainController = domainController;
+		this.model = domainController.getModel();
 	}
 
 	/**
@@ -48,8 +51,6 @@ public class StockTab {
 	 */
 	public Component draw() {
 		JPanel panel = new JPanel();
-
-		this.model.updateStock();
 
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -124,7 +125,8 @@ public class StockTab {
 
 	private void createInputWindow() {
 		double sum = 0;
-		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
+		for (SoldItem i : model.getCurrentPurchaseInfoTableModel()
+				.getTableRows()) {
 			sum += i.getSum();
 		}
 		;
@@ -164,8 +166,8 @@ public class StockTab {
 			double price = Double.parseDouble(priceField.getText());
 			String description = descrField.getText();
 			int quantity = Integer.parseInt(quantityField.getText());
-			model.getWarehouseTableModel().addItem(
-					new StockItem(id, name, description, price, quantity));
+			this.domainController.addStockItem(new StockItem(id, name,
+					description, price, quantity));
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
 					"Id, Price and quantity should be entered as numbers.");
@@ -174,14 +176,15 @@ public class StockTab {
 	}
 
 	/**
-	 * table of the wareshouse stock
+	 * table of the warehouse stock
 	 * 
 	 * @return Panel
 	 */
 	private Component drawStockMainPane() {
 		JPanel panel = new JPanel();
 
-		JTable table = new JTable(model.getWarehouseTableModel());
+		this.domainController.updateStockTableModel();
+		JTable table = new JTable(this.domainController.getStockTableModel());
 
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
@@ -200,5 +203,4 @@ public class StockTab {
 		panel.setBorder(BorderFactory.createTitledBorder("Warehouse status"));
 		return panel;
 	}
-
 }

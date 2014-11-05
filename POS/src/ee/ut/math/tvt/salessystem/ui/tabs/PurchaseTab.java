@@ -6,6 +6,7 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -39,7 +40,7 @@ public class PurchaseTab {
 
 	private static final Logger log = Logger.getLogger(PurchaseTab.class);
 
-	private final SalesDomainController domainController;
+	private final SalesDomainControllerImpl domainController;
 
 	private JButton newPurchase;
 
@@ -59,9 +60,10 @@ public class PurchaseTab {
 	 * @param model
 	 *            SalesSystemModel
 	 */
-	public PurchaseTab(SalesDomainController controller, SalesSystemModel model) {
-		this.domainController = controller;
-		this.model = model;
+	public PurchaseTab(SalesDomainControllerImpl domainController,
+			SalesSystemModel model) {
+		this.domainController = domainController;
+		this.model = this.domainController.getModel();
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class PurchaseTab {
 		panel.add(getPurchaseMenuPane(), getConstraintsForPurchaseMenu());
 
 		// Add the main purchase-panel
-		purchasePane = new PurchaseItemPanel(this.model);
+		purchasePane = new PurchaseItemPanel(this.domainController);
 		panel.add(purchasePane, getConstraintsForPurchasePanel());
 
 		return panel;
@@ -170,7 +172,7 @@ public class PurchaseTab {
 	protected void newPurchaseButtonClicked() {
 		log.info("New sale process started");
 		try {
-			domainController.startNewPurchase();
+			model.startNewPurchase();
 			startNewSale();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
@@ -184,18 +186,9 @@ public class PurchaseTab {
 	protected void cancelPurchaseButtonClicked() {
 		log.info("Sale cancelled");
 		// try {
-		model.getCurrentPurchaseTableModel().clear();
+		model.getCurrentPurchaseInfoTableModel().clear();
 		// domainController.cancelCurrentPurchase();
 		endSale();
-		/*
-		 * DEPRICATED for (SoldItem i : model.getCurrentPurchaseTableModel()
-		 * .getTableRows()) { StockItem stockItem = i.getStockItem(); stockItem
-		 * .setQuantity(stockItem.getQuantity() + i.getQuantity()); } ;
-		 */
-		// model.getCurrentPurchaseTableModel().clear();
-		// } catch (VerificationFailedException e1) {
-		// log.error(e1.getMessage());
-		// }
 	}
 
 	/**
@@ -205,10 +198,10 @@ public class PurchaseTab {
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");
 		try {
-			if (model.getCurrentPurchaseTableModel().getRowCount() == 0)
+			if (model.getCurrentPurchaseInfoTableModel().getRowCount() == 0)
 				throw new NullPointerException();
 			log.debug("Contents of the current basket:\n"
-					+ model.getCurrentPurchaseTableModel());
+					+ model.getCurrentPurchaseInfoTableModel());
 
 			while (createPaymentWindow() == 1)
 				;
@@ -250,7 +243,7 @@ public class PurchaseTab {
 			OutOfStockException {
 		try {
 			double sum = 0;
-			for (SoldItem item : model.getCurrentPurchaseTableModel()
+			for (SoldItem item : model.getCurrentPurchaseInfoTableModel()
 					.getTableRows()) {
 				sum += item.getSum();
 			}
@@ -277,15 +270,14 @@ public class PurchaseTab {
 				submitPayment(paymentPanel,
 						round(Double.parseDouble(paymentPane.getText()), 2)
 								- sum);
-				this.model.getHistoryTableModel()
-						.addItem(
-								new HistoryItem(sum, model
-										.getCurrentPurchaseTableModel()
-										.getTableRows()));
+				this.model.getHistoryTableModel().addItem(
+						new HistoryItem(sum, model
+								.getCurrentPurchaseInfoTableModel()
+								.getTableRows()));
 				domainController.submitCurrentPurchase(model
-						.getCurrentPurchaseTableModel().getTableRows());
+						.getCurrentPurchaseInfoTableModel().getTableRows());
 				endSale();
-				model.getCurrentPurchaseTableModel().clear();
+				model.getCurrentPurchaseInfoTableModel().clear();
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e);

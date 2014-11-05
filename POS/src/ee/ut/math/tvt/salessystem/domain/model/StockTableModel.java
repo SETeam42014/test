@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.domain.model;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
@@ -61,60 +60,17 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	}
 
 	/**
-	 * Reduce stock item Quantity
-	 * 
-	 * DEPRECATED
-	 * 
-	 * @param stockItem
-	 *            Item
-	 * @param quantity
-	 *            Quantity
-	 * @throws Exception
-	 *             Not enough items in stock
-	 */
-	// private void reduceItemQuantity(final StockItem stockItem, int quantity)
-	// throws OutOfStockException {
-	// if (stockItem.getQuantity() < quantity) {
-	// throw new OutOfStockException();
-	// }
-	// this.getItemById(stockItem.getId()).reduceQuantity(quantity);
-	// }
-
-	/**
-	 * Sell items from WareHouse
-	 * 
-	 * @param stockItem
-	 *            Item to sell
-	 * @throws Exception
-	 *             Not enough items in stock
-	 */
-	// private void reduceItemQuantity(final SoldItem soldItem)
-	// throws OutOfStockException {
-	// if (this.getItemById(soldItem.getId()).getQuantity() < soldItem
-	// .getQuantity()) {
-	// throw new OutOfStockException();
-	// }
-	// this.getItemById(soldItem.getId()).reduceQuantity(
-	// soldItem.getQuantity());
-	// }
-
-	/**
 	 * Sell items from WareHouse
 	 * 
 	 * @param stockItem
 	 *            List of items to be sold
 	 * @throws Exception
 	 */
-	public void sellItem(final List<SoldItem> soldItem)
-			throws OutOfStockException {
-		boolean isOutOfStock = false;
-		for (SoldItem item : soldItem) {
-			// this.reduceItemQuantity(item);
-			this.getItemById(item.getId()).reduceQuantity(item.getQuantity());
-			if (this.getItemById(item.getId()).getQuantity() < 0)
-				isOutOfStock = true;
-		}
-		if (isOutOfStock)
+	public void sellItem(final SoldItem soldItem) throws OutOfStockException {
+		StockItem stockItem = this.getItemById(soldItem.getId());
+		stockItem.reduceQuantity(soldItem.getQuantity());
+		fireTableDataChanged();
+		if (stockItem.getQuantity() < 0)
 			throw new OutOfStockException();
 	}
 

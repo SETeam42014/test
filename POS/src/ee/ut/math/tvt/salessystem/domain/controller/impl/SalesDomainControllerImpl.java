@@ -1,18 +1,17 @@
 package ee.ut.math.tvt.salessystem.domain.controller.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 
-import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.model.HistoryTableModel;
+import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
+import ee.ut.math.tvt.salessystem.domain.model.StockTableModel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 
 /**
@@ -22,8 +21,6 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 
 	private SalesSystemModel model;
 
-	private HibernateDataService dbService;
-
 	/**
 	 * Default constructor
 	 * 
@@ -32,12 +29,10 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	 */
 	public SalesDomainControllerImpl(SalesSystemModel model) {
 		this.model = model;
-		this.dbService = new HibernateDataService();
 	}
 
 	public SalesDomainControllerImpl() {
-		this.model = new SalesSystemModel(this, dbService);
-		this.dbService = new HibernateDataService();
+		this.model = new SalesSystemModel();
 	}
 
 	public SalesSystemModel getModel() {
@@ -45,129 +40,51 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	}
 
 	public void submitCurrentPurchase(List<SoldItem> goods)
-			throws VerificationFailedException, OutOfStockException {
-		try {
-			this.model.getWarehouseTableModel().sellItem(goods);
-		} catch (OutOfStockException e) {
-			this.cancelCurrentPurchase();
-		}
+			throws VerificationFailedException {
+		this.model.submitCurrentPurchase();
 	}
-
-	// public void submitCurrentPurchase(List<SoldItem> goods,
-	// List<StockItem> stock) throws VerificationFailedException,
-	// OutOfStockException {
-	// /**
-	// * Sell goods
-	// */
-	// for (SoldItem soldItem : goods) {
-	// for (StockItem stockItem : stock) {
-	// if (soldItem.getId() == stockItem.getId()) {
-	// stockItem.reduceQuantity(soldItem.getQuantity());
-	// }
-	// }
-	// }
-	// /**
-	// * Check if not out of stock
-	// */
-	// for (StockItem stockItem : stock) {
-	// /**
-	// * If out of stock, cancel purchase and throw error
-	// */
-	// if (stockItem.getQuantity() < 0) {
-	// this.cancelCurrentPurchase(goods, stock);
-	// throw new OutOfStockException();
-	// }
-	// }
-	//
-	// // after submit, synchronize warehouse data
-	// }
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
-		// XXX - Cancel current purchase
-		List<SoldItem> goods = this.model.getCurrentPurchaseTableModel()
-				.getTableRows();
-		for (SoldItem item : goods) {
-			StockItem warehouseItem = this.model.getWarehouseTableModel()
-					.getItemById(item.getId());
-			warehouseItem.setQuantity(warehouseItem.getQuantity()
-					+ item.getQuantity());
-		}
+		this.model.cancelCurrentPurchase();
 	}
-
-	// /**
-	// * Cancel current purchase
-	// *
-	// * @param goods
-	// * Purchased goods
-	// * @param stock
-	// * Warehouse stock
-	// * @throws VerificationFailedException
-	// */
-	// public void cancelCurrentPurchase(List<SoldItem> goods,
-	// List<StockItem> stock) {
-	// // XXX - Cancel current purchase
-	// // Reload data from database?
-	// for (SoldItem soldItem : goods) {
-	// for (StockItem stockItem : stock) {
-	// if (soldItem.getId() == stockItem.getId()) {
-	// // stockItem.reduceQuantity(-soldItem.getQuantity());
-	// stockItem.setQuantity(stockItem.getQuantity()
-	// + soldItem.getQuantity());
-	// }
-	// }
-	// }
-	// // NEEDS new logic
-	// }
 
 	public void startNewPurchase() throws VerificationFailedException {
-		// XXX - Start new purchase
-
-	}
-
-	public void loadHistoryState() {
-		this.model.getHistoryTableModel().populateWithData(
-				this.dbService.getHistoryItems());
-	}
-
-	public void synchronizeWithDatabase() {
-		// TODO
+		this.model.startNewPurchase();
 	}
 
 	/**
 	 * Load Warehouse items
+	 * 
+	 * USED ONLY FOR CONSOLEUI
 	 */
 	public List<StockItem> loadWarehouseState() {
-		List<StockItem> warehouse = this.dbService.getStockItems();
-		this.model.getWarehouseTableModel().populateWithData(warehouse);
-		return warehouse;
-		// return this.dbService.getStockItems();
-		// XXX mock implementation
-		// NEXT Practical will implement loadWarehouseState with database to
-		// here???
-		// BFORE:
-		// List<StockItem> dataset = new ArrayList<StockItem>();
-		//
-		// StockItem chips = new StockItem(1l, "Lays chips", "Potato chips",
-		// 11.0,
-		// 0);
-		// StockItem chupaChups = new StockItem(2l, "Chupa-chups", "Sweets",
-		// 8.0,
-		// 8);
-		// StockItem frankfurters = new StockItem(3l, "Frankfurters",
-		// "Beer sauseges", 15.0, 12);
-		// StockItem beer = new StockItem(4l, "Free Beer", "Student's delight",
-		// 0.0, 100);
-		//
-		// dataset.add(chips);
-		// dataset.add(chupaChups);
-		// dataset.add(frankfurters);
-		// dataset.add(beer);
-		//
-		// return dataset;
+		this.model.updateStock();
+		return this.model.getStockTableModel().getTableRows();
+	}
+
+	public StockTableModel getStockTableModel() {
+		return this.model.getStockTableModel();
+	}
+
+	public void updateStockTableModel() {
+		this.model.updateStock();
+	}
+
+	public HistoryTableModel loadHistoryTableState() {
+		// this.model.updateHistory();
+		return this.model.getHistoryTableModel();
+	}
+
+	public PurchaseInfoTableModel getCurrentPurchaseInfoTableModel() {
+		return this.model.getCurrentPurchaseInfoTableModel();
+	}
+
+	public void addStockItem(StockItem stockItem) {
+		this.model.getStockTableModel().addItem(stockItem);
 	}
 
 	/**
-	 * End DB session
+	 * End database session
 	 */
 	public void endSession() {
 		try {

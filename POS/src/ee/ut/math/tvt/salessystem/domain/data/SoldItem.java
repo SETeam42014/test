@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -24,11 +25,12 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	// @OneToOne(mappedBy = "id")
 
-	@OneToOne
-	@MapsId
-	private StockItem stockItem;
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "price")
 	private double price;
@@ -36,9 +38,14 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	@Column(name = "quantity")
 	private Integer quantity;
 
+	// @ManyToOne
+	@Transient
+	private HistoryItem historyItem;
+
 	public SoldItem(StockItem stockItem, int quantity) {
 		this.id = stockItem.getId();
-		this.stockItem = stockItem;
+		this.name = stockItem.getName();
+		this.description = stockItem.getDescription();
 		this.price = stockItem.getPrice();
 		this.quantity = quantity;
 	}
@@ -52,7 +59,7 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	}
 
 	public String getName() {
-		return this.stockItem.getName();
+		return this.name;
 	}
 
 	public double getPrice() {
@@ -78,14 +85,6 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	 */
 	public double getSum() {
 		return this.price * ((double) quantity);
-	}
-
-	public StockItem getStockItem() {
-		return stockItem;
-	}
-
-	public void setStockItem(StockItem stockItem) {
-		this.stockItem = stockItem;
 	}
 
 }

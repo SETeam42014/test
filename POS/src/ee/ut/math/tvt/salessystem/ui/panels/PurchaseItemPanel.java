@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
@@ -39,12 +40,13 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField quantityField;
 	private JTextField nameField;
 	private JTextField priceField;
-	private JComboBox products;
+	private JComboBox<String> products;
 
 	private JButton addItemButton;
 
 	// Warehouse model
 	private SalesSystemModel model;
+	private SalesDomainControllerImpl domainController;
 
 	/**
 	 * Constructs new purchase item panel.
@@ -52,8 +54,10 @@ public class PurchaseItemPanel extends JPanel {
 	 * @param model
 	 *            composite model of the warehouse and the shopping cart.
 	 */
-	public PurchaseItemPanel(SalesSystemModel model) {
-		this.model = model;
+	public PurchaseItemPanel(SalesDomainControllerImpl domainController) {
+
+		this.domainController = domainController;
+		this.model = this.domainController.getModel();
 
 		setLayout(new GridBagLayout());
 
@@ -73,7 +77,8 @@ public class PurchaseItemPanel extends JPanel {
 
 		// Create the table, put it inside a scollPane,
 		// and add the scrollPane to the basketPanel.
-		JTable table = new JTable(model.getCurrentPurchaseTableModel());
+		JTable table = new JTable(
+				domainController.getCurrentPurchaseInfoTableModel());
 		JScrollPane scrollPane = new JScrollPane(table);
 
 		basketPane.add(scrollPane, getBacketScrollPaneConstraints());
@@ -185,11 +190,11 @@ public class PurchaseItemPanel extends JPanel {
 	public void populateProducts() {
 		if (this.products.getItemCount() > 0)
 			this.products.removeAllItems();
-		// log.debug("Listis on: " + this.products.getItemCount());
-		for (StockItem product : model.getWarehouseTableModel().getTableRows()) {
+		for (StockItem product : domainController.getStockTableModel()
+				.getTableRows()) {
 			this.products.addItem(product.getName());
 		}
-		getStockItemByBarcode();
+		// getStockItemByBarcode();
 
 	}
 
@@ -198,7 +203,7 @@ public class PurchaseItemPanel extends JPanel {
 	private StockItem getStockItemByBarcode() {
 		try {
 			int code = Integer.parseInt(barCodeField.getText());
-			return model.getWarehouseTableModel().getItemById(code);
+			return model.getStockTableModel().getItemById(code);
 		} catch (NumberFormatException ex) {
 			return null;
 		} catch (NoSuchElementException ex) {
@@ -212,26 +217,27 @@ public class PurchaseItemPanel extends JPanel {
 	 */
 	public void addItemEventHandler() {
 		// add chosen item to the shopping cart.
-		StockItem stockItem = getStockItemByBarcode();
+		StockItem stockItem = new StockItem();
 		int quantity;
 		try {
+			stockItem = this.domainController.getStockTableModel().getItemById(
+					Integer.parseInt(barCodeField.getText()));
 			quantity = Integer.parseInt(quantityField.getText());
 			if (stockItem.getQuantity() == 0
 					|| quantity > stockItem.getQuantity()) {
 				throw new OutOfStockException();
 			}
 			try {
-				if (model.getCurrentPurchaseTableModel()
+				if (model.getCurrentPurchaseInfoTableModel()
 						.getItemById(stockItem.getId()).getQuantity() >= stockItem
 						.getQuantity()) {
 					throw new OutOfStockException();
 				}
 			} catch (NoSuchElementException e) {
-				// If the element isn't in the purchase list yet
+				// if the element is not in the purchase list, then do nothing
 			}
-			// quantity = Integer.parseInt(quantityField.getText());
-			// add item to sold item list
-			this.model.getCurrentPurchaseTableModel().addItem(
+
+			this.model.getCurrentPurchaseInfoTableModel().addItem(
 					new SoldItem(stockItem, quantity));
 		} catch (NumberFormatException ex) {
 			quantity = 1;
@@ -242,7 +248,7 @@ public class PurchaseItemPanel extends JPanel {
 		} catch (NullPointerException e) {
 			log.info("No product selected");
 		} catch (NoSuchElementException e) {
-			log.info("There is no element like: " + e);
+			log.info("There is no element like: " + stockItem.getId());
 		}
 
 	}
@@ -255,7 +261,7 @@ public class PurchaseItemPanel extends JPanel {
 	 */
 	public void itemSelectHandler(ActionEvent e) {
 		try {
-			StockItem item = model.getWarehouseTableModel().getItemByName(
+			StockItem item = model.getStockTableModel().getItemByName(
 					(String) ((JComboBox<String>) e.getSource())
 							.getSelectedItem());
 			this.barCodeField.setText(item.getId().toString());

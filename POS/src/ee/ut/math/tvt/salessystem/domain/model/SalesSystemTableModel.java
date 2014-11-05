@@ -57,7 +57,7 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
 	 * @param id
 	 * @return <T> item
 	 */
-	public T getItemById(final long id) {
+	public T getItemById(final long id) throws NoSuchElementException {
 		for (final T item : rows) {
 			if (item.getId() == id)
 				return item;
