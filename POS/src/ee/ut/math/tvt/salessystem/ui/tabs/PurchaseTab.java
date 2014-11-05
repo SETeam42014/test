@@ -57,11 +57,8 @@ public class PurchaseTab {
 	 * 
 	 * @param controller
 	 *            SalesDomainController
-	 * @param model
-	 *            SalesSystemModel
 	 */
-	public PurchaseTab(SalesDomainControllerImpl domainController,
-			SalesSystemModel model) {
+	public PurchaseTab(SalesDomainControllerImpl domainController) {
 		this.domainController = domainController;
 		this.model = this.domainController.getModel();
 	}
@@ -172,7 +169,7 @@ public class PurchaseTab {
 	protected void newPurchaseButtonClicked() {
 		log.info("New sale process started");
 		try {
-			model.startNewPurchase();
+			domainController.startNewPurchase();
 			startNewSale();
 		} catch (VerificationFailedException e1) {
 			log.error(e1.getMessage());
@@ -185,9 +182,12 @@ public class PurchaseTab {
 	 */
 	protected void cancelPurchaseButtonClicked() {
 		log.info("Sale cancelled");
-		// try {
-		model.getCurrentPurchaseInfoTableModel().clear();
-		// domainController.cancelCurrentPurchase();
+		try {
+			domainController.cancelCurrentPurchase();
+		} catch (VerificationFailedException e) {
+			// TODO Auto-generated catch block
+			log.error(e);
+		}
 		endSale();
 	}
 

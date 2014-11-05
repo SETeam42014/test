@@ -42,10 +42,19 @@ public class SalesSystemModel {
 		this.currentPurchaseInfoTableModel = new PurchaseInfoTableModel();
 	}
 
-	public void updateStock() {
+	public void updateStockTable() {
 		log.debug("Stock update triggered");
 		this.stockTableModel.populateWithData(this.databaseService
 				.getStockItems());
+	}
+
+	/**
+	 * 
+	 */
+	public void updateHistoryTable() {
+		log.debug("History update triggered");
+		this.historyTableModel.populateWithData(this.databaseService
+				.getHistoryItems());
 	}
 
 	public StockTableModel getStockTableModel() {
@@ -61,50 +70,44 @@ public class SalesSystemModel {
 	}
 
 	public void startNewPurchase() throws VerificationFailedException {
-		// sync DB
+		this.updateStockTable();
+		this.databaseService.startSale();
 	}
 
 	public void submitCurrentPurchase() throws VerificationFailedException {
-		try {
-			for (SoldItem soldItem : this.currentPurchaseInfoTableModel
-					.getTableRows()) {
-				this.stockTableModel.sellItem(soldItem);
-			}
 
-		} catch (OutOfStockException e) {
-			log.debug("Not enough items in stock.");
-			this.cancelCurrentPurchase();
-			return;
-		}
+		/**
+		 * Update remote database
+		 */
+		this.databaseService.endSale();
 		log.debug("Purchase submitted");
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
+		log.debug("Purchase canceled.");
 		List<SoldItem> goods = this.currentPurchaseInfoTableModel
 				.getTableRows();
-		log.debug("Purchase canceled.");
 		for (SoldItem item : goods) {
-			try {
-				this.stockTableModel.addItem(this.stockTableModel
-						.getItemById(item.getId()));
-			} catch (NoSuchElementException exception) {
-				// if there is no product in the stock, that is sold (it
-				// shouldn't happen, but just in case.
-				// item is added to stock
-				this.stockTableModel.addItem(new StockItem(item.getId(), item
-						.getName(), "Automatically added by system", item
-						.getPrice(), item.getQuantity()));
-			}
+			this.stockTableModel.addItem(new StockItem(item.getId(), item
+					.getName(), "Automatically added by system", item
+					.getPrice(), item.getQuantity()));
 		}
+		this.currentPurchaseInfoTableModel.clear();
+		this.databaseService.endSale();
 	}
 
 	/**
-	 * 
+	 * @param soldItem
+	 * @throws OutOfStockException
 	 */
-	public void updateHistory() {
-		log.debug("History update triggered");
-		this.historyTableModel.populateWithData(this.databaseService
-				.getHistoryItems());
+	public void sellItem(SoldItem soldItem) throws OutOfStockException {
+		try {
+			this.stockTableModel.sellItem(soldItem);
+			this.currentPurchaseInfoTableModel.addItem(soldItem);
+		} catch (OutOfStockException exception) {
+			throw exception;
+		}
+
 	}
 
 }
