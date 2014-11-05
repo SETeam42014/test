@@ -108,7 +108,8 @@ public class HistoryTab {
 		panel.setLayout(new GridBagLayout());
 
 		// Create table
-		JTable table = new JTable(this.domainController.loadHistoryTableState());
+		JTable table = new JTable(this.domainController.getModel()
+				.getHistoryTableModel());
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
 

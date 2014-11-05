@@ -58,7 +58,7 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	 * USED ONLY FOR CONSOLEUI
 	 */
 	public List<StockItem> loadWarehouseState() {
-		this.model.updateStock();
+		this.model.updateStockTable();
 		return this.model.getStockTableModel().getTableRows();
 	}
 
@@ -67,7 +67,7 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	}
 
 	public void updateStockTableModel() {
-		this.model.updateStock();
+		this.model.updateStockTable();
 	}
 
 	public HistoryTableModel loadHistoryTableState() {
