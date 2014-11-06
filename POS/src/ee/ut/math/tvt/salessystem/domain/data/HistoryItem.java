@@ -12,9 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -32,6 +29,7 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	/**
 	 * Variables
 	 */
+	@Transient
 	private static long nextId;
 
 	@Id
@@ -60,6 +58,10 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 		this.items = purchase;
 	}
 
+	public HistoryItem() {
+		this.sum = this.calculateSum();
+	}
+
 	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
@@ -85,6 +87,14 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 
 	public void setSum(double sum) {
 		this.sum = sum;
+	}
+
+	private double calculateSum() {
+		double sum = 0.0;
+		for (SoldItem item : this.items) {
+			sum += item.getPrice();
+		}
+		return sum;
 	}
 
 	/*
