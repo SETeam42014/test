@@ -1,13 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui;
 
-import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
-import ee.ut.math.tvt.salessystem.domain.service.HibernateDataService;
-import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -19,6 +11,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
 
 /**
  * Graphical user interface of the sales system.

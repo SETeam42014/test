@@ -64,6 +64,10 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		this.model.updateStockTable();
 	}
 
+	public void updateHistoryTableModel() {
+		this.model.updateHistoryTable();
+	}
+
 	public PurchaseInfoTableModel getCurrentPurchaseInfoTableModel() {
 		return this.model.getCurrentPurchaseInfoTableModel();
 	}

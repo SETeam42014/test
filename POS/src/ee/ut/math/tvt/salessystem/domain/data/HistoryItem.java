@@ -3,7 +3,6 @@
  */
 package ee.ut.math.tvt.salessystem.domain.data;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,16 +21,11 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "HISTORYITEM")
-public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class HistoryItem implements Cloneable, DisplayableItem {
 
 	/**
 	 * Variables
 	 */
-	@Transient
-	private static long nextId;
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,14 +46,14 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 	 *            goods
 	 */
 	public HistoryItem(double sum, List<SoldItem> purchase) {
-		this.id = nextId++;
+		// this.id = nextId++;
 		this.date = new Date();
 		this.sum = sum;
 		this.items = purchase;
 	}
 
 	public HistoryItem() {
-		this.sum = this.calculateSum();
+		// this.sum = this.calculateSum();
 	}
 
 	@OneToMany(mappedBy = "historyItem")
@@ -89,13 +83,13 @@ public class HistoryItem implements Cloneable, DisplayableItem, Serializable {
 		this.sum = sum;
 	}
 
-	private double calculateSum() {
-		double sum = 0.0;
-		for (SoldItem item : this.items) {
-			sum += item.getPrice();
-		}
-		return sum;
-	}
+	// private double calculateSum() {
+	// double sum = 0.0;
+	// for (SoldItem item : this.items) {
+	// sum += item.getPrice();
+	// }
+	// return sum;
+	// }
 
 	/*
 	 * (non-Javadoc)

@@ -80,6 +80,8 @@ public class SalesSystemModel {
 		this.currentPurchaseInfoTableModel.clear();
 		// end the sale
 		this.databaseService.endSale();
+		// this.historyTableModel.populateWithData(this.databaseService
+		// .getHistoryItems());
 		log.debug("Purchase submitted");
 	}
 

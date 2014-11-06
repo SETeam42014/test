@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ee.ut.math.tvt.salessystem.domain.service;
 
 //import java.util.Collections;
@@ -18,7 +15,8 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 public class HibernateDataService {
 
 	private Session session = HibernateUtil.currentSession();
-	private Transaction tx;
+
+	// private Transaction tx;
 
 	public List<SoldItem> getSoldItems() {
 		List<SoldItem> result = session.createQuery("from SoldItem").list();
@@ -38,10 +36,11 @@ public class HibernateDataService {
 	}
 
 	public void startSale() {
-		this.tx = session.beginTransaction();
+		// this.tx = session.beginTransaction();
+		session.beginTransaction();
 	}
 
 	public void endSale() {
-		tx.commit();
+		session.flush();
 	}
 }
