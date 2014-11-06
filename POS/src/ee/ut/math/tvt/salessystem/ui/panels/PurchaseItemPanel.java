@@ -43,7 +43,6 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField nameField;
 	private JTextField priceField;
 	private JComboBox<String> products;
-	private JTextField empty;
 
 	private JButton addItemButton;
 
@@ -93,11 +92,14 @@ public class PurchaseItemPanel extends JPanel {
 	private JComponent drawDialogPane() {
 
 		// Create the panel
-		JPanel panel2 = new JPanel();
-		panel2.setLayout(new BorderLayout());
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(6, 2));
-		panel2.setBorder(BorderFactory.createTitledBorder("Product"));
+		JPanel unifiedPanel = new JPanel();
+		unifiedPanel.setLayout(new BorderLayout());
+		JPanel namePanel = new JPanel();
+		namePanel.setLayout(new GridLayout(6, 1));
+		JPanel itemPanel = new JPanel();
+		itemPanel.setLayout(new GridLayout(6, 1));
+
+		unifiedPanel.setBorder(BorderFactory.createTitledBorder("Product"));
 		// Initialize the textfields
 
 		products = new JComboBox<String>();
@@ -110,23 +112,23 @@ public class PurchaseItemPanel extends JPanel {
 		nameField.setEditable(false);
 		priceField.setEditable(false);
 
-		panel.add(new JLabel("Products:"));
-		panel.add(products);
+		namePanel.add(new JLabel("Products:"));
+		itemPanel.add(products);
 
-		panel.add(new JLabel("Bar code:"));
-		panel.add(barCodeField);
+		namePanel.add(new JLabel("Bar code:"));
+		itemPanel.add(barCodeField);
 
 		// - amount
-		panel.add(new JLabel("Amount:"));
-		panel.add(quantityField);
+		namePanel.add(new JLabel("Amount:"));
+		itemPanel.add(quantityField);
 
 		// - name
-		panel.add(new JLabel("Name:"));
-		panel.add(nameField);
+		namePanel.add(new JLabel("Name:"));
+		itemPanel.add(nameField);
 
 		// - price
-		panel.add(new JLabel("Price:"));
-		panel.add(priceField);
+		namePanel.add(new JLabel("Price:"));
+		itemPanel.add(priceField);
 
 		// - populate products combobox with product names
 		populateProducts();
@@ -156,10 +158,11 @@ public class PurchaseItemPanel extends JPanel {
 				fillDialogFields();
 			}
 		});
-		panel2.add(panel, BorderLayout.CENTER);
-		panel2.add(addItemButton, BorderLayout.PAGE_END);
+		unifiedPanel.add(itemPanel, BorderLayout.EAST);
+		unifiedPanel.add(namePanel, BorderLayout.WEST);
+		unifiedPanel.add(addItemButton, BorderLayout.PAGE_END);
 
-		return panel2;
+		return unifiedPanel;
 	}
 
 	// Fill dialog with data from the "database".
