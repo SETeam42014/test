@@ -37,7 +37,6 @@ public class HistoryTab {
 	public Component draw() {
 		JPanel panel = new JPanel();
 
-		this.domainController.updateHistoryTableModel();
 		// Layout
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		panel.setLayout(new GridBagLayout());
@@ -94,6 +93,8 @@ public class HistoryTab {
 
 	private Component drawHistoryMainPane() {
 		JPanel panel = new JPanel();
+
+		this.domainController.updateHistoryTableModel();
 
 		panel.setLayout(new GridBagLayout());
 

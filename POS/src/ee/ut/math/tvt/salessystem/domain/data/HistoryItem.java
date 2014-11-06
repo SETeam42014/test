@@ -37,26 +37,12 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
-	@Transient
-	private double sum;
-
-	/**
-	 * Constructor for HistoryItem
-	 * 
-	 * @param Sum
-	 *            of the transaction
-	 * @param Sold
-	 *            goods
-	 */
 	public HistoryItem(double sum, List<SoldItem> purchase) {
-		// this.id = nextId++;
 		this.date = new Date();
-		this.sum = sum;
 		this.items = purchase;
 	}
 
 	public HistoryItem() {
-		// this.sum = this.calculateSum();
 	}
 
 	public void setItems(List<SoldItem> purchase) {
@@ -76,36 +62,18 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	}
 
 	public double getSum() {
-		return sum;
+		double sum = 0.0;
+		for (SoldItem item : this.items) {
+			sum += item.getPrice();
+		}
+		return (double) Math.round(sum * 100) / 100;
 	}
 
-	public void setSum(double sum) {
-		this.sum = sum;
-	}
-
-	// private double calculateSum() {
-	// double sum = 0.0;
-	// for (SoldItem item : this.items) {
-	// sum += item.getPrice();
-	// }
-	// return sum;
-	// }
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ee.ut.math.tvt.salessystem.domain.data.DisplayableItem#getId()
-	 */
 	@Override
 	public Long getId() {
 		return this.id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see ee.ut.math.tvt.salessystem.domain.data.DisplayableItem#getName()
-	 */
 	@Override
 	public String getName() {
 		return this.id + " " + this.date;
