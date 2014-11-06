@@ -92,6 +92,10 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		return this.model.getHistoryTableModel().getItemById(l);
 	}
 
+	public StockItem getStockItemById(long id) {
+		return this.model.getStockTableModel().getItemById(id);
+	}
+
 	/**
 	 * End database session
 	 */

@@ -105,6 +105,7 @@ public class PurchaseTab {
 	 */
 	private JButton createNewPurchaseButton() {
 		JButton b = new JButton("New purchase");
+		b.setBackground(Color.BLUE);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newPurchaseButtonClicked();
@@ -121,6 +122,7 @@ public class PurchaseTab {
 	 */
 	private JButton createConfirmButton() {
 		JButton b = new JButton("Confirm");
+		b.setBackground(Color.GREEN);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitPurchaseButtonClicked();
@@ -138,6 +140,7 @@ public class PurchaseTab {
 	 */
 	private JButton createCancelButton() {
 		JButton b = new JButton("Cancel");
+		b.setBackground(Color.RED);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancelPurchaseButtonClicked();
@@ -254,9 +257,10 @@ public class PurchaseTab {
 				paymentPane.setText(sumField.getText());
 				paymentPanel.remove(sumField);
 				paymentPanel.add(paymentPane);
-				submitPayment(paymentPanel,
-						round(Double.parseDouble(paymentPane.getText()), 2)
-								- sum);
+				submitPayment(
+						paymentPanel,
+						round(Double.parseDouble(paymentPane.getText()) - sum,
+								2));
 				// Submit purchase
 				domainController.submitCurrentPurchase();
 				endSale();

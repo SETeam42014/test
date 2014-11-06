@@ -145,13 +145,10 @@ public class HistoryTab {
 				JPanel paymentPanel = new JPanel();
 				paymentPanel.add(drawBasketPane(item),
 						getBasketPaneConstraints());
-
-				JOptionPane.showConfirmDialog(null, paymentPanel,
-						"Order details", JOptionPane.OK_CANCEL_OPTION);
-			} catch (NoSuchElementException exception) {
-				JOptionPane.showMessageDialog(null, exception, "Alert",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			Object[] options = { "OK" };
+			JOptionPane.showOptionDialog(null, paymentPanel, "Order details",
+					JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+					options, options[0]);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -27,7 +28,6 @@ import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerIm
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
-import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -42,12 +42,9 @@ public class PurchaseItemPanel extends JPanel {
 	private JTextField nameField;
 	private JTextField priceField;
 	private JComboBox<String> products;
-	private JTextField empty;
 
 	private JButton addItemButton;
 
-	// Warehouse model
-	private SalesSystemModel model;
 	private SalesDomainControllerImpl domainController;
 
 	/**
@@ -59,7 +56,6 @@ public class PurchaseItemPanel extends JPanel {
 	public PurchaseItemPanel(SalesDomainControllerImpl domainController) {
 
 		this.domainController = domainController;
-		this.model = this.domainController.getModel();
 
 		setLayout(new GridBagLayout());
 
@@ -91,11 +87,13 @@ public class PurchaseItemPanel extends JPanel {
 	// purchase dialog
 	private JComponent drawDialogPane() {
 
-		// Create the panel
+		// Create the panel with two columns and add to cart button
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(6, 2));
+		JPanel panel3 = new JPanel();
+		panel.setLayout(new GridLayout(6, 1));
+		panel3.setLayout(new GridLayout(6, 1));
 		panel2.setBorder(BorderFactory.createTitledBorder("Product"));
 		// Initialize the textfields
 
@@ -110,28 +108,29 @@ public class PurchaseItemPanel extends JPanel {
 		priceField.setEditable(false);
 
 		panel.add(new JLabel("Products:"));
-		panel.add(products);
+		panel3.add(products);
 
 		panel.add(new JLabel("Bar code:"));
-		panel.add(barCodeField);
+		panel3.add(barCodeField);
 
 		// - amount
 		panel.add(new JLabel("Amount:"));
-		panel.add(quantityField);
+		panel3.add(quantityField);
 
 		// - name
 		panel.add(new JLabel("Name:"));
-		panel.add(nameField);
+		panel3.add(nameField);
 
 		// - price
 		panel.add(new JLabel("Price:"));
-		panel.add(priceField);
+		panel3.add(priceField);
 
 		// - populate products combobox with product names
 		populateProducts();
 
 		// Create and add the button
 		addItemButton = new JButton("Add to cart");
+		addItemButton.setBackground(Color.GREEN);
 		addItemButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addItemEventHandler();
@@ -155,7 +154,8 @@ public class PurchaseItemPanel extends JPanel {
 				fillDialogFields();
 			}
 		});
-		panel2.add(panel, BorderLayout.CENTER);
+		panel2.add(panel3, BorderLayout.EAST);
+		panel2.add(panel, BorderLayout.WEST);
 		panel2.add(addItemButton, BorderLayout.PAGE_END);
 
 		return panel2;
@@ -240,9 +240,12 @@ public class PurchaseItemPanel extends JPanel {
 	 */
 	public void itemSelectHandler(ActionEvent e) {
 		try {
-			StockItem item = model.getStockTableModel().getItemByName(
-					(String) ((JComboBox<String>) e.getSource())
-							.getSelectedItem());
+			StockItem item = this.domainController
+					.getModel()
+					.getStockTableModel()
+					.getItemByName(
+							(String) ((JComboBox<String>) e.getSource())
+									.getSelectedItem());
 			this.barCodeField.setText(item.getId().toString());
 			this.nameField.setText(item.getName().toString());
 			this.priceField.setText(Double.toString(item.getPrice()));
