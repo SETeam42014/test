@@ -7,31 +7,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
-import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -145,10 +134,13 @@ public class HistoryTab {
 				JPanel paymentPanel = new JPanel();
 				paymentPanel.add(drawBasketPane(item),
 						getBasketPaneConstraints());
-			Object[] options = { "OK" };
-			JOptionPane.showOptionDialog(null, paymentPanel, "Order details",
-					JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
-					options, options[0]);
+				Object[] options = { "OK" };
+				JOptionPane.showOptionDialog(null, paymentPanel,
+						"Order details", JOptionPane.PLAIN_MESSAGE,
+						JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			} catch (NoSuchElementException exception) {
+				// ERROR
+			}
 		}
 	}
 
