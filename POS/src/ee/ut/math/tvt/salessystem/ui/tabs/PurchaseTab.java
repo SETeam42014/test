@@ -234,11 +234,6 @@ public class PurchaseTab {
 			OutOfStockException {
 		try {
 			double sum = 0;
-			// for (SoldItem item :
-			// this.model.getCurrentPurchaseInfoTableModel()
-			// .getTableRows()) {
-			// sum += item.getSum();
-			// }
 			sum = round(this.domainController
 					.getCurrentPurchaseInfoTableModel().getSum(), 2);
 			JTextField sumField = new JTextField(5);

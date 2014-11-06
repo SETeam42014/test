@@ -42,13 +42,13 @@ public class SalesSystemModel {
 		this.currentPurchaseInfoTableModel = new PurchaseInfoTableModel();
 	}
 
-	public void updateStockTable() {
+	public void updateStockTableFromDatabase() {
 		log.debug("Stock update triggered");
 		this.stockTableModel.populateWithData(this.databaseService
 				.getStockItems());
 	}
 
-	public void getHistoryTableFromDatabase() {
+	public void updateHistoryTableFromDatabase() {
 		log.debug("History update triggered");
 		this.historyTableModel.populateWithData(this.databaseService
 				.getHistoryItems());
@@ -67,7 +67,7 @@ public class SalesSystemModel {
 	}
 
 	public void startNewPurchase() throws VerificationFailedException {
-		this.updateStockTable();
+		this.updateStockTableFromDatabase();
 		this.databaseService.startTransaction();
 	}
 
@@ -112,9 +112,6 @@ public class SalesSystemModel {
 
 	public void addItemToHistoryTable(HistoryItem historyItem) {
 		this.databaseService.addHistoryItem(historyItem);
-		// for (SoldItem soldItem : historyItem.getItems()) {
-		// this.databaseService.addSoldItem(soldItem);
-		// }
 		this.historyTableModel.populateWithData(this.databaseService
 				.getHistoryItems());
 	}

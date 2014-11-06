@@ -1,6 +1,5 @@
 package ee.ut.math.tvt.salessystem.domain.service;
 
-//import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -36,13 +35,13 @@ public class HibernateDataService {
 		session.beginTransaction();
 	}
 
-	public void addStockItem(StockItem stockItem) {
-		session.beginTransaction();
-		session.save(stockItem);
+	public void endTransaction() {
 		session.getTransaction().commit();
 	}
 
-	public void endTransaction() {
+	public void addStockItem(StockItem stockItem) {
+		session.beginTransaction();
+		session.save(stockItem);
 		session.getTransaction().commit();
 	}
 

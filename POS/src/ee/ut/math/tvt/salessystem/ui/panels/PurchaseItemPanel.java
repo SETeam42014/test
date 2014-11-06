@@ -1,7 +1,6 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -28,7 +27,6 @@ import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerIm
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
-import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -46,8 +44,6 @@ public class PurchaseItemPanel extends JPanel {
 
 	private JButton addItemButton;
 
-	// Warehouse model
-	private SalesSystemModel model;
 	private SalesDomainControllerImpl domainController;
 
 	/**
@@ -59,7 +55,6 @@ public class PurchaseItemPanel extends JPanel {
 	public PurchaseItemPanel(SalesDomainControllerImpl domainController) {
 
 		this.domainController = domainController;
-		this.model = this.domainController.getModel();
 
 		setLayout(new GridBagLayout());
 
@@ -165,13 +160,16 @@ public class PurchaseItemPanel extends JPanel {
 		return unifiedPanel;
 	}
 
+	private StockItem getItemByBarcode() throws NumberFormatException,
+			NoSuchElementException {
+		return this.domainController.getStockTableModel().getItemById(
+				Long.parseLong(this.barCodeField.getText()));
+	}
+
 	// Fill dialog with data from the "database".
 	private void fillDialogFields() {
 		try {
-			// StockItem stockItem = this.domainController.getModel()
-			// .getStockTableModel()
-			// .getItemById(Integer.parseInt(barCodeField.getText()));
-			StockItem stockItem = new StockItem();
+			StockItem stockItem = this.getItemByBarcode();
 			nameField.setText(stockItem.getName());
 			priceField.setText(String.valueOf(stockItem.getPrice()));
 			products.setSelectedItem(stockItem.getName());
@@ -189,37 +187,19 @@ public class PurchaseItemPanel extends JPanel {
 				.getTableRows()) {
 			this.products.addItem(product.getName());
 		}
-		// getStockItemByBarcode();
-
 	}
 
 	/**
 	 * Add new item to the cart. When item out of stock then error message
 	 * displayed
 	 */
-	public void addItemEventHandler() {
+	private void addItemEventHandler() {
 		// add chosen item to the shopping cart.
 		StockItem stockItem = new StockItem();
 		int quantity;
 		try {
-			stockItem = this.domainController.getStockTableModel().getItemById(
-					Integer.parseInt(barCodeField.getText()));
+			stockItem = this.getItemByBarcode();
 			quantity = Integer.parseInt(quantityField.getText());
-
-			// if (stockItem.getQuantity() == 0
-			// || quantity > stockItem.getQuantity()) {
-			// throw new OutOfStockException();
-			// }
-			// try {
-			// if (model.getCurrentPurchaseInfoTableModel()
-			// .getItemById(stockItem.getId()).getQuantity() >= stockItem
-			// .getQuantity()) {
-			// throw new OutOfStockException();
-			// }
-			// } catch (NoSuchElementException e) {
-			// // if the element is not in the purchase list, then do nothing
-			// }
-
 			this.domainController.getModel().sellItem(
 					new SoldItem(stockItem, quantity));
 		} catch (NumberFormatException ex) {
@@ -233,20 +213,11 @@ public class PurchaseItemPanel extends JPanel {
 		} catch (NoSuchElementException e) {
 			log.info("There is no element like: " + stockItem.getId());
 		}
-
 	}
 
-	/**
-	 * Handles selected item in JComboBox as StockItem
-	 * 
-	 * @param e
-	 *            JComboBox actionEvent
-	 */
-	public void itemSelectHandler(ActionEvent e) {
+	private void itemSelectHandler(ActionEvent e) {
 		try {
-			StockItem item = model.getStockTableModel().getItemByName(
-					(String) ((JComboBox<String>) e.getSource())
-							.getSelectedItem());
+			StockItem item = getSelectedItem(e);
 			this.barCodeField.setText(item.getId().toString());
 			this.nameField.setText(item.getName().toString());
 			this.priceField.setText(Double.toString(item.getPrice()));
@@ -256,9 +227,12 @@ public class PurchaseItemPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * Sets whether or not this component is enabled.
-	 */
+	private StockItem getSelectedItem(ActionEvent e)
+			throws NoSuchElementException {
+		return this.domainController.getStockTableModel().getItemByName(
+				(String) ((JComboBox<String>) e.getSource()).getSelectedItem());
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		this.products.setEnabled(enabled);
@@ -277,19 +251,6 @@ public class PurchaseItemPanel extends JPanel {
 		nameField.setText("");
 		priceField.setText("");
 	}
-
-	/*
-	 * === Ideally, UI's layout and behavior should be kept as separated as
-	 * possible. If you work on the behavior of the application, you don't want
-	 * the layout details to get on your way all the time, and vice versa. This
-	 * separation leads to cleaner, more readable and better maintainable code.
-	 * 
-	 * In a Swing application, the layout is also defined as Java code and this
-	 * separation is more difficult to make. One thing that can still be done is
-	 * moving the layout-defining code out into separate methods, leaving the
-	 * more important methods unburdened of the messy layout code. This is done
-	 * in the following methods.
-	 */
 
 	// Formatting constraints for the dialogPane
 	private GridBagConstraints getDialogPaneConstraints() {
