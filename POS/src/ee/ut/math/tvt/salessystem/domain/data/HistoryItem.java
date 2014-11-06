@@ -34,6 +34,9 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@Column(name = "date")
 	private Date date;
 
+	@OneToMany(mappedBy = "historyItem")
+	private List<SoldItem> items;
+
 	@Transient
 	private double sum;
 
@@ -55,9 +58,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public HistoryItem() {
 		// this.sum = this.calculateSum();
 	}
-
-	@OneToMany(mappedBy = "historyItem")
-	private List<SoldItem> items;
 
 	public void setItems(List<SoldItem> purchase) {
 		this.items = purchase;

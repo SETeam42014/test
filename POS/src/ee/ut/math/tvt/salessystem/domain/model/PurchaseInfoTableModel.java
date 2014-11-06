@@ -78,6 +78,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 		for (SoldItem soldItem : rows) {
 			sum += soldItem.getSum();
 		}
-		return sum;
+		sum = Math.round(sum * 10);
+		return sum / 10;
 	}
 }
