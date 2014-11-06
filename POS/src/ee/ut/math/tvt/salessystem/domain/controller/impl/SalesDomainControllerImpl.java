@@ -65,7 +65,7 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	}
 
 	public void updateHistoryTableModel() {
-		this.model.updateHistoryTable();
+		this.model.getHistoryTableFromDatabase();
 	}
 
 	public PurchaseInfoTableModel getCurrentPurchaseInfoTableModel() {
@@ -73,7 +73,8 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	}
 
 	public void addStockItem(StockItem stockItem) {
-		this.model.getStockTableModel().addItem(stockItem);
+		// this.model.getStockTableModel().addItem(stockItem);
+		this.model.addItemToStockTable(stockItem);
 	}
 
 	public HistoryItem getHistoryItemById(long l) {

@@ -48,7 +48,7 @@ public class SalesSystemModel {
 				.getStockItems());
 	}
 
-	public void updateHistoryTable() {
+	public void getHistoryTableFromDatabase() {
 		log.debug("History update triggered");
 		this.historyTableModel.populateWithData(this.databaseService
 				.getHistoryItems());
@@ -68,21 +68,17 @@ public class SalesSystemModel {
 
 	public void startNewPurchase() throws VerificationFailedException {
 		this.updateStockTable();
-		this.databaseService.startSale();
+		this.databaseService.startTransaction();
 	}
 
 	public void submitCurrentPurchase() throws VerificationFailedException {
-		// save purchase to history
-		this.historyTableModel.addItem(new HistoryItem(
-				this.currentPurchaseInfoTableModel.getSum(),
-				this.currentPurchaseInfoTableModel.getTableRows()));
-		// clear purchase table
-		this.currentPurchaseInfoTableModel.clear();
-		// end the sale
-		this.databaseService.endSale();
-		// this.historyTableModel.populateWithData(this.databaseService
-		// .getHistoryItems());
+		this.databaseService.endTransaction();
 		log.debug("Purchase submitted");
+		HistoryItem historyItem = new HistoryItem(
+				this.currentPurchaseInfoTableModel.getSum(),
+				this.currentPurchaseInfoTableModel.getTableRows());
+		this.addItemToHistoryTable(historyItem);
+		this.currentPurchaseInfoTableModel.clear();
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {
@@ -95,7 +91,7 @@ public class SalesSystemModel {
 					.getPrice(), item.getQuantity()));
 		}
 		this.currentPurchaseInfoTableModel.clear();
-		this.databaseService.endSale();
+		this.databaseService.endTransaction();
 	}
 
 	public void sellItem(SoldItem soldItem) throws OutOfStockException {
@@ -108,4 +104,18 @@ public class SalesSystemModel {
 
 	}
 
+	public void addItemToStockTable(StockItem stockItem) {
+		this.databaseService.addStockItem(stockItem);
+		this.stockTableModel.populateWithData(this.databaseService
+				.getStockItems());
+	}
+
+	public void addItemToHistoryTable(HistoryItem historyItem) {
+		this.databaseService.addHistoryItem(historyItem);
+		// for (SoldItem soldItem : historyItem.getItems()) {
+		// this.databaseService.addSoldItem(soldItem);
+		// }
+		this.historyTableModel.populateWithData(this.databaseService
+				.getHistoryItems());
+	}
 }

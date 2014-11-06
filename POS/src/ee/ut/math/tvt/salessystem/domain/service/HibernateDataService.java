@@ -4,7 +4,6 @@ package ee.ut.math.tvt.salessystem.domain.service;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -15,7 +14,6 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 public class HibernateDataService {
 
 	private Session session = HibernateUtil.currentSession();
-	private Transaction tx;
 
 	public List<SoldItem> getSoldItems() {
 		List<SoldItem> result = session.createQuery("from SoldItem").list();
@@ -34,13 +32,29 @@ public class HibernateDataService {
 		return result;
 	}
 
-	public void startSale() {
-		this.tx = session.beginTransaction();
+	public void startTransaction() {
+		session.beginTransaction();
 	}
 
-	public void endSale() {
-		// session.flush();
-		// session.beginTransaction().commit();
-		tx.commit();
+	public void addStockItem(StockItem stockItem) {
+		session.beginTransaction();
+		session.save(stockItem);
+		session.getTransaction().commit();
+	}
+
+	public void endTransaction() {
+		session.getTransaction().commit();
+	}
+
+	public void addHistoryItem(HistoryItem historyItem) {
+		session.beginTransaction();
+		session.save(historyItem);
+		session.getTransaction().commit();
+	}
+
+	public void addSoldItem(SoldItem soldItem) {
+		session.beginTransaction();
+		session.save(soldItem);
+		session.getTransaction().commit();
 	}
 }

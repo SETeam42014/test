@@ -2,9 +2,11 @@ package ee.ut.math.tvt.salessystem.domain.data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -36,7 +38,8 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	private Integer quantity;
 
 	// @ManyToOne
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "historyitem_id", nullable = false)
 	private HistoryItem historyItem;
 
 	public SoldItem(StockItem stockItem, int quantity) {

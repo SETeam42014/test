@@ -120,17 +120,12 @@ public class StockTab {
 
 	private void createInputWindow() {
 		double sum = 0;
-		// for (SoldItem i : model.getCurrentPurchaseInfoTableModel()
-		// .getTableRows()) {
-		// sum += i.getSum();
-		// }
 		sum = this.domainController.getCurrentPurchaseInfoTableModel().getSum();
 		JTextField idField = new JTextField(3);
 		JTextField priceField = new JTextField(5);
 		JTextField nameField = new JTextField(15);
 		JTextField descrField = new JTextField(15);
 		JTextField quantityField = new JTextField(5);
-		// JTextField descrField = new JTextField();
 		nameField.setText(Double.toString(sum));
 		JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Id"));
