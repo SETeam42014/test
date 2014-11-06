@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.model.HistoryTableModel;
@@ -44,6 +45,10 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 		this.model.submitCurrentPurchase();
 	}
 
+	public void submitCurrentPurchase() throws VerificationFailedException {
+		this.model.submitCurrentPurchase();
+	}
+
 	public void cancelCurrentPurchase() throws VerificationFailedException {
 		this.model.cancelCurrentPurchase();
 	}
@@ -58,7 +63,7 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	 * USED ONLY FOR CONSOLEUI
 	 */
 	public List<StockItem> loadWarehouseState() {
-		this.model.updateStock();
+		this.model.updateStockTable();
 		return this.model.getStockTableModel().getTableRows();
 	}
 
@@ -67,7 +72,7 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 	}
 
 	public void updateStockTableModel() {
-		this.model.updateStock();
+		this.model.updateStockTable();
 	}
 
 	public HistoryTableModel loadHistoryTableState() {
@@ -81,6 +86,14 @@ public class SalesDomainControllerImpl extends SalesDomainController {
 
 	public void addStockItem(StockItem stockItem) {
 		this.model.getStockTableModel().addItem(stockItem);
+	}
+
+	public HistoryItem getHistoryItemById(long l) {
+		return this.model.getHistoryTableModel().getItemById(l);
+	}
+
+	public StockItem getStockItemById(long id) {
+		return this.model.getStockTableModel().getItemById(id);
 	}
 
 	/**

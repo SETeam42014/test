@@ -1,6 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -99,14 +100,6 @@ public class PurchaseItemPanel extends JPanel {
 		panel2.setBorder(BorderFactory.createTitledBorder("Product"));
 		// Initialize the textfields
 
-		// Add products to JComboBox
-		/*
-		 * int i = model.getWarehouseTableModel().getRowCount(); String[]
-		 * warehouseProducts = new String[i--]; for (; i >= 0; i--) {
-		 * warehouseProducts[i] = model.getWarehouseTableModel() .getValueAt(i,
-		 * 1).toString(); }
-		 */
-
 		products = new JComboBox<String>();
 		barCodeField = new JTextField();
 		quantityField = new JTextField("1");
@@ -117,13 +110,6 @@ public class PurchaseItemPanel extends JPanel {
 		nameField.setEditable(false);
 		priceField.setEditable(false);
 
-		// == Add components to the panel
-		// JComboBox nimed = new JComboBox(nameOptions);
-		// - bar code
-		// final JPanel comboPanel = new JPanel();
-		// JLabel comboLbl = new JLabel("Team members:");
-		// JComboBox nimed = new JComboBox(nameOptions);
-		// comboPanel.add(comboLbl); comboPanel.add(nimed);
 		panel.add(new JLabel("Products:"));
 		panel.add(products);
 
@@ -142,7 +128,7 @@ public class PurchaseItemPanel extends JPanel {
 		panel.add(new JLabel("Price:"));
 		panel.add(priceField);
 
-		// - populate products
+		// - populate products combobox with product names
 		populateProducts();
 
 		// Create and add the button
@@ -178,18 +164,19 @@ public class PurchaseItemPanel extends JPanel {
 
 	// Fill dialog with data from the "database".
 	private void fillDialogFields() {
-		StockItem stockItem = getStockItemByBarcode();
-
-		if (stockItem != null) {
+		try {
+			// StockItem stockItem = this.domainController.getModel()
+			// .getStockTableModel()
+			// .getItemById(Integer.parseInt(barCodeField.getText()));
+			StockItem stockItem = new StockItem();
 			nameField.setText(stockItem.getName());
-			String priceString = String.valueOf(stockItem.getPrice());
-			priceField.setText(priceString);
+			priceField.setText(String.valueOf(stockItem.getPrice()));
 			products.setSelectedItem(stockItem.getName());
-
-		} else {
+		} catch (NoSuchElementException exception) {
+			reset();
+		} catch (NumberFormatException exception) {
 			reset();
 		}
-
 	}
 
 	public void populateProducts() {
@@ -201,19 +188,6 @@ public class PurchaseItemPanel extends JPanel {
 		}
 		// getStockItemByBarcode();
 
-	}
-
-	// Search the warehouse for a StockItem with the bar code entered
-	// to the barCode textfield.
-	private StockItem getStockItemByBarcode() {
-		try {
-			int code = Integer.parseInt(barCodeField.getText());
-			return model.getStockTableModel().getItemById(code);
-		} catch (NumberFormatException ex) {
-			return null;
-		} catch (NoSuchElementException ex) {
-			return null;
-		}
 	}
 
 	/**
@@ -228,21 +202,22 @@ public class PurchaseItemPanel extends JPanel {
 			stockItem = this.domainController.getStockTableModel().getItemById(
 					Integer.parseInt(barCodeField.getText()));
 			quantity = Integer.parseInt(quantityField.getText());
-			if (stockItem.getQuantity() == 0
-					|| quantity > stockItem.getQuantity()) {
-				throw new OutOfStockException();
-			}
-			try {
-				if (model.getCurrentPurchaseInfoTableModel()
-						.getItemById(stockItem.getId()).getQuantity() >= stockItem
-						.getQuantity()) {
-					throw new OutOfStockException();
-				}
-			} catch (NoSuchElementException e) {
-				// if the element is not in the purchase list, then do nothing
-			}
 
-			this.model.getCurrentPurchaseInfoTableModel().addItem(
+			// if (stockItem.getQuantity() == 0
+			// || quantity > stockItem.getQuantity()) {
+			// throw new OutOfStockException();
+			// }
+			// try {
+			// if (model.getCurrentPurchaseInfoTableModel()
+			// .getItemById(stockItem.getId()).getQuantity() >= stockItem
+			// .getQuantity()) {
+			// throw new OutOfStockException();
+			// }
+			// } catch (NoSuchElementException e) {
+			// // if the element is not in the purchase list, then do nothing
+			// }
+
+			this.domainController.getModel().sellItem(
 					new SoldItem(stockItem, quantity));
 		} catch (NumberFormatException ex) {
 			quantity = 1;
@@ -298,7 +273,6 @@ public class PurchaseItemPanel extends JPanel {
 		quantityField.setText("1");
 		nameField.setText("");
 		priceField.setText("");
-		getStockItemByBarcode();
 	}
 
 	/*
