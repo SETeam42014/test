@@ -1,7 +1,6 @@
 package ee.ut.math.tvt.salessystem.domain.model;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
@@ -49,9 +48,6 @@ public class SalesSystemModel {
 				.getStockItems());
 	}
 
-	/**
-	 * 
-	 */
 	public void updateHistoryTable() {
 		log.debug("History update triggered");
 		this.historyTableModel.populateWithData(this.databaseService
@@ -100,10 +96,6 @@ public class SalesSystemModel {
 		this.databaseService.endSale();
 	}
 
-	/**
-	 * @param soldItem
-	 * @throws OutOfStockException
-	 */
 	public void sellItem(SoldItem soldItem) throws OutOfStockException {
 		try {
 			this.stockTableModel.sellItem(soldItem);

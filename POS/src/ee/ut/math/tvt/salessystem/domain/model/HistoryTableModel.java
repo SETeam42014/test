@@ -3,8 +3,6 @@
  */
 package ee.ut.math.tvt.salessystem.domain.model;
 
-import java.util.NoSuchElementException;
-
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
