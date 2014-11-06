@@ -51,6 +51,7 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 			log.debug("Found existing item " + stockItem.getName()
 					+ " increased quantity by " + stockItem.getQuantity());
 		} catch (NoSuchElementException e) {
+			System.out.println("ei ole sellist elementi");
 			rows.add(stockItem);
 			log.debug("Added " + stockItem.getName() + " quantity of "
 					+ stockItem.getQuantity());
@@ -63,16 +64,14 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 	 * 
 	 * @param stockItem
 	 *            List of items to be sold
-	 * @param quantity
 	 * @throws Exception
 	 */
-	public void sellItem(SoldItem soldItem) throws OutOfStockException {
+	public void sellItem(final SoldItem soldItem) throws OutOfStockException {
 		StockItem stockItem = this.getItemById(soldItem.getId());
-		int quantity = soldItem.getQuantity();
-		if (stockItem.getQuantity() < quantity)
-			throw new OutOfStockException();
-		stockItem.reduceQuantity(quantity);
+		stockItem.reduceQuantity(soldItem.getQuantity());
 		fireTableDataChanged();
+		if (stockItem.getQuantity() < 0)
+			throw new OutOfStockException();
 	}
 
 	@Override

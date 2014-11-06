@@ -1,5 +1,10 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -16,17 +21,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.table.JTableHeader;
 
 import org.apache.log4j.Logger;
-
-import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 public class StockTab {
 
 	private JButton addItem;
 	private static final Logger log = Logger.getLogger(StockTab.class);
+	private SalesSystemModel model;
 	private SalesDomainControllerImpl domainController;
 
 	/**
@@ -37,6 +41,7 @@ public class StockTab {
 	 */
 	public StockTab(SalesDomainControllerImpl domainController) {
 		this.domainController = domainController;
+		this.model = domainController.getModel();
 	}
 
 	/**
@@ -120,11 +125,11 @@ public class StockTab {
 
 	private void createInputWindow() {
 		double sum = 0;
-		// for (SoldItem i : model.getCurrentPurchaseInfoTableModel()
-		// .getTableRows()) {
-		// sum += i.getSum();
-		// }
-		sum = this.domainController.getCurrentPurchaseInfoTableModel().getSum();
+		for (SoldItem i : model.getCurrentPurchaseInfoTableModel()
+				.getTableRows()) {
+			sum += i.getSum();
+		}
+		;
 		JTextField idField = new JTextField(3);
 		JTextField priceField = new JTextField(5);
 		JTextField nameField = new JTextField(15);

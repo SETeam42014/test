@@ -7,7 +7,6 @@ package ee.ut.math.tvt.salessystem.domain.service;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -18,7 +17,6 @@ import ee.ut.math.tvt.salessystem.util.HibernateUtil;
 public class HibernateDataService {
 
 	private Session session = HibernateUtil.currentSession();
-	private Transaction tx;
 
 	/**
 	 * Not needed ?
@@ -51,11 +49,4 @@ public class HibernateDataService {
 		return result;
 	}
 
-	public void startSale() {
-		this.tx = session.beginTransaction();
-	}
-
-	public void endSale() {
-		tx.commit();
-	}
 }
