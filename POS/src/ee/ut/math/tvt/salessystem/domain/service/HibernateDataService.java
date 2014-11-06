@@ -40,6 +40,7 @@ public class HibernateDataService {
 
 	public void endSale() {
 		// session.flush();
-		session.beginTransaction().commit();
+		// session.beginTransaction().commit();
+		tx.commit();
 	}
 }
