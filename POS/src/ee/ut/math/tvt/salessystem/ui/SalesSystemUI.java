@@ -31,8 +31,6 @@ public class SalesSystemUI extends JFrame {
 
 	private final SalesDomainControllerImpl domainController;
 
-	private final SalesSystemModel model;
-
 	// Instances of tab classes
 	private PurchaseTab purchaseTab;
 	private HistoryTab historyTab;
@@ -47,7 +45,6 @@ public class SalesSystemUI extends JFrame {
 	 */
 	public SalesSystemUI(SalesDomainControllerImpl domainController) {
 		this.domainController = domainController;
-		this.model = domainController.getModel();
 
 		// Create single instances of the tab classes
 		historyTab = new HistoryTab(domainController);
