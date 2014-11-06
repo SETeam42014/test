@@ -139,11 +139,8 @@ public class HistoryTab {
 			try {
 				// get item clicked
 				HistoryItem item = this.domainController
-						.getModel()
-						.getHistoryTableModel()
-						.getItemById(
-								(long) ((JTable) e.getSource())
-										.getSelectedRow());
+						.getHistoryItemById((long) ((JTable) e.getSource())
+								.getSelectedRow());
 				// Create new panel for purchase history view
 				JPanel paymentPanel = new JPanel();
 				paymentPanel.add(drawBasketPane(item),

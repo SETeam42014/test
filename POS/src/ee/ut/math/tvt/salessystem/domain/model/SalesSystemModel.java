@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
@@ -75,10 +76,13 @@ public class SalesSystemModel {
 	}
 
 	public void submitCurrentPurchase() throws VerificationFailedException {
-
-		/**
-		 * Update remote database
-		 */
+		// save purchase to history
+		this.historyTableModel.addItem(new HistoryItem(
+				this.currentPurchaseInfoTableModel.getSum(),
+				this.currentPurchaseInfoTableModel.getTableRows()));
+		// clear purchase table
+		this.currentPurchaseInfoTableModel.clear();
+		// end the sale
 		this.databaseService.endSale();
 		log.debug("Purchase submitted");
 	}

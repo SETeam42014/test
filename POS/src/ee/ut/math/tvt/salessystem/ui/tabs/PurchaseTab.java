@@ -1,29 +1,15 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
-import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
-import ee.ut.math.tvt.salessystem.domain.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
-import ee.ut.math.tvt.SETeam42014.Intro;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.InputMismatchException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,6 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -50,8 +41,6 @@ public class PurchaseTab {
 
 	private PurchaseItemPanel purchasePane;
 
-	private SalesSystemModel model;
-
 	/**
 	 * Default constructor
 	 * 
@@ -60,7 +49,6 @@ public class PurchaseTab {
 	 */
 	public PurchaseTab(SalesDomainControllerImpl domainController) {
 		this.domainController = domainController;
-		this.model = this.domainController.getModel();
 	}
 
 	/**
@@ -185,8 +173,7 @@ public class PurchaseTab {
 		try {
 			domainController.cancelCurrentPurchase();
 		} catch (VerificationFailedException e) {
-			// TODO Auto-generated catch block
-			log.error(e);
+			log.error(e.getMessage());
 		}
 		endSale();
 	}
@@ -198,10 +185,11 @@ public class PurchaseTab {
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");
 		try {
-			if (model.getCurrentPurchaseInfoTableModel().getRowCount() == 0)
+			if (this.domainController.getCurrentPurchaseInfoTableModel()
+					.getRowCount() == 0)
 				throw new NullPointerException();
 			log.debug("Contents of the current basket:\n"
-					+ model.getCurrentPurchaseInfoTableModel());
+					+ this.domainController.getCurrentPurchaseInfoTableModel());
 
 			while (createPaymentWindow() == 1)
 				;
@@ -243,11 +231,13 @@ public class PurchaseTab {
 			OutOfStockException {
 		try {
 			double sum = 0;
-			for (SoldItem item : model.getCurrentPurchaseInfoTableModel()
-					.getTableRows()) {
-				sum += item.getSum();
-			}
-			sum = round(sum, 2);
+			// for (SoldItem item :
+			// this.model.getCurrentPurchaseInfoTableModel()
+			// .getTableRows()) {
+			// sum += item.getSum();
+			// }
+			sum = round(this.domainController
+					.getCurrentPurchaseInfoTableModel().getSum(), 2);
 			JTextField sumField = new JTextField(5);
 			JTextPane sumPane = new JTextPane();
 			sumPane.setText(Double.toString(sum));
@@ -258,9 +248,6 @@ public class PurchaseTab {
 			paymentPanel.add(sumField);
 			paymentPanel.add(Box.createHorizontalStrut(15)); // a spacer
 
-			// int result = JOptionPane.showConfirmDialog(null, myPanel,
-			// "Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
-
 			if (JOptionPane.showConfirmDialog(null, paymentPanel,
 					"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 				JTextPane paymentPane = new JTextPane();
@@ -270,14 +257,9 @@ public class PurchaseTab {
 				submitPayment(paymentPanel,
 						round(Double.parseDouble(paymentPane.getText()), 2)
 								- sum);
-				this.model.getHistoryTableModel().addItem(
-						new HistoryItem(sum, model
-								.getCurrentPurchaseInfoTableModel()
-								.getTableRows()));
-				domainController.submitCurrentPurchase(model
-						.getCurrentPurchaseInfoTableModel().getTableRows());
+				// Submit purchase
+				domainController.submitCurrentPurchase();
 				endSale();
-				model.getCurrentPurchaseInfoTableModel().clear();
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e);
