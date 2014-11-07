@@ -112,6 +112,9 @@ public class SalesSystemModel {
 
 	public void addItemToHistoryTable(HistoryItem historyItem) {
 		this.databaseService.addHistoryItem(historyItem);
+		for (SoldItem soldItem : historyItem.getItems()) {
+			this.databaseService.addSoldItem(soldItem);
+		}
 		this.historyTableModel.populateWithData(this.databaseService
 				.getHistoryItems());
 	}
