@@ -6,17 +6,13 @@ package ee.ut.math.tvt.salessystem.domain.data;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.FetchMode;
 
 /**
  * @author Johani
@@ -37,10 +33,9 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@Column(name = "date")
 	private Date date;
 
-	// @OneToMany(mappedBy = "historyItem", cascade = {
-	// javax.persistence.CascadeType.ALL }, orphanRemoval = true)
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,
-			CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "historyItem")
+	// @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,
+	// CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "historyItem")
+	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
 	public HistoryItem(double sum, List<SoldItem> purchase) {

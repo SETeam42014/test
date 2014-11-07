@@ -47,7 +47,20 @@ public class HibernateDataService {
 
 	public void addHistoryItem(HistoryItem historyItem) {
 		session.beginTransaction();
-		session.save(historyItem);
+		session.persist(historyItem);
+		// session.save(historyItem);
+		session.getTransaction().commit();
+	}
+
+	public void updateItem(Object item) {
+		session.beginTransaction();
+		session.update(item);
+		session.getTransaction().commit();
+	}
+
+	public void addItem(Object item) {
+		session.beginTransaction();
+		session.save(item);
 		session.getTransaction().commit();
 	}
 
