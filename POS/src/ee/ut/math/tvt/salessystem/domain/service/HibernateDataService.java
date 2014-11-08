@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.domain.service;
 
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
@@ -39,34 +40,23 @@ public class HibernateDataService {
 		session.getTransaction().commit();
 	}
 
-	public void addStockItem(StockItem stockItem) {
+	public void updateOrAddItem(Object item) {
 		session.beginTransaction();
-		session.save(stockItem);
+		try {
+			session.merge(item);
+
+		} catch (ObjectNotFoundException exception) {
+			session.save(item);
+		}
 		session.getTransaction().commit();
 	}
 
-	public void addHistoryItem(HistoryItem historyItem) {
-		session.beginTransaction();
-		session.persist(historyItem);
-		// session.save(historyItem);
-		session.getTransaction().commit();
-	}
-
-	public void updateItem(Object item) {
-		session.beginTransaction();
-		session.update(item);
-		session.getTransaction().commit();
-	}
-
+	/**
+	 * @param historyItem
+	 */
 	public void addItem(Object item) {
 		session.beginTransaction();
 		session.save(item);
-		session.getTransaction().commit();
-	}
-
-	public void addSoldItem(SoldItem soldItem) {
-		session.beginTransaction();
-		session.save(soldItem);
 		session.getTransaction().commit();
 	}
 }

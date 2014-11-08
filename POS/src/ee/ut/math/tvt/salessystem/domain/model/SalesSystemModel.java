@@ -105,22 +105,19 @@ public class SalesSystemModel {
 	}
 
 	public void addItemToStockTable(StockItem stockItem) {
-		this.databaseService.addStockItem(stockItem);
+		// this.databaseService.addStockItem(stockItem);
+		this.stockTableModel.addItem(stockItem);
+		this.databaseService.updateOrAddItem(this.stockTableModel
+				.getItemById(stockItem.getId()));
 		this.stockTableModel.populateWithData(this.databaseService
 				.getStockItems());
 	}
 
 	public void addItemToHistoryTable(HistoryItem historyItem) {
-		// this.databaseService.addHistoryItem(historyItem);
-		// for (SoldItem soldItem : historyItem.getItems()) {
-		// this.databaseService.addSoldItem(soldItem);
-		// }
-		// this.historyTableModel.populateWithData(this.databaseService
-		// .getHistoryItems());
+		this.historyTableModel.addItem(historyItem);
 		this.databaseService.addItem(historyItem);
 		for (SoldItem soldItem : historyItem.getItems()) {
 			this.databaseService.addItem(soldItem);
 		}
-		this.historyTableModel.addItem(historyItem);
 	}
 }
