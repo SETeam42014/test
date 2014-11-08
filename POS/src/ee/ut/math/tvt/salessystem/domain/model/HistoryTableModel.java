@@ -6,6 +6,7 @@ package ee.ut.math.tvt.salessystem.domain.model;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 
 /**
  * @author Johani
@@ -63,5 +64,4 @@ public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 
 		return buffer.toString();
 	}
-
 }

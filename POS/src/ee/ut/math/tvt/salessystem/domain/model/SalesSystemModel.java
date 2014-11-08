@@ -121,5 +121,6 @@ public class SalesSystemModel {
 		for (SoldItem soldItem : historyItem.getItems()) {
 			this.databaseService.addItem(soldItem);
 		}
+		this.historyTableModel.addItem(historyItem);
 	}
 }

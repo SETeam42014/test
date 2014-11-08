@@ -16,10 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.model.HistoryTableModel;
 import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
 
 /**
@@ -119,31 +121,36 @@ public class HistoryTab {
 
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				historyTabelMouseListener(e);
+				HistoryItem item = historyTabelMouseListener(e);
+				if (item != null && e.getButton() == MouseEvent.BUTTON1) {
+					drawPurchaseHistoryPopup(item);
+				}
 			}
 		});
 		return panel;
 	}
 
-	private void historyTabelMouseListener(MouseEvent e) {
-		if (e.getClickCount() == 1) {
-			try {
-				// get item clicked
-				HistoryItem item = this.domainController
-						.getHistoryItemById((long) ((JTable) e.getSource())
-								.getSelectedRow());
-				// Create new panel for purchase history view
-				JPanel paymentPanel = new JPanel();
-				paymentPanel.add(drawBasketPane(item),
-						getBasketPaneConstraints());
-				Object[] options = { "OK" };
-				JOptionPane.showOptionDialog(null, paymentPanel,
-						"Order details", JOptionPane.PLAIN_MESSAGE,
-						JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-			} catch (NoSuchElementException exception) {
-				// ERROR
-			}
+	private HistoryItem historyTabelMouseListener(MouseEvent e) {
+		try {
+			int index = ((JTable) e.getSource()).getSelectedRow();
+			HistoryItem item = this.domainController.getModel()
+					.getHistoryTableModel().getItemAt(index);
+			return item;
+		} catch (NoSuchElementException exception) {
+			return null;
+		} catch (ArrayIndexOutOfBoundsException exception) {
+			return null;
 		}
+	}
+
+	private void drawPurchaseHistoryPopup(HistoryItem item) {
+		JPanel paymentPanel = new JPanel();
+		paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
+		Object[] options = { "OK" };
+		JOptionPane.showOptionDialog(null, paymentPanel, "Order details",
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+				options, options[0]);
+
 	}
 
 	private JComponent drawBasketPane(HistoryItem item) {

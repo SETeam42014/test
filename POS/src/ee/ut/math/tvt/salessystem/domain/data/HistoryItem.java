@@ -41,6 +41,9 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public HistoryItem(double sum, List<SoldItem> purchase) {
 		this.date = new Date();
 		this.items = purchase;
+		for (SoldItem soldItem : purchase) {
+			soldItem.setHistoryItem(this);
+		}
 	}
 
 	public HistoryItem() {
@@ -64,8 +67,8 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 
 	public double getSum() {
 		double sum = 0.0;
-		for (SoldItem item : this.items) {
-			sum += item.getPrice();
+		for (SoldItem item : items) {
+			sum += item.getSum();
 		}
 		return (double) Math.round(sum * 100) / 100;
 	}

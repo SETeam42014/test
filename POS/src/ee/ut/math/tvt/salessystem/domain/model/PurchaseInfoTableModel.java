@@ -75,10 +75,10 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 
 	public double getSum() {
 		double sum = 0.0;
-		for (SoldItem soldItem : rows) {
+		for (SoldItem soldItem : this.rows) {
 			sum += soldItem.getSum();
 		}
-		sum = Math.round(sum * 10);
-		return sum / 10;
+		sum = Math.round(sum * 100);
+		return sum / 100;
 	}
 }

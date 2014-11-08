@@ -82,13 +82,21 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		this.quantity = quantity;
 	}
 
+	public HistoryItem getHistoryItem() {
+		return historyItem;
+	}
+
+	public void setHistoryItem(HistoryItem historyItem) {
+		this.historyItem = historyItem;
+	}
+
 	/**
 	 * Gets the sum of all (quantity) products
 	 * 
 	 * @return quantity * price
 	 */
 	public double getSum() {
-		return this.price * ((double) quantity);
+		return this.price * ((double) this.quantity);
 	}
 
 }
