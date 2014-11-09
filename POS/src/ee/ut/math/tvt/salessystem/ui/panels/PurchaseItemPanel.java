@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
@@ -200,10 +201,17 @@ public class PurchaseItemPanel extends JPanel {
 		try {
 			stockItem = this.getItemByBarcode();
 			quantity = Integer.parseInt(quantityField.getText());
+			if (quantity <= 0) {
+				throw new InputMismatchException();
+			}
 			this.domainController.getModel().sellItem(
 					new SoldItem(stockItem, quantity));
 		} catch (NumberFormatException ex) {
 			quantity = 1;
+		} catch (InputMismatchException e) {
+			JOptionPane.showMessageDialog(null, "Quantity should be over 0.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			log.info("Entered quantity lower than 1.");
 		} catch (OutOfStockException e) {
 			log.info("Product out of Stock");
 			JOptionPane.showMessageDialog(null, "Product out of stock",

@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.InputMismatchException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -156,12 +157,19 @@ public class StockTab {
 			double price = Double.parseDouble(priceField.getText());
 			String description = descrField.getText();
 			int quantity = Integer.parseInt(quantityField.getText());
+			if (quantity < 0 || price < 0) {
+				throw new InputMismatchException();
+			}
 			this.domainController.addStockItem(new StockItem(id, name,
 					description, price, quantity));
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
 					"Id, Price and quantity should be entered as numbers.");
 			log.error("Adding StockItem failed, price or quantity not a number.");
+		} catch (InputMismatchException e) {
+			JOptionPane.showMessageDialog(null,
+					"Price and quantity should be at least 0.");
+			log.error("Adding StockItem failed, price or quantity below 0.");
 		}
 	}
 
