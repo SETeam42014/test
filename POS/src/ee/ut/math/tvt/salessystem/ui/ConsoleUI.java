@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
@@ -69,10 +69,8 @@ public class ConsoleUI {
 	private void showStock(List<StockItem> stock) {
 		System.out.println("-------------------------");
 		for (StockItem si : stock) {
-			System.out.println(si.getId() + " "
-					+ si.getName() + " "
-					+ si.getPrice() + "Euro ("
-					+ si.getQuantity() + " items)");
+			System.out.println(si.getId() + " " + si.getName() + " "
+					+ si.getPrice() + "Euro (" + si.getQuantity() + " items)");
 		}
 		if (stock.size() == 0) {
 			System.out.println("\tNothing");
@@ -106,24 +104,29 @@ public class ConsoleUI {
 
 		if (c[0].equals("h"))
 			printUsage();
-		else if (c[0].equals("q"))
+		else if (c[0].equals("q")) {
+			// Quit application
+			this.dc.endSession();
 			System.exit(0);
-		else if (c[0].equals("w"))
+		} else if (c[0].equals("w"))
 			showStock(warehouse);
 		else if (c[0].equals("c"))
 			showStock(cart);
 		else if (c[0].equals("p"))
 			try {
-			    List<SoldItem> soldItems = new ArrayList<SoldItem>();
-			    for(StockItem stockItem : cart) {
-			        soldItems.add(new SoldItem(stockItem, stockItem.getQuantity()));
-			    }
+				List<SoldItem> soldItems = new ArrayList<SoldItem>();
+				for (StockItem stockItem : cart) {
+					soldItems.add(new SoldItem(stockItem, stockItem
+							.getQuantity()));
+				}
 				dc.submitCurrentPurchase(soldItems);
 				cart.clear();
 			} catch (VerificationFailedException e) {
 				log.error(e.getMessage());
+			} catch (OutOfStockException e) {
+				log.error(e.getMessage());
 			}
-		else if (c[0].equals("r")) 
+		else if (c[0].equals("r"))
 			try {
 				dc.cancelCurrentPurchase();
 				cart.clear();
@@ -138,5 +141,4 @@ public class ConsoleUI {
 			cart.add(item);
 		}
 	}
-	
 }

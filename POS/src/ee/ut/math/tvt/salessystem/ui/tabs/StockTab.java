@@ -1,17 +1,12 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.model.StockTableModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.InputMismatchException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,25 +17,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.table.JTableHeader;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 public class StockTab {
 
 	private JButton addItem;
 	private static final Logger log = Logger.getLogger(StockTab.class);
-	private SalesSystemModel model;
+	private SalesDomainControllerImpl domainController;
 
 	/**
 	 * Default constructor for StockTab
 	 * 
-	 * @param model
+	 * @param domainController
 	 *            SalesSystemModel
 	 */
-	public StockTab(SalesSystemModel model) {
-		this.model = model;
+	public StockTab(SalesDomainControllerImpl domainController) {
+		this.domainController = domainController;
 	}
 
 	/**
@@ -50,8 +47,6 @@ public class StockTab {
 	 */
 	public Component draw() {
 		JPanel panel = new JPanel();
-
-		this.model.updateStock();
 
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -126,16 +121,12 @@ public class StockTab {
 
 	private void createInputWindow() {
 		double sum = 0;
-		for (SoldItem i : model.getCurrentPurchaseTableModel().getTableRows()) {
-			sum += i.getSum();
-		}
-		;
+		sum = this.domainController.getCurrentPurchaseInfoTableModel().getSum();
 		JTextField idField = new JTextField(3);
 		JTextField priceField = new JTextField(5);
 		JTextField nameField = new JTextField(15);
 		JTextField descrField = new JTextField(15);
 		JTextField quantityField = new JTextField(5);
-		// JTextField descrField = new JTextField();
 		nameField.setText(Double.toString(sum));
 		JPanel myPanel = new JPanel();
 		myPanel.add(new JLabel("Id"));
@@ -166,26 +157,32 @@ public class StockTab {
 			double price = Double.parseDouble(priceField.getText());
 			String description = descrField.getText();
 			int quantity = Integer.parseInt(quantityField.getText());
-			StockItem stockItem = new StockItem(id, name, description, price,
-					quantity);
-			model.getWarehouseTableModel().addItem(
-					new StockItem(id, name, description, price, quantity));
+			if (quantity < 0 || price < 0) {
+				throw new InputMismatchException();
+			}
+			this.domainController.addStockItem(new StockItem(id, name,
+					description, price, quantity));
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
 					"Id, Price and quantity should be entered as numbers.");
 			log.error("Adding StockItem failed, price or quantity not a number.");
+		} catch (InputMismatchException e) {
+			JOptionPane.showMessageDialog(null,
+					"Price and quantity should be at least 0.");
+			log.error("Adding StockItem failed, price or quantity below 0.");
 		}
 	}
 
 	/**
-	 * table of the wareshouse stock
+	 * table of the warehouse stock
 	 * 
 	 * @return Panel
 	 */
 	private Component drawStockMainPane() {
 		JPanel panel = new JPanel();
 
-		JTable table = new JTable(model.getWarehouseTableModel());
+		this.domainController.updateStockTableModel();
+		JTable table = new JTable(this.domainController.getStockTableModel());
 
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
@@ -204,5 +201,4 @@ public class StockTab {
 		panel.setBorder(BorderFactory.createTitledBorder("Warehouse status"));
 		return panel;
 	}
-
 }

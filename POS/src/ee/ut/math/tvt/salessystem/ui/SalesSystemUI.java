@@ -1,12 +1,5 @@
 package ee.ut.math.tvt.salessystem.ui;
 
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
-import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -19,6 +12,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.ui.tabs.HistoryTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.InfoTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
+import ee.ut.math.tvt.salessystem.ui.tabs.StockTab;
+
 /**
  * Graphical user interface of the sales system.
  */
@@ -28,10 +27,7 @@ public class SalesSystemUI extends JFrame {
 
 	private static final Logger log = Logger.getLogger(SalesSystemUI.class);
 
-	private final SalesDomainController domainController;
-
-	// Warehouse model
-	private SalesSystemModel model;
+	private final SalesDomainControllerImpl domainController;
 
 	// Instances of tab classes
 	private PurchaseTab purchaseTab;
@@ -45,14 +41,13 @@ public class SalesSystemUI extends JFrame {
 	 * @param domainController
 	 *            Sales domain controller.
 	 */
-	public SalesSystemUI(SalesDomainController domainController) {
+	public SalesSystemUI(SalesDomainControllerImpl domainController) {
 		this.domainController = domainController;
-		this.model = new SalesSystemModel(domainController);
 
-		// Create singleton instances of the tab classes
-		historyTab = new HistoryTab(model);
-		stockTab = new StockTab(model);
-		purchaseTab = new PurchaseTab(domainController, model);
+		// Create single instances of the tab classes
+		historyTab = new HistoryTab(domainController);
+		stockTab = new StockTab(domainController);
+		purchaseTab = new PurchaseTab(domainController);
 		infoTab = new InfoTab();
 
 		setTitle("Sales system");
@@ -65,7 +60,6 @@ public class SalesSystemUI extends JFrame {
 		} catch (UnsupportedLookAndFeelException e1) {
 			log.warn(e1.getMessage());
 		}
-
 		drawWidgets();
 
 		// size & location
@@ -78,7 +72,7 @@ public class SalesSystemUI extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				exitProgram();
 			}
 		});
 	}
@@ -94,4 +88,11 @@ public class SalesSystemUI extends JFrame {
 		getContentPane().add(tabbedPane);
 	}
 
+	/**
+	 * Terminate DB session and exit program
+	 */
+	private void exitProgram() {
+		this.domainController.endSession();
+		System.exit(0);
+	}
 }

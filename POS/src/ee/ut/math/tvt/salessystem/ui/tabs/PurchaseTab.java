@@ -1,28 +1,15 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
-import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
-import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
-import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
-import ee.ut.math.tvt.SETeam42014.Intro;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.InputMismatchException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,6 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import org.apache.log4j.Logger;
+
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
+import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -39,7 +31,7 @@ public class PurchaseTab {
 
 	private static final Logger log = Logger.getLogger(PurchaseTab.class);
 
-	private final SalesDomainController domainController;
+	private final SalesDomainControllerImpl domainController;
 
 	private JButton newPurchase;
 
@@ -49,19 +41,14 @@ public class PurchaseTab {
 
 	private PurchaseItemPanel purchasePane;
 
-	private SalesSystemModel model;
-
 	/**
 	 * Default constructor
 	 * 
 	 * @param controller
 	 *            SalesDomainController
-	 * @param model
-	 *            SalesSystemModel
 	 */
-	public PurchaseTab(SalesDomainController controller, SalesSystemModel model) {
-		this.domainController = controller;
-		this.model = model;
+	public PurchaseTab(SalesDomainControllerImpl domainController) {
+		this.domainController = domainController;
 	}
 
 	/**
@@ -79,7 +66,7 @@ public class PurchaseTab {
 		panel.add(getPurchaseMenuPane(), getConstraintsForPurchaseMenu());
 
 		// Add the main purchase-panel
-		purchasePane = new PurchaseItemPanel(model);
+		purchasePane = new PurchaseItemPanel(this.domainController);
 		panel.add(purchasePane, getConstraintsForPurchasePanel());
 
 		return panel;
@@ -118,6 +105,7 @@ public class PurchaseTab {
 	 */
 	private JButton createNewPurchaseButton() {
 		JButton b = new JButton("New purchase");
+		b.setBackground(Color.BLUE);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newPurchaseButtonClicked();
@@ -134,6 +122,7 @@ public class PurchaseTab {
 	 */
 	private JButton createConfirmButton() {
 		JButton b = new JButton("Confirm");
+		b.setBackground(Color.GREEN);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitPurchaseButtonClicked();
@@ -151,6 +140,7 @@ public class PurchaseTab {
 	 */
 	private JButton createCancelButton() {
 		JButton b = new JButton("Cancel");
+		b.setBackground(Color.RED);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancelPurchaseButtonClicked();
@@ -185,17 +175,10 @@ public class PurchaseTab {
 		log.info("Sale cancelled");
 		try {
 			domainController.cancelCurrentPurchase();
-			endSale();
-			/*
-			 * DEPRICATED for (SoldItem i : model.getCurrentPurchaseTableModel()
-			 * .getTableRows()) { StockItem stockItem = i.getStockItem();
-			 * stockItem .setQuantity(stockItem.getQuantity() +
-			 * i.getQuantity()); } ;
-			 */
-			model.getCurrentPurchaseTableModel().clear();
-		} catch (VerificationFailedException e1) {
-			log.error(e1.getMessage());
+		} catch (VerificationFailedException e) {
+			log.error(e.getMessage());
 		}
+		endSale();
 	}
 
 	/**
@@ -205,10 +188,11 @@ public class PurchaseTab {
 	protected void submitPurchaseButtonClicked() {
 		log.info("Sale complete");
 		try {
-			if (model.getCurrentPurchaseTableModel().getRowCount() == 0)
+			if (this.domainController.getCurrentPurchaseInfoTableModel()
+					.getRowCount() == 0)
 				throw new NullPointerException();
 			log.debug("Contents of the current basket:\n"
-					+ model.getCurrentPurchaseTableModel());
+					+ this.domainController.getCurrentPurchaseInfoTableModel());
 
 			while (createPaymentWindow() == 1)
 				;
@@ -250,11 +234,8 @@ public class PurchaseTab {
 			OutOfStockException {
 		try {
 			double sum = 0;
-			for (SoldItem item : model.getCurrentPurchaseTableModel()
-					.getTableRows()) {
-				sum += item.getSum();
-			}
-			sum = round(sum, 2);
+			sum = round(this.domainController
+					.getCurrentPurchaseInfoTableModel().getSum(), 2);
 			JTextField sumField = new JTextField(5);
 			JTextPane sumPane = new JTextPane();
 			sumPane.setText(Double.toString(sum));
@@ -265,28 +246,19 @@ public class PurchaseTab {
 			paymentPanel.add(sumField);
 			paymentPanel.add(Box.createHorizontalStrut(15)); // a spacer
 
-			// int result = JOptionPane.showConfirmDialog(null, myPanel,
-			// "Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION);
-
 			if (JOptionPane.showConfirmDialog(null, paymentPanel,
 					"Please Enter Payment size", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 				JTextPane paymentPane = new JTextPane();
 				paymentPane.setText(sumField.getText());
 				paymentPanel.remove(sumField);
 				paymentPanel.add(paymentPane);
-				submitPayment(paymentPanel,
-						round(Double.parseDouble(paymentPane.getText()), 2)
-								- sum);
-				this.model.getHistoryTableModel()
-						.addItem(
-								new HistoryItem(sum, model
-										.getCurrentPurchaseTableModel()
-										.getTableRows()));
-				domainController.submitCurrentPurchase(model
-						.getCurrentPurchaseTableModel().getTableRows(), model
-						.getWarehouseTableModel().getTableRows());
+				submitPayment(
+						paymentPanel,
+						round(Double.parseDouble(paymentPane.getText()) - sum,
+								2));
+				// Submit purchase
+				domainController.submitCurrentPurchase();
 				endSale();
-				model.getCurrentPurchaseTableModel().clear();
 			}
 		} catch (IllegalArgumentException e) {
 			log.error(e);

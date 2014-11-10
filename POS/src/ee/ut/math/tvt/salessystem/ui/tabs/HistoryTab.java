@@ -7,28 +7,22 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
-import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
-import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
+import ee.ut.math.tvt.salessystem.domain.model.HistoryTableModel;
+import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -36,11 +30,10 @@ import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
  */
 public class HistoryTab {
 
-	// TODO - implement!
-	private SalesSystemModel model;
+	private SalesDomainControllerImpl domainController;
 
-	public HistoryTab(SalesSystemModel model) {
-		this.model = model;
+	public HistoryTab(SalesDomainControllerImpl domainController) {
+		this.domainController = domainController;
 	}
 
 	public Component draw() {
@@ -103,14 +96,15 @@ public class HistoryTab {
 	private Component drawHistoryMainPane() {
 		JPanel panel = new JPanel();
 
+		this.domainController.updateHistoryTableModel();
+
 		panel.setLayout(new GridBagLayout());
 
 		// Create table
-		JTable table = new JTable(model.getHistoryTableModel());
+		JTable table = new JTable(this.domainController.getModel()
+				.getHistoryTableModel());
 		JTableHeader header = table.getTableHeader();
 		header.setReorderingAllowed(false);
-
-		// historyItemClicked(table);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 
@@ -127,24 +121,36 @@ public class HistoryTab {
 
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				historyTabelMouseListener(e);
+				HistoryItem item = historyTabelMouseListener(e);
+				if (item != null && e.getButton() == MouseEvent.BUTTON1) {
+					drawPurchaseHistoryPopup(item);
+				}
 			}
 		});
 		return panel;
 	}
 
-	private void historyTabelMouseListener(MouseEvent e) {
-		if (e.getClickCount() == 1) {
-			// get item clicked
-			HistoryItem item = model.getHistoryTableModel().getItemById(
-					(long) ((JTable) e.getSource()).getSelectedRow());
-			// Create new panel for purchase history view
-			JPanel paymentPanel = new JPanel();
-			paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
-
-			JOptionPane.showConfirmDialog(null, paymentPanel, "Order details",
-					JOptionPane.OK_CANCEL_OPTION);
+	private HistoryItem historyTabelMouseListener(MouseEvent e) {
+		try {
+			int index = ((JTable) e.getSource()).getSelectedRow();
+			HistoryItem item = this.domainController.getModel()
+					.getHistoryTableModel().getItemAt(index);
+			return item;
+		} catch (NoSuchElementException exception) {
+			return null;
+		} catch (ArrayIndexOutOfBoundsException exception) {
+			return null;
 		}
+	}
+
+	private void drawPurchaseHistoryPopup(HistoryItem item) {
+		JPanel paymentPanel = new JPanel();
+		paymentPanel.add(drawBasketPane(item), getBasketPaneConstraints());
+		Object[] options = { "OK" };
+		JOptionPane.showOptionDialog(null, paymentPanel, "Order details",
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+				options, options[0]);
+
 	}
 
 	private JComponent drawBasketPane(HistoryItem item) {

@@ -5,23 +5,6 @@
 	
 	<!-- Definitions are loaded from file "application.properties" -->
 	<property file="application.properties"/>
-	<!-- 
-	DEPRICATED
-	
-	<property file="version.properties"/>
-
-	<property name="build.dir" value="${basedir}/build"/>
-	<property name="build.classes.dir" value="${build.dir}/classes"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="dist.dir" value="${basedir}/dist"/>
-	<property name="conf.dir" value="${basedir}/etc"/>
-	<property name="doc.dir" value="${build.dir}/doc"/>
-	<property name="test.reports.dir" value="${build.dir}/reports/"/>
-	
-	<loadproperties>
-		<file file="application.properties"/>
-	</loadproperties>
-	-->
 	
 	<!-- Definitions of classpath variants used for different tasks -->
 
@@ -40,8 +23,11 @@
 	</macrodef>
 	
 	<path id="compile.classpath">
-		<fileset dir="lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib.hibernate.dir}">
+		    <include name="*.jar"/>
 		</fileset>
 	</path>
 
@@ -65,7 +51,10 @@
 			<!-- configuration -->
 			<pathelement location="${conf.dir}"/>
 			<!-- Include libraries from "lib" folder-->
-			<fileset dir="lib">
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${lib.hibernate.dir}">
 				<include name="*.jar"/>
 			</fileset>
 			<pathelement location="${basedir}"/>
@@ -83,7 +72,7 @@
 	<target name="run" depends="build" description="Run the application">
 		<java 
 			classname="${application.main.class}" 
-			classpathref="run.classpath" 
+			classpathref="run.classpath"
 			fork="true" >
 			<jvmarg value="-Xdebug" />
 		    <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
@@ -154,10 +143,13 @@
 			<fileset dir="${build.classes.dir}"/>
 			<!-- Include properties files -->
 			<fileset dir="${basedir}/" includes="*.properties"/>
-			<!-- Include configuration directory ("etc") -->
+			<!-- Include etc directory -->
+			<fileset dir="${etc.dir}"/>
+			<!-- Include configuration directory ("conf") -->
 			<fileset dir="${conf.dir}"/>
-			<!-- Include log4j classes from JAR file -->
-			<zipfileset includes="**/*.class" src="lib/log4j-1.2.17.jar"/>
+			<!-- Include jar-s from lib/ -->
+			<zipgroupfileset dir="${lib.hibernate.dir}" includes="**/*.jar"/>
+			<zipgroupfileset dir="${lib.dir}" includes="**/*.jar"/>
 			<manifest>
 				<attribute name="Main-Class" 
 					value="${application.main.class}"/>
@@ -173,7 +165,7 @@
 	
 	<!-- runc target -->
 	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="${application.main.class}" classpathref="test.classpath" fork="yes">
+		<java classname="${application.main.class}" classpathref="run.classpath" fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
@@ -240,5 +232,25 @@
 				<arg value="https://${git.username}:${git.password}@github.com/SETeam42014/test.git"/>
 			</args>
 		</git>
+	</target>
+	
+	<target name="dbmanager" description="Start the HSQLDB manager">
+		<java
+	            classname="org.hsqldb.util.DatabaseManagerSwing"
+	            classpathref="run.classpath"
+	            fork="yes"
+	        >
+	            <arg line="--user sa --url ${db.url}" />
+	        </java>
+	    </target>
+
+	<target name="startdb" description="Start the HSQLDB with the default params">
+	        <java
+	            classname="org.hsqldb.Server"
+	            classpathref="run.classpath"
+	            fork="yes"
+	        >
+	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
+	        </java>
 	</target>
 </project>
