@@ -33,8 +33,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@Column(name = "date")
 	private Date date;
 
-	// @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL,
-	// CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "historyItem")
 	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
