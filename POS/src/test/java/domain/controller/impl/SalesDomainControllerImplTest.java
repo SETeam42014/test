@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test.java.domain.model;
+package test.java.domain.controller.impl;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author Johani
  *
  */
-public class HistoryTableModelTest {
+public class SalesDomainControllerImplTest {
 
 	/**
 	 * @throws java.lang.Exception

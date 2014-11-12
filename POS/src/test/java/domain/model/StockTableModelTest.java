@@ -1,19 +1,53 @@
+/**
+ * 
+ */
 package test.java.domain.model;
 
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ * @author Johani
+ *
+ */
 public class StockTableModelTest {
-	public void testValidateNameUniqueness() {
-		// TODO
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
-	public void testHasEnoughInStock() {
-		// TODO
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 	}
 
-	public void testGetItemByIdWhenItemExists() {
-		// TODO
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
 	}
 
-	public void testGetItemByIdWhenThrowsException() {
-		// TODO
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
 	}
+
+	@Test
+	public void test() {
+		fail("Not yet implemented"); // TODO
+	}
+
 }
