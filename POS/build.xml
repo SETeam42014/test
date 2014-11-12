@@ -99,6 +99,25 @@
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
+	
+	<target name="build-tests" depends="build" description="Build the system">
+		<mkdir dir="${build.test.dir}"/>
+		<javac
+            srcdir="${test.dir}"
+            destdir="${build.test.dir}"
+            debug="true"
+            debuglevel="lines,vars,source"
+            encoding="utf-8"
+            compiler="modern"
+            target="1.7"
+            source="1.7"
+        	classpathref="test.classpath"
+        >
+			<classpath>
+				<pathelement path="${build.classes.dir}" />
+			</classpath>
+		</javac>
+	</target>
 
 	<!-- Build internal documentation -->
 	<!-- Directly copied from demo, not changed -->
@@ -252,5 +271,15 @@
 	        >
 	            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
 	        </java>
+	</target>
+	
+	<target name="test" depends="build-tests" description="Run the template application">
+		<junit>
+			<classpath refid="test.classpath" />
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${build.test.dir}" includes="**/*.class" />
+			</batchtest>
+		</junit>
 	</target>
 </project>
