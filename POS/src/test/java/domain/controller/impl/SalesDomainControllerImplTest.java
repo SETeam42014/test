@@ -158,7 +158,6 @@ public class SalesDomainControllerImplTest {
 	}
 
 }
-=======
 /**
  * 
  */
@@ -331,4 +330,3 @@ public class SalesDomainControllerImplTest {
 	}
 
 }
->>>>>>> branch 'development' of https://github.com/SETeam42014/test.git
