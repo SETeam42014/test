@@ -24,7 +24,7 @@ public class StockItemTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		stockItem1 = new StockItem((long) 1, "Lauapiim", "Jook", 10.0);
+		stockItem1 = new StockItem((long) 1, "Lauapiim", "Jook", 10.0, 12);
 	}
 
 	/**
@@ -32,11 +32,6 @@ public class StockItemTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testgetColumnFalseIndex() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	@Test
@@ -51,27 +46,57 @@ public class StockItemTest {
 
 	@Test
 	public void testStockItemId() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(1, stockItem1.getId(), 0.0001);
 	}
 
 	@Test
 	public void testStockItemName() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("Lauapiim", stockItem1.getName());
 	}
 
 	@Test
 	public void testStockItemPrice() {
-		fail("Not yet implemented"); // TODO
+		assertEquals(10.0, stockItem1.getPrice(), 0.0001);
 	}
 
 	@Test
 	public void testStockItemDescription() {
-		fail("Not yet implemented"); // TODO
+		assertEquals("Jook", stockItem1.getDescription());
 	}
 
 	@Test
-	public void testClone() {
-		fail("Not yet implemented"); // TODO
+	public void testStockItemQuantity() {
+		assertEquals(10, stockItem1.getQuantity(), 0.0001);
+	}
+
+	@Test
+	public void testCloneId() {
+		StockItem stockItem2 = (StockItem) stockItem1.clone();
+		assertEquals(stockItem1.getId(), stockItem2.getId(), 0.0001);
+	}
+
+	@Test
+	public void testCloneName() {
+		StockItem stockItem2 = (StockItem) stockItem1.clone();
+		assertEquals(stockItem1.getName(), stockItem2.getName());
+	}
+
+	@Test
+	public void testClonePrice() {
+		StockItem stockItem2 = (StockItem) stockItem1.clone();
+		assertEquals(stockItem1.getPrice(), stockItem2.getPrice(), 0.0001);
+	}
+
+	@Test
+	public void testCloneDescription() {
+		StockItem stockItem2 = (StockItem) stockItem1.clone();
+		assertEquals(stockItem1.getDescription(), stockItem2.getDescription());
+	}
+
+	@Test
+	public void testCloneQuantity() {
+		StockItem stockItem2 = (StockItem) stockItem1.clone();
+		assertEquals(stockItem1.getQuantity(), stockItem2.getQuantity(), 0.0001);
 	}
 
 }
