@@ -6,36 +6,41 @@ package test.java.domain.model;
 import static org.junit.Assert.*;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
 
 /**
  * @author Johani
- *
+ * 
  */
 public class PurchaseInfoTableModelTest {
+	private StockItem stockitem1;
+	private StockItem stockitem2;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+	private SoldItem solditem1;
+	private SoldItem solditem2;
+	private SoldItem solditem3;
+	private PurchaseInfoTableModel model;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		model = new PurchaseInfoTableModel();
+
+		stockitem1 = new StockItem((long) 1, "Lauapiim", "Jook", 0.75, 5);
+		stockitem2 = new StockItem((long) 2, "Porgand", "Suupiste", 0.30, 5);
+
+		solditem1 = new SoldItem(stockitem1, 1); // sum 0.75
+		solditem2 = new SoldItem(stockitem1, 4); // sum 3
+		solditem3 = new SoldItem(stockitem2, 0); // sum 0
+
+		model.addItem(solditem1);
 	}
 
 	/**
@@ -46,8 +51,68 @@ public class PurchaseInfoTableModelTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented"); // TODO
+	public void testaddItemExistingId() {
+		model.addItem(solditem2);
+		assertEquals(4.5, (double) model.getValueAt(0, 4), 0.0001);
+		assertEquals(model.getRowCount(), 1);
+	}
+
+	@Test
+	public void testaddItemNewId() {
+		model.addItem(solditem3);
+		assertEquals(1, (long) model.getValueAt(0, 0), 0.0001);
+		assertEquals(2, (long) model.getValueAt(1, 0), 0.0001);
+		assertEquals(2, model.getRowCount());
+	}
+
+	@Test
+	public void testGetSumWithMultipleItems() {
+		assertEquals(3, solditem2.getSum(), 0.0001);
+	}
+
+	@Test
+	public void testGetSumWithOneItem() {
+		assertEquals(0.75, solditem1.getSum(), 0.0001);
+	}
+
+	@Test
+	public void testGetSumWithNoItems() {
+		assertEquals(0, solditem3.getSum(), 0.0001);
+	}
+
+	@Test
+	public void testgetColumnValueCorrectIndex() {
+		assertEquals(1, model.getColumnValue(solditem1, 0));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testgetColumnValueOutOfBoundsIndex() {
+		model.getColumnValue(solditem1, 8);
+	}
+
+	@Test
+	public void testSoldItemGetId() {
+		assertEquals(1, model.getColumnValue(solditem1, 0));
+	}
+
+	@Test
+	public void testSoldItemGetName() {
+		assertEquals("Lauapiim", model.getColumnValue(solditem1, 1));
+	}
+
+	@Test
+	public void testSoldItemGetPrice() {
+		assertEquals(0.75, model.getColumnValue(solditem1, 2));
+	}
+
+	@Test
+	public void testSoldItemGetQuantity() {
+		assertEquals(1, model.getColumnValue(solditem1, 3));
+	}
+
+	@Test
+	public void testSoldItemGetSum() {
+		assertEquals(0.75, model.getColumnValue(solditem1, 4));
 	}
 
 }
