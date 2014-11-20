@@ -36,7 +36,7 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	@OneToMany(mappedBy = "historyItem")
 	private List<SoldItem> items;
 
-	public HistoryItem(double sum, List<SoldItem> purchase) {
+	public HistoryItem(List<SoldItem> purchase) {
 		this.date = new Date();
 		this.items = purchase;
 		for (SoldItem soldItem : purchase) {
@@ -47,20 +47,12 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public HistoryItem() {
 	}
 
-	public void setItems(List<SoldItem> purchase) {
-		this.items = purchase;
-	}
-
 	public List<SoldItem> getItems() {
 		return this.items;
 	}
 
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public double getSum() {
