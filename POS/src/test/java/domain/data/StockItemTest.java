@@ -36,7 +36,7 @@ public class StockItemTest {
 
 	@Test
 	public void testgetColumnCorrectIndex() {
-		assertEquals(1, stockItem1.getColumn(0));
+		assertEquals((long) 1, stockItem1.getColumn(0));
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -66,7 +66,7 @@ public class StockItemTest {
 
 	@Test
 	public void testStockItemQuantity() {
-		assertEquals(10, stockItem1.getQuantity(), 0.0001);
+		assertEquals(12, stockItem1.getQuantity(), 0.0001);
 	}
 
 	@Test
