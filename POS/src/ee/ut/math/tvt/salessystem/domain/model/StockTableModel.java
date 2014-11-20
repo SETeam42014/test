@@ -38,12 +38,6 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		throw new IllegalArgumentException("Column index out of range");
 	}
 
-	/**
-	 * Add new stock item to table. If there already is a stock item with same
-	 * id, then existing item's quantity will be increased.
-	 * 
-	 * @param stockItem
-	 */
 	public void addItem(final StockItem stockItem) {
 		try {
 			StockItem item = getItemById(stockItem.getId());
@@ -58,15 +52,8 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 		fireTableDataChanged();
 	}
 
-	/**
-	 * Sell items from WareHouse
-	 * 
-	 * @param stockItem
-	 *            List of items to be sold
-	 * @param quantity
-	 * @throws Exception
-	 */
-	public void sellItem(SoldItem soldItem) throws OutOfStockException {
+	public void sellItem(SoldItem soldItem) throws OutOfStockException,
+			NoSuchElementException {
 		StockItem stockItem = this.getItemById(soldItem.getId());
 		int quantity = soldItem.getQuantity();
 		if (stockItem.getQuantity() < quantity)

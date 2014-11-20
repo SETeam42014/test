@@ -3,15 +3,14 @@
  */
 package test.java.domain.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
@@ -62,27 +61,13 @@ public class HistoryItemTest {
 
 	/**
 	 * Test method for
-	 * {@link ee.ut.math.tvt.salessystem.domain.data.HistoryItem#HistoryItem(double, java.util.List)}
+	 * {@link ee.ut.math.tvt.salessystem.domain.data.HistoryItem#HistoryItem(java.util.List)}
 	 * .
 	 */
 	@Test
 	public void testHistoryItemDoubleListOfSoldItem() {
-		HistoryItem historyItem = new HistoryItem(0, soldItems);
+		HistoryItem historyItem = new HistoryItem(soldItems);
 		assertEquals(soldItems, historyItem.getItems());
-	}
-
-	/**
-	 * Test method for
-	 * {@link ee.ut.math.tvt.salessystem.domain.data.HistoryItem#setItems(java.util.List)}
-	 * .
-	 */
-	@Test
-	public void testSetItems() {
-		HistoryItem historyItem = new HistoryItem(0, soldItems);
-		List<SoldItem> soldItems2 = new ArrayList<SoldItem>();
-		soldItems2.add(soldItem5);
-		historyItem.setItems(soldItems2);
-		assertEquals(soldItems2, historyItem.getItems());
 	}
 
 	/**
@@ -91,7 +76,7 @@ public class HistoryItemTest {
 	 */
 	@Test
 	public void testGetSum() {
-		HistoryItem historyItem = new HistoryItem(0, soldItems);
+		HistoryItem historyItem = new HistoryItem(soldItems);
 		assertTrue(this.sum == historyItem.getSum());
 	}
 
