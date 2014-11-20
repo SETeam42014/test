@@ -30,22 +30,16 @@
 		    <include name="*.jar"/>
 		</fileset>
 	</path>
-
 	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}"/>
-		<!-- configuration -->
-		<pathelement location="${conf.dir}"/>
-		<!-- Include libraries from "lib" folder-->
-		<fileset dir="lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar"/>
 		</fileset>
-		<pathelement location="${basedir}"/>
-		<!-- Includes application properties -->
-		<fileset dir="">
-			<include name="*.properties"/>
+		<fileset dir="${lib.hibernate.dir}">
+		    <include name="*.jar"/>
 		</fileset>
+	    <pathelement path="${build.classes.dir}/" />
+		<pathelement path="${build.test.dir}/" />
 	</path>
-	
 	<path id="run.classpath">
 			<pathelement location="${build.classes.dir}"/>
 			<!-- configuration -->
