@@ -73,4 +73,9 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 		return this.id + " " + this.date;
 	}
 
+	public void setId(long l) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
