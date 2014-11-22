@@ -6,36 +6,23 @@ package test.java.domain.data;
 import static org.junit.Assert.*;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
 /**
  * @author Johani
  *
  */
 public class SoldItemTest {
+	SoldItem soldItem1;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
+	
 	@Before
 	public void setUp() throws Exception {
+		soldItem1 = new SoldItem(new StockItem((long) 1, "Kalapulgad", "Suupiste", 4.0, 12), 4);
 	}
 
 	/**
@@ -48,97 +35,46 @@ public class SoldItemTest {
 	/**
 	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#SoldItem(ee.ut.math.tvt.salessystem.domain.data.StockItem, int)}.
 	 */
-	@Test
-	public void testSoldItemStockItemInt() {
-		fail("Not yet implemented"); // TODO
-	}
 
 	/**
 	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#SoldItem()}.
 	 */
+	
 	@Test
-	public void testSoldItem() {
-		fail("Not yet implemented"); // TODO
+	public void testSoldItemId() {
+		assertEquals(1, soldItem1.getId(), 0.0001);
+	}
+	
+	@Test
+	public void testSoldItemName() {
+		assertEquals("Kalapulgad", soldItem1.getName());
 	}
 
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getId()}.
-	 */
 	@Test
-	public void testGetId() {
-		fail("Not yet implemented"); // TODO
+	public void testSoldItemPrice() {
+		assertEquals(4.0, soldItem1.getPrice(), 0.0001);
 	}
 
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#setId(java.lang.Long)}.
-	 */
 	@Test
-	public void testSetId() {
-		fail("Not yet implemented"); // TODO
+	public void testSoldItemQuantity() {
+		assertEquals(12, soldItem1.getQuantity(), 0.0001);
 	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getName()}.
-	 */
+    
 	@Test
-	public void testGetName() {
-		fail("Not yet implemented"); // TODO
+	public void testgetSum() {
+		assertEquals(soldItem1.getSum(), soldItem1.getPrice() * soldItem1.getQuantity(), 0.0001);
 	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getPrice()}.
-	 */
+	
 	@Test
-	public void testGetPrice() {
-		fail("Not yet implemented"); // TODO
+	public void testgetSumWithZeroQuantity() {
+		soldItem1.setQuantity(0);
+		assertEquals(soldItem1.getSum(), 0.0, 0.0001);
 	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#setPrice(double)}.
-	 */
-	@Test
-	public void testSetPrice() {
-		fail("Not yet implemented"); // TODO
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testgetSumWithNegativeQuantity() {
+		soldItem1.setQuantity(-3);
+		assertEquals(soldItem1.getSum(), -12.0, 0.0001);
 	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getQuantity()}.
-	 */
-	@Test
-	public void testGetQuantity() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#setQuantity(java.lang.Integer)}.
-	 */
-	@Test
-	public void testSetQuantity() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getHistoryItem()}.
-	 */
-	@Test
-	public void testGetHistoryItem() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#setHistoryItem(ee.ut.math.tvt.salessystem.domain.data.HistoryItem)}.
-	 */
-	@Test
-	public void testSetHistoryItem() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link ee.ut.math.tvt.salessystem.domain.data.SoldItem#getSum()}.
-	 */
-	@Test
-	public void testGetSum() {
-		fail("Not yet implemented"); // TODO
-	}
-
+	
 }
