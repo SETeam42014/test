@@ -24,15 +24,15 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
  */
 public class HistoryItemTest {
 
-	StockItem stockItem1;
-	StockItem stockItem2;
-	SoldItem soldItem1;
-	SoldItem soldItem2;
-	SoldItem soldItem3;
-	SoldItem soldItem4;
-	SoldItem soldItem5;
-	double sum;
-	List<SoldItem> soldItems = new ArrayList<SoldItem>();
+	private StockItem stockItem1;
+	private StockItem stockItem2;
+	private SoldItem soldItem1;
+	private SoldItem soldItem2;
+	private SoldItem soldItem3;
+	private SoldItem soldItem4;
+	private SoldItem soldItem5;
+	private double sum;
+	private List<SoldItem> soldItems = new ArrayList<SoldItem>();
 
 	/**
 	 * @throws java.lang.Exception
@@ -41,7 +41,7 @@ public class HistoryItemTest {
 	public void setUp() throws Exception {
 		stockItem1 = new StockItem((long) 1, "Lauaviin", "Alkohol", 15.0, 3);
 		stockItem2 = new StockItem((long) 1, "Hapukurk", "Lisand", 2.0, 12);
-		soldItem1 = new SoldItem(stockItem1, 0);
+		soldItem1 = new SoldItem(stockItem1, 1);
 		soldItem2 = new SoldItem(stockItem2, 1);
 		soldItem3 = new SoldItem(stockItem1, 2);
 		soldItem4 = new SoldItem(stockItem2, 3);
@@ -80,7 +80,7 @@ public class HistoryItemTest {
 	public void testHistoryItemConstructorWithNoVariables() {
 		HistoryItem historyItem = new HistoryItem();
 		List<SoldItem> items = historyItem.getItems();
-		assertEquals(null, items);
+		assertEquals(0, items.size());
 	}
 
 	@Test
@@ -90,10 +90,6 @@ public class HistoryItemTest {
 		assertEquals(date, historyItem.getDate());
 	}
 
-	/**
-	 * Test method for
-	 * {@link ee.ut.math.tvt.salessystem.domain.data.HistoryItem#getSum()}.
-	 */
 	@Test
 	public void testGetSum() {
 		HistoryItem historyItem = new HistoryItem(soldItems);
