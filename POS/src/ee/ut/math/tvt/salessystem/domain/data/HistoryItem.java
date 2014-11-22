@@ -37,9 +37,6 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	private List<SoldItem> items;
 
 	public HistoryItem(List<SoldItem> purchase) {
-		if (purchase == null) {
-			throw new NullPointerException();
-		}
 		this.date = new Date();
 		this.items = purchase;
 		for (SoldItem soldItem : purchase) {
