@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
+
 /**
  * Stock item. Corresponds to the Data Transfer Object design pattern.
  */
@@ -28,39 +30,6 @@ public class StockItem implements Cloneable, DisplayableItem {
 	@Column(name = "quantity")
 	private int quantity;
 
-	/**
-	 * Constucts new <code>StockItem</code> with the specified values.
-	 * 
-	 * @param id
-	 *            Barcode id
-	 * @param name
-	 *            Name of the product
-	 * @param desc
-	 *            Description of the product
-	 * @param price
-	 *            Price of the product
-	 */
-	public StockItem(Long id, String name, String desc, double price) {
-		this.id = id;
-		this.name = name;
-		this.description = desc;
-		this.price = price;
-	}
-
-	/**
-	 * Creates new StockItem with parameters
-	 * 
-	 * @param id
-	 *            Barcode id
-	 * @param name
-	 *            Name of the product
-	 * @param desc
-	 *            Description of the product
-	 * @param price
-	 *            Price of the product
-	 * @param quantity
-	 *            How many of the same product
-	 */
 	public StockItem(Long id, String name, String desc, double price,
 			int quantity) {
 		this.id = id;
@@ -79,6 +48,9 @@ public class StockItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setDescription(String description) {
+		if (description == null) {
+			throw new NullPointerException();
+		}
 		this.description = description;
 	}
 
@@ -87,6 +59,9 @@ public class StockItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setName(String name) {
+		if (name == null) {
+			throw new NullPointerException();
+		}
 		this.name = name;
 	}
 
@@ -95,6 +70,9 @@ public class StockItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setPrice(double price) {
+		if (price < 0.0) {
+			throw new IllegalArgumentException();
+		}
 		this.price = price;
 	}
 
@@ -103,6 +81,9 @@ public class StockItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setId(Long id) {
+		if (id < 0) {
+			throw new IllegalArgumentException();
+		}
 		this.id = id;
 	}
 
@@ -111,35 +92,24 @@ public class StockItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setQuantity(int quantity) {
+		if (quantity < 0) {
+			throw new IllegalArgumentException();
+		}
 		this.quantity = quantity;
 	}
 
-	public void reduceQuantity(int quantity) {
+	public void reduceQuantity(int quantity) throws OutOfStockException {
+		if (quantity <= 0) {
+			throw new IllegalArgumentException();
+		}
+		if (this.quantity < quantity) {
+			throw new OutOfStockException();
+		}
 		this.quantity -= quantity;
 	}
 
 	public String toString() {
 		return id + " " + name + " " + description + " " + price;
-	}
-
-	/**
-	 * Method for querying the value of a certain column when StockItems are
-	 * shown as table rows in the SalesSstemTableModel. The order of the columns
-	 * is: id, name, price, quantity.
-	 */
-	public Object getColumn(int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return id;
-		case 1:
-			return name;
-		case 2:
-			return new Double(price);
-		case 3:
-			return new Integer(quantity);
-		default:
-			throw new RuntimeException("invalid column!");
-		}
 	}
 
 	public Object clone() {

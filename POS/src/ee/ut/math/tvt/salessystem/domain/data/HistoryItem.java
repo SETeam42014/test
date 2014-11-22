@@ -72,5 +72,4 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	public String getName() {
 		return this.id + " " + this.date;
 	}
-
 }

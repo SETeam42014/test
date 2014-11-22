@@ -58,10 +58,6 @@ public class SoldItem implements Cloneable, DisplayableItem {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -71,6 +67,9 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setPrice(double price) {
+		if (price < 0.0) {
+			throw new IllegalArgumentException();
+		}
 		this.price = price;
 	}
 
@@ -79,6 +78,9 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setQuantity(Integer quantity) {
+		if (quantity <= 0) {
+			throw new IllegalArgumentException();
+		}
 		this.quantity = quantity;
 	}
 
@@ -87,6 +89,9 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	}
 
 	public void setHistoryItem(HistoryItem historyItem) {
+		if (historyItem == null) {
+			throw new NullPointerException();
+		}
 		this.historyItem = historyItem;
 	}
 
