@@ -13,10 +13,6 @@ import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.model.PurchaseInfoTableModel;
 
-/**
- * @author Johani
- * 
- */
 public class PurchaseInfoTableModelTest {
 	private StockItem stockitem1;
 	private StockItem stockitem2;

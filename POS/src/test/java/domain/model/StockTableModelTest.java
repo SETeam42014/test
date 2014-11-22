@@ -11,43 +11,26 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ee.ut.math.tvt.salessystem.domain.model.StockTableModel;
+
 /**
  * @author Johani
  *
  */
 public class StockTableModelTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented"); // TODO
+	public void testStockTableModelDefaultConstructor() {
+		StockTableModel stock = new StockTableModel();
+		assertTrue(stock.getRowCount() == 0);
 	}
 
 }

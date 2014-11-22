@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
@@ -38,8 +39,8 @@ public class HistoryItemTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		stockItem1 = new StockItem((long) 1, "Lauaviin", "Alkohol", 15.0);
-		stockItem2 = new StockItem((long) 1, "Hapukurk", "Lisand", 2.0);
+		stockItem1 = new StockItem((long) 1, "Lauaviin", "Alkohol", 15.0, 3);
+		stockItem2 = new StockItem((long) 1, "Hapukurk", "Lisand", 2.0, 12);
 		soldItem1 = new SoldItem(stockItem1, 0);
 		soldItem2 = new SoldItem(stockItem2, 1);
 		soldItem3 = new SoldItem(stockItem1, 2);
@@ -65,9 +66,28 @@ public class HistoryItemTest {
 	 * .
 	 */
 	@Test
-	public void testHistoryItemDoubleListOfSoldItem() {
+	public void testHistoryItemConstructorWithSoldItems() {
 		HistoryItem historyItem = new HistoryItem(soldItems);
 		assertEquals(soldItems, historyItem.getItems());
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testHistoryItemConstructorWithNullItems() {
+		HistoryItem historyItem = new HistoryItem(null);
+	}
+
+	@Test
+	public void testHistoryItemConstructorWithNoVariables() {
+		HistoryItem historyItem = new HistoryItem();
+		List<SoldItem> items = historyItem.getItems();
+		assertEquals(null, items);
+	}
+
+	@Test
+	public void testGetDate() {
+		Date date = new Date();
+		HistoryItem historyItem = new HistoryItem(new ArrayList<SoldItem>());
+		assertEquals(date, historyItem.getDate());
 	}
 
 	/**
@@ -78,6 +98,12 @@ public class HistoryItemTest {
 	public void testGetSum() {
 		HistoryItem historyItem = new HistoryItem(soldItems);
 		assertTrue(this.sum == historyItem.getSum());
+	}
+
+	@Test
+	public void testGetSumWithNoItems() {
+		HistoryItem historyItem = new HistoryItem(new ArrayList<SoldItem>());
+		assertEquals(0.0, historyItem.getSum(), 0.00001);
 	}
 
 }

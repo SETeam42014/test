@@ -34,15 +34,15 @@ public class StockItemTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testgetColumnCorrectIndex() {
-		assertEquals((long) 1, stockItem1.getColumn(0));
-	}
+	// @Test
+	// public void testgetColumnCorrectIndex() {
+	// assertEquals((long) 1, stockItem1.getColumn(0));
+	// }
 
-	@Test(expected = RuntimeException.class)
-	public void testgetColumnOutOfBoundsIndex() {
-		stockItem1.getColumn(6);
-	}
+	// @Test(expected = RuntimeException.class)
+	// public void testgetColumnOutOfBoundsIndex() {
+	// stockItem1.getColumn(6);
+	// }
 
 	@Test
 	public void testStockItemId() {

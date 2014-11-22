@@ -75,7 +75,6 @@ public class SalesSystemModel {
 		this.databaseService.endTransaction();
 		log.debug("Purchase submitted");
 		HistoryItem historyItem = new HistoryItem(
-				this.currentPurchaseInfoTableModel.getSum(),
 				this.currentPurchaseInfoTableModel.getTableRows());
 		this.addItemToHistoryTable(historyItem);
 		this.currentPurchaseInfoTableModel.clear();
