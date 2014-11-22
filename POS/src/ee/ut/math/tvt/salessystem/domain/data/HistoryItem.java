@@ -3,6 +3,7 @@
  */
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,8 @@ public class HistoryItem implements Cloneable, DisplayableItem {
 	}
 
 	public HistoryItem() {
+		this.date = new Date();
+		this.items = new ArrayList<SoldItem>();
 	}
 
 	public List<SoldItem> getItems() {
