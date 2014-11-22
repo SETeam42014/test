@@ -78,3 +78,4 @@ public class SoldItemTest {
 	}
 	
 }
+>>>>>>> branch 'development' of https://github.com/SETeam42014/test.git
