@@ -43,6 +43,10 @@ public class SoldItem implements Cloneable, DisplayableItem {
 	private HistoryItem historyItem;
 
 	public SoldItem(StockItem stockItem, int quantity) {
+		if (quantity <= 0) {
+			throw new IllegalArgumentException(
+					"SoldItem quantity cannot be zero or less than zero");
+		}
 		this.id = stockItem.getId();
 		this.name = stockItem.getName();
 		this.description = stockItem.getDescription();
