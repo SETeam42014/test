@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.OutOfStockException;
 
 /**
  * @author Johani
@@ -34,6 +35,7 @@ public class StockItemTest {
 	public void tearDown() throws Exception {
 	}
 
+	// getColumn removed from StockItem
 	// @Test
 	// public void testgetColumnCorrectIndex() {
 	// assertEquals((long) 1, stockItem1.getColumn(0));
@@ -44,29 +46,77 @@ public class StockItemTest {
 	// stockItem1.getColumn(6);
 	// }
 
-	@Test
-	public void testStockItemId() {
-		assertEquals(1, stockItem1.getId(), 0.0001);
+	@Test(expected = IllegalArgumentException.class)
+	public void testStockSetItemIdNegative() {
+		stockItem1.setId((long) -1);
 	}
 
 	@Test
-	public void testStockItemName() {
-		assertEquals("Lauapiim", stockItem1.getName());
+	public void testStockSetItemId() {
+		stockItem1.setId((long) 3);
+		assertEquals((long) 3, (long) stockItem1.getId());
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testStockSetItemNameNull() {
+		stockItem1.setName(null);
 	}
 
 	@Test
-	public void testStockItemPrice() {
-		assertEquals(10.0, stockItem1.getPrice(), 0.0001);
+	public void testStockSetItemName() {
+		stockItem1.setName("Piim");
+		assertEquals("Piim", stockItem1.getName());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testStockSetItemPriceNegative() {
+		stockItem1.setPrice(-1.3);
 	}
 
 	@Test
-	public void testStockItemDescription() {
-		assertEquals("Jook", stockItem1.getDescription());
+	public void testStockSetItemPrice() {
+		stockItem1.setPrice(5.0);
+		assertEquals(5.0, stockItem1.getPrice(), 0.0001);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testStockSetItemDescriptionNull() {
+		stockItem1.setDescription(null);
 	}
 
 	@Test
-	public void testStockItemQuantity() {
-		assertEquals(12, stockItem1.getQuantity(), 0.0001);
+	public void testStockSetItemDescription() {
+		stockItem1.setDescription("kook");
+		assertEquals("kook", stockItem1.getDescription());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testStockSetItemQuantityNegative() {
+		stockItem1.setQuantity(-1);
+	}
+
+	@Test
+	public void testStockSetItemQuantity() {
+		stockItem1.setQuantity(3);
+		assertEquals(3, stockItem1.getQuantity());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testReduceNotPositiveQuantity() throws OutOfStockException {
+		stockItem1.reduceQuantity(-1);
+	}
+
+	@Test(expected = OutOfStockException.class)
+	public void testReduceQuantityToNegative() throws OutOfStockException {
+		stockItem1.setQuantity(0);
+		stockItem1.reduceQuantity(1);
+	}
+
+	@Test
+	public void testReduceQuantityCorrect() throws OutOfStockException {
+		stockItem1.setQuantity(2);
+		stockItem1.reduceQuantity(1);
+		assertEquals(1, stockItem1.getQuantity());
 	}
 
 	@Test

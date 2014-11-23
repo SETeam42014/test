@@ -34,7 +34,7 @@ public class PurchaseInfoTableModelTest {
 
 		solditem1 = new SoldItem(stockitem1, 1); // sum 0.75
 		solditem2 = new SoldItem(stockitem1, 4); // sum 3
-		solditem3 = new SoldItem(stockitem2, 0); // sum 0
+		solditem3 = new SoldItem(stockitem2, 1); // sum 0.3
 
 		model.addItem(solditem1);
 	}
@@ -62,19 +62,16 @@ public class PurchaseInfoTableModelTest {
 	}
 
 	@Test
-	public void testGetSumWithMultipleItems() {
-		assertEquals(3, solditem2.getSum(), 0.0001);
-	}
-
-	@Test
 	public void testGetSumWithOneItem() {
-		assertEquals(0.75, solditem1.getSum(), 0.0001);
+		assertEquals(0.75, model.getSum(), 0.0001);
 	}
 
 	@Test
-	public void testGetSumWithNoItems() {
-		assertEquals(0, solditem3.getSum(), 0.0001);
+	public void testGetSumWithMultipleItems() {
+		model.addItem(solditem3);
+		assertEquals(1.05, model.getSum(), 0.0001);
 	}
+
 	/**
 	 * @Test public void testgetColumnValueCorrectIndex() { assertEquals(1,
 	 *       model.getColumnValue(solditem1, 0)); }
