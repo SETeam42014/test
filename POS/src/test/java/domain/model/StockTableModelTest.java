@@ -67,7 +67,7 @@ public class StockTableModelTest {
 		stock.addItem(stockItem1);
 		stock.addItem(stockItem3);
 		// TODO
-		fail("Unhandled input combination");
+		fail("Unhandled test case");
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -98,6 +98,29 @@ public class StockTableModelTest {
 		stock.sellItem(new SoldItem(stockItem2, 4));
 		goodsLeftInStock = stock.getItemAt(0).getQuantity();
 		assertEquals(4, goodsInStock - goodsLeftInStock);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void getValueAtWrongRowIndex() {
+		int rowCount = stock.getRowCount();
+		int columnCount = stock.getColumnCount();
+		stock.getValueAt(rowCount + 1, columnCount);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void getValueAtWrongColumnIndex() {
+		int rowCount = stock.getRowCount();
+		int columnCount = stock.getColumnCount();
+		stock.getValueAt(rowCount, columnCount + 1);
+	}
+
+	@Test
+	public void getValueInFirstCell() {
+		stock.addItem(stockItem1);
+		int rowCount = stock.getRowCount();
+		int columnCount = stock.getColumnCount();
+		System.out.println(rowCount + ";;" + columnCount);
+		stock.getValueAt(1, 1);
 	}
 
 	@Test
