@@ -44,9 +44,4 @@ public class HistoryTableModelTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testHistoryTableModelDefaultConstructor() {
-		HistoryTableModel historyTableModel = new HistoryTableModel();
-		assertEquals(0, historyTableModel.getRowCount());
-	}
 }

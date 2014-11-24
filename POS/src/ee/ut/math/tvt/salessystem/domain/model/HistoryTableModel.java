@@ -23,7 +23,7 @@ public class HistoryTableModel extends SalesSystemTableModel<HistoryItem> {
 	}
 
 	@Override
-	public Object getColumnValue(HistoryItem item, int columnIndex) {
+	protected Object getColumnValue(HistoryItem item, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
 			return item.getDate();
