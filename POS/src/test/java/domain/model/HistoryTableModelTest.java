@@ -26,6 +26,7 @@ public class HistoryTableModelTest {
 	private SoldItem soldItem1;
 	private List<SoldItem> soldItems;
 	private HistoryItem historyItem1;
+	private HistoryTableModel historyTableModel;
 
 	// private HistoryTableModel historyTableModel;
 
@@ -36,8 +37,7 @@ public class HistoryTableModelTest {
 		soldItems = new ArrayList<>();
 		soldItems.add(soldItem1);
 		historyItem1 = new HistoryItem(soldItems);
-		// historyTableModel = new HistoryTableModel();
-		// historyTableModel.addItem(historyItem1);
+
 	}
 
 	@After
@@ -46,7 +46,14 @@ public class HistoryTableModelTest {
 
 	@Test
 	public void testHistoryTableModelDefaultConstructor() {
-		HistoryTableModel historyTableModel = new HistoryTableModel();
+		historyTableModel = new HistoryTableModel();
 		assertEquals(0, historyTableModel.getRowCount());
+	}
+
+	@Test
+	public void testAddItem() {
+		historyTableModel = new HistoryTableModel();
+		historyTableModel.addItem(historyItem1);
+		assertEquals(1, historyTableModel.getRowCount());
 	}
 }

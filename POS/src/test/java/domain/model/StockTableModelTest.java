@@ -117,10 +117,8 @@ public class StockTableModelTest {
 	@Test
 	public void getValueInFirstCell() {
 		stock.addItem(stockItem1);
-		int rowCount = stock.getRowCount();
-		int columnCount = stock.getColumnCount();
-		System.out.println(rowCount + ";;" + columnCount);
-		stock.getValueAt(1, 1);
+		Object value = stock.getValueAt(0, 0);
+		assertEquals(stockItem1.getId(), (long) value, 0);
 	}
 
 	@Test
